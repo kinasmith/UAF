@@ -1,1 +1,3 @@
-# uaf_dendrometer
+# Dendrometer 
+
+This project is in development.
