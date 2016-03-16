@@ -12,13 +12,11 @@
 #define SERIAL_BAUD 9600
 #define ACK_TIME    50  // # of ms to wait for an ack
 
-
 /*==============|| DS3231_RTC ||==============*/
 DS3231  rtc(SDA, SCL);
 
 /*==============|| SD ||==============*/
 const int chipSelect = 4;
-
 
 /*==============|| RFM69 ||==============*/
 RFM69 radio;
@@ -26,13 +24,12 @@ byte ackCount=0;
 const bool promiscuousMode = false; //set to 'true' to sniff all packets on the same network
 
 typedef struct {    
-  int nodeId; //store this nodeId
+  int nodeID; //store this nodeId
   float temp;
   float voltage;
 } 
 Payload;
-Payload theData;
-
+Payload data_rcv;
 
 void setup() {
   Serial.begin(9600);
@@ -51,83 +48,70 @@ void setup() {
 }
 
 void loop() {
-
   /*==============|| RADIO Recieve ||==============*/
-  if (radio.receiveDone()) {
-    radioReceive();
-    writeDataToCard();
-    if (radio.ACKRequested()) {
-      ACKsend();
-    }
-    Blink(LED,3);
-  }
+	if (radio.receiveDone()) {
+		if(radio.DATALEN != sizeof(Payload)) {
+			Serial.println("Invalid payload received!!");
+			writeDataToCard(00,99.99,99.99,thisUnixTime());
+		}
+		else {
+			data_rcv = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
+			printData();
+			writeDataToCard(data_rcv.nodeID, data_rcv.temp, data_rcv.voltage, thisUnixTime());
+		}
+		if (radio.ACKRequested()) {
+			radio.sendACK();
+			if (ackCount++%3==0) delay(3); 
+		}
+		Blink(LED,1);
+	}
 }
 
-void radioReceive() {
-  if(radio.DATALEN != sizeof(Payload)) {
-    Serial.println("Invalid payload received, not matching Payload struct!");
-  }
-  else {
-    theData = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
-    Serial.print(theData.nodeId);
+long thisUnixTime(){
+  return rtc.getUnixTime(rtc.getTime());
+}
+
+void writeDataToCard(int id, float t, float v, long utm) {
+	String fileName = String(String(id) + ".csv");
+	char __fileName[fileName.length()+1];
+	fileName.toCharArray(__fileName, sizeof(__fileName));
+	File dataFile = SD.open(__fileName, FILE_WRITE);
+	if(dataFile) {
+		dataFile.print(id);
+		dataFile.print(", ");
+		dataFile.print(t);
+		dataFile.print(", ");
+		dataFile.print(v);
+		dataFile.print(", ");
+		dataFile.print(utm);
+		dataFile.println();
+		dataFile.close();
+	} 
+	else {
+		Blink(LED, 5);
+		Serial.print("Error opening ");
+		Serial.println(fileName);
+	}
+}
+
+void printData(){
+    Serial.print(data_rcv.nodeID);
     Serial.print(", RFM_temp: ");
-    Serial.print(theData.temp);
+    Serial.print(data_rcv.temp);
     Serial.print(", Battery Voltage: ");
-    Serial.print(theData.voltage);
+    Serial.print(data_rcv.voltage);
     Serial.print(", time: ");
-    Serial.print(theUnixTime());
+    Serial.print(thisUnixTime());
     Serial.println();
-  }
 }
 
-void ACKsend(){
-  //  byte theNodeID = radio.SENDERID;
-  radio.sendACK();
-  //Serial.print(" - ACK sent.");
-  // When a node requests an ACK, respond to the ACK
-  // and also send a packet requesting an ACK (every 3rd one only)
-  // This way both TX/RX NODE functions are tested on 1 end at the GATEWAY
-  if (ackCount++%3==0) {
-    //   Serial.print(" Pinging node ");
-    //Serial.print(theNodeID);
-    //Serial.print(" - ACK...");
-    delay(3); //need this when sending right after reception .. ?
-    //    if (radio.sendWithRetry(theNodeID, "ACK TEST", 8, 0))  // 0 = only 1 attempt, no retries
-    // Serial.print("ok!");
-    // else Serial.print("nothing");
-  }
-}
 void Blink(byte PIN, int DELAY_MS) {
   pinMode(PIN, OUTPUT);
   digitalWrite(PIN,HIGH);
   delay(DELAY_MS);
   digitalWrite(PIN,LOW);
 }
-long theUnixTime(){
-  return rtc.getUnixTime(rtc.getTime());
-}
-void writeDataToCard() {
-  String fileName = String(String(theData.nodeId) + ".csv");
-  char __fileName[fileName.length()+1];
-  fileName.toCharArray(__fileName, sizeof(__fileName));
-  File dataFile = SD.open(__fileName, FILE_WRITE);
-  if(dataFile) {
-    dataFile.print(theData.nodeId);
-    dataFile.print(", ");
-    dataFile.print(theData.temp);
-    dataFile.print(", ");
-    dataFile.print(theData.voltage);
-    dataFile.print(", ");
-    dataFile.print(theUnixTime());
-    dataFile.println();
-    dataFile.close();
-    Serial.println("printed data to file");
-  } 
-  else {
-    Serial.print("Error opening ");
-    Serial.println(fileName);
-  }
-}
+
 
 
 
