@@ -17,6 +17,7 @@ DS3231  rtc(SDA, SCL);
 
 /*==============|| SD ||==============*/
 const int chipSelect = 4;
+bool CD_STATE = 0;
 
 /*==============|| RFM69 ||==============*/
 RFM69 radio;
@@ -32,19 +33,22 @@ Payload;
 Payload data_rcv;
 
 void setup() {
-  Serial.begin(9600);
-  rtc.begin();
-  pinMode(10, OUTPUT);
-  if(!SD.begin(chipSelect)) {
-    Serial.println("Card failed, or not present");
-    return;
-  }
-  Serial.println("card initialized");
+	Serial.begin(9600);
+	rtc.begin();
+	pinMode(10, OUTPUT);
 
-  radio.initialize(FREQUENCY,NODEID,NETWORKID);
-  radio.setHighPower(); //uncomment only for RFM69HW!
-  radio.encrypt(KEY);
-  Serial.println("Setup Done");
+	if(!SD.begin(chipSelect)) {
+		while(true) { //stop forever and blink LED
+			Blink(LED, 100);
+		}
+	}
+
+	Serial.println("SD card initialized");
+
+	radio.initialize(FREQUENCY,NODEID,NETWORKID);
+	radio.setHighPower(); //uncomment only for RFM69HW!
+	radio.encrypt(KEY);
+	Serial.println("Setup Done");
 }
 
 void loop() {
@@ -63,7 +67,7 @@ void loop() {
 			radio.sendACK();
 			if (ackCount++%3==0) delay(3); 
 		}
-		Blink(LED,1);
+		Blink(LED,100);
 	}
 }
 
@@ -88,7 +92,7 @@ void writeDataToCard(int id, float t, float v, long utm) {
 		dataFile.close();
 	} 
 	else {
-		Blink(LED, 5);
+		for(int i = 0; i < 5; i++) Blink(LED, 100);
 		Serial.print("Error opening ");
 		Serial.println(fileName);
 	}
@@ -110,6 +114,7 @@ void Blink(byte PIN, int DELAY_MS) {
   digitalWrite(PIN,HIGH);
   delay(DELAY_MS);
   digitalWrite(PIN,LOW);
+  delay(DELAY_MS);
 }
 
 
