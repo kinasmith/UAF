@@ -3,7 +3,7 @@ datafram_data$time
 
 setwd("~/Documents/Projects/UAF//uaf_dendrometer/data/test/")
 getwd()
-data = data.frame(read.csv("2016.03.16/12.CSV"))
+data = data.frame(read.csv("2016.03.17/14.CSV"))
 names(data) <- c("sensor", "temp", "voltage", "time")
 attach(data)
 diff = matrix(NA, nrow = (length(time)-1))

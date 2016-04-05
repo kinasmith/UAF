@@ -149,8 +149,8 @@
 <library name="_my-parts">
 <packages>
 <package name="KEYSTONEAAHOLDER_2CELL">
-<pad name="P$1" x="-7.493" y="27.178" drill="0.8" diameter="1.4224" shape="octagon"/>
-<pad name="P$2" x="7.493" y="27.178" drill="0.8" diameter="1.4224" shape="octagon"/>
+<pad name="P$1" x="-7.493" y="27.178" drill="0.889" diameter="1.4224" shape="long" rot="R270"/>
+<pad name="P$2" x="7.493" y="27.178" drill="0.889" diameter="1.4224" shape="long" rot="R90"/>
 <circle x="-7.493" y="0" radius="1.651" width="0.127" layer="48"/>
 <circle x="7.493" y="0" radius="1.651" width="0.127" layer="48"/>
 <wire x1="-16.51" y1="29.7561" x2="-16.51" y2="-29.7561" width="0.127" layer="21"/>
@@ -3852,8 +3852,8 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="R2" gate="G$1" x="119.38" y="165.1" rot="R90"/>
 <instance part="R5" gate="G$1" x="45.72" y="175.26" rot="R90"/>
 <instance part="C4" gate="G$1" x="40.64" y="144.78" rot="R180"/>
-<instance part="LED1" gate="G$1" x="114.3" y="119.38" rot="R270"/>
-<instance part="R6" gate="G$1" x="119.38" y="127" rot="R270"/>
+<instance part="LED1" gate="G$1" x="121.92" y="137.16" rot="R270"/>
+<instance part="R6" gate="G$1" x="134.62" y="142.24" rot="R270"/>
 <instance part="PGRM" gate="G$1" x="27.94" y="83.82"/>
 <instance part="C5" gate="G$1" x="45.72" y="91.44" rot="R270"/>
 </instances>
@@ -4037,8 +4037,8 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 </segment>
 <segment>
 <pinref part="R6" gate="G$1" pin="P$1"/>
-<wire x1="119.38" y1="132.08" x2="119.38" y2="134.62" width="0.1524" layer="91"/>
-<label x="119.38" y="134.62" size="1.778" layer="95"/>
+<wire x1="134.62" y1="147.32" x2="134.62" y2="149.86" width="0.1524" layer="91"/>
+<label x="139.7" y="149.86" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -4250,19 +4250,11 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <label x="101.6" y="139.7" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$8" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="PB1(OC1A)"/>
-<wire x1="96.52" y1="119.38" x2="109.22" y2="119.38" width="0.1524" layer="91"/>
-<pinref part="LED1" gate="G$1" pin="C"/>
-</segment>
-</net>
 <net name="N$9" class="0">
 <segment>
 <pinref part="LED1" gate="G$1" pin="A"/>
-<wire x1="116.84" y1="119.38" x2="119.38" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="137.16" x2="134.62" y2="137.16" width="0.1524" layer="91"/>
 <pinref part="R6" gate="G$1" pin="P$2"/>
-<wire x1="119.38" y1="119.38" x2="119.38" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$10" class="0">
@@ -4270,6 +4262,13 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="PGRM" gate="G$1" pin="6"/>
 <wire x1="33.02" y1="91.44" x2="40.64" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="C5" gate="G$1" pin="2"/>
+</segment>
+</net>
+<net name="N$5" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="PD3(INT1)"/>
+<pinref part="LED1" gate="G$1" pin="C"/>
+<wire x1="96.52" y1="137.16" x2="116.84" y2="137.16" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
