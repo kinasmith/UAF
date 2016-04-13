@@ -149,14 +149,14 @@
 <library name="_my-parts">
 <packages>
 <package name="KEYSTONEAAHOLDER_2CELL">
-<pad name="P$1" x="-7.493" y="27.178" drill="0.889" diameter="1.4224" shape="long" rot="R270"/>
-<pad name="P$2" x="7.493" y="27.178" drill="0.889" diameter="1.4224" shape="long" rot="R90"/>
+<pad name="P$1" x="-7.493" y="27.178" drill="1.016" diameter="1.524" shape="long" rot="R270"/>
+<pad name="P$2" x="7.493" y="27.178" drill="1.016" diameter="1.524" shape="long" rot="R90"/>
 <circle x="-7.493" y="0" radius="1.651" width="0.127" layer="48"/>
 <circle x="7.493" y="0" radius="1.651" width="0.127" layer="48"/>
-<wire x1="-16.51" y1="29.7561" x2="-16.51" y2="-29.7561" width="0.127" layer="21"/>
-<wire x1="-16.51" y1="-29.7561" x2="16.51" y2="-29.7561" width="0.127" layer="21"/>
-<wire x1="16.51" y1="-29.7561" x2="16.51" y2="29.7561" width="0.127" layer="21"/>
-<wire x1="16.51" y1="29.7561" x2="-16.51" y2="29.7561" width="0.127" layer="21"/>
+<wire x1="-16.51" y1="29.7561" x2="-16.51" y2="-29.7561" width="0.127" layer="48"/>
+<wire x1="-16.51" y1="-29.7561" x2="16.51" y2="-29.7561" width="0.127" layer="48"/>
+<wire x1="16.51" y1="-29.7561" x2="16.51" y2="29.7561" width="0.127" layer="48"/>
+<wire x1="16.51" y1="29.7561" x2="-16.51" y2="29.7561" width="0.127" layer="48"/>
 </package>
 <package name="SOT23-5">
 <smd name="P$1" x="-0.95" y="-1.2" dx="1.1" dy="0.6" layer="1" rot="R90"/>
@@ -170,6 +170,16 @@
 <wire x1="-1.5" y1="-0.9" x2="1.5" y2="-0.9" width="0.127" layer="21"/>
 <text x="-1.425" y="1.9" size="0.6096" layer="25" ratio="5">&gt;NAME</text>
 <text x="-1.52" y="-2.565" size="0.6096" layer="27" ratio="5">&gt;VALUE</text>
+</package>
+<package name="WURTH_10UH_650MA">
+<smd name="P$1" x="0" y="-1.1" dx="3.2" dy="1" layer="1"/>
+<smd name="P$2" x="0" y="1.1" dx="3.2" dy="1" layer="1"/>
+<text x="-2.54" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.27" layer="27">&gt;VALUE</text>
+<wire x1="-1.8" y1="0.9" x2="-1.8" y2="-0.9" width="0.127" layer="21"/>
+<wire x1="1.8" y1="0.9" x2="1.8" y2="-0.9" width="0.127" layer="21"/>
+<wire x1="-0.9" y1="1.8" x2="0.9" y2="1.8" width="0.127" layer="21"/>
+<wire x1="-0.9" y1="-1.8" x2="0.9" y2="-1.8" width="0.127" layer="21"/>
 </package>
 <package name="COILCRAFT_DO3314">
 <wire x1="-1.88" y1="1.88" x2="1.88" y2="1.88" width="0" layer="21"/>
@@ -186,10 +196,8 @@
 <smd name="P$2" x="1.6" y="0" dx="1.016" dy="0.508" layer="1" rot="R90"/>
 <wire x1="-1.27" y1="1.905" x2="1.27" y2="1.905" width="0.127" layer="21"/>
 <wire x1="-1.27" y1="-1.905" x2="1.27" y2="-1.905" width="0.127" layer="21"/>
-</package>
-<package name="WURTH_10UH_650MA">
-<smd name="P$1" x="0" y="-1.1" dx="3.2" dy="1" layer="1"/>
-<smd name="P$2" x="0" y="1.1" dx="3.2" dy="1" layer="1"/>
+<text x="-2.54" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.27" layer="27">&gt;VALUE</text>
 </package>
 </packages>
 <symbols>
@@ -3684,13 +3692,13 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="U3" library="Microchip_By_element14_Batch_1" deviceset="MCP3425A0T-E/CH" device=""/>
 <part name="U$5" library="LowPowerLab" deviceset="RFM69" device=""/>
 <part name="U2" library="_my-parts" deviceset="TPS61097-33" device=""/>
-<part name="U$4" library="_my-parts" deviceset="INDUCTORS" device="_WURTH"/>
+<part name="U4" library="_my-parts" deviceset="INDUCTORS" device="_WURTH"/>
 <part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C2" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C3" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
 <part name="R3" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="100k"/>
-<part name="JP2" library="SparkFun-Connectors" deviceset="M01" device="PTH"/>
-<part name="J1" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="PTH"/>
+<part name="ANT" library="SparkFun-Connectors" deviceset="M01" device="PTH"/>
+<part name="ICSP" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="PTH"/>
 <part name="R1" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>
 <part name="R2" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>
 <part name="R5" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>
@@ -3716,13 +3724,13 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="U3" gate="A" x="147.32" y="25.4"/>
 <instance part="U$5" gate="G$1" x="177.8" y="116.84"/>
 <instance part="U2" gate="TPS61097-33" x="55.88" y="17.78"/>
-<instance part="U$4" gate="G$1" x="35.56" y="20.32"/>
+<instance part="U4" gate="G$1" x="35.56" y="20.32"/>
 <instance part="C1" gate="G$1" x="30.48" y="7.62"/>
 <instance part="C2" gate="G$1" x="68.58" y="7.62"/>
 <instance part="C3" gate="G$1" x="119.38" y="55.88" rot="R90"/>
 <instance part="R3" gate="G$1" x="114.3" y="63.5" rot="R90"/>
-<instance part="JP2" gate="G$1" x="205.74" y="119.38" rot="R180"/>
-<instance part="J1" gate="G$1" x="27.94" y="50.8"/>
+<instance part="ANT" gate="G$1" x="205.74" y="119.38" rot="R180"/>
+<instance part="ICSP" gate="G$1" x="27.94" y="50.8"/>
 <instance part="R1" gate="G$1" x="111.76" y="165.1" rot="R90"/>
 <instance part="R2" gate="G$1" x="119.38" y="165.1" rot="R90"/>
 <instance part="R5" gate="G$1" x="45.72" y="175.26" rot="R90"/>
@@ -3744,13 +3752,13 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <net name="N$1" class="0">
 <segment>
 <pinref part="U2" gate="TPS61097-33" pin="L"/>
-<pinref part="U$4" gate="G$1" pin="P$1"/>
+<pinref part="U4" gate="G$1" pin="P$1"/>
 <wire x1="43.18" y1="20.32" x2="40.64" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
 <segment>
-<pinref part="U$4" gate="G$1" pin="P$2"/>
+<pinref part="U4" gate="G$1" pin="P$2"/>
 <wire x1="30.48" y1="20.32" x2="27.94" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="20.32" x2="27.94" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="U2" gate="TPS61097-33" pin="VIN"/>
@@ -3824,7 +3832,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <label x="177.8" y="96.52" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="J1" gate="G$1" pin="6"/>
+<pinref part="ICSP" gate="G$1" pin="6"/>
 <wire x1="38.1" y1="48.26" x2="55.88" y2="48.26" width="0.1524" layer="91"/>
 <label x="50.8" y="48.26" size="1.778" layer="95"/>
 </segment>
@@ -3885,7 +3893,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <label x="177.8" y="137.16" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="J1" gate="G$1" pin="2"/>
+<pinref part="ICSP" gate="G$1" pin="2"/>
 <wire x1="38.1" y1="53.34" x2="55.88" y2="53.34" width="0.1524" layer="91"/>
 <label x="50.8" y="53.34" size="1.778" layer="95"/>
 </segment>
@@ -3994,7 +4002,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <pinref part="U$5" gate="G$1" pin="ANT"/>
 <wire x1="190.5" y1="119.38" x2="198.12" y2="119.38" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="G$1" pin="1"/>
+<pinref part="ANT" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="SCK" class="0">
@@ -4006,7 +4014,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <label x="0" y="50.8" size="1.778" layer="95"/>
 <wire x1="20.32" y1="50.8" x2="0" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="J1" gate="G$1" pin="3"/>
+<pinref part="ICSP" gate="G$1" pin="3"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="PB5(SCK)"/>
@@ -4016,7 +4024,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 </net>
 <net name="RST" class="0">
 <segment>
-<pinref part="J1" gate="G$1" pin="5"/>
+<pinref part="ICSP" gate="G$1" pin="5"/>
 <wire x1="20.32" y1="48.26" x2="0" y2="48.26" width="0.1524" layer="91"/>
 <label x="0" y="48.26" size="1.778" layer="95"/>
 </segment>
@@ -4053,7 +4061,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <label x="0" y="53.34" size="1.778" layer="95"/>
 <wire x1="20.32" y1="53.34" x2="0" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="J1" gate="G$1" pin="1"/>
+<pinref part="ICSP" gate="G$1" pin="1"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="PB4(MISO)"/>
@@ -4070,7 +4078,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <label x="50.8" y="50.8" size="1.778" layer="95"/>
 <wire x1="38.1" y1="50.8" x2="55.88" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="J1" gate="G$1" pin="4"/>
+<pinref part="ICSP" gate="G$1" pin="4"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="PB3(MOSI/OC2)"/>

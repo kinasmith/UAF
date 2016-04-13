@@ -6,7 +6,7 @@
 
 MCP342X myADC;
 
-#define NODE_ID      2
+#define NODE_ID      1
 #define NETWORK_ID   100
 #define GATEWAY_ID   0
 #define FREQUENCY   RF69_433MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
@@ -20,7 +20,7 @@ MCP342X myADC;
 #define SENS_EN 4
 #define LED         3
 
-int TRANSMIT_PERIOD = 60000; //transmit a packet to gateway so often (in ms)
+int TRANSMIT_PERIOD = 1000; //transmit a packet to gateway so often (in ms)
 int TRANSMIT_PERIOD_MINUTES = 1;
 int ACK_FAIL_WAIT_PERIOD = 500; 
 
