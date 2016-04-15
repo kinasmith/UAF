@@ -6,7 +6,7 @@
 
 MCP342X myADC;
 
-#define NODE_ID      1
+#define NODE_ID      3
 #define NETWORK_ID   100
 #define GATEWAY_ID   0
 #define FREQUENCY   RF69_433MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
