@@ -779,7 +779,7 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <element name="R2" library="passives-7351" package="R0603-N" value="10k" x="24.13" y="30.48" smashed="yes" rot="R90">
 <attribute name="NAME" x="23.33309375" y="27.823078125" size="1.016" layer="25" font="vector" ratio="16"/>
 </element>
-<element name="R3" library="passives-7351" package="R0603-N" value="100k" x="33.02" y="20.32" smashed="yes" rot="R90">
+<element name="R3" library="passives-7351" package="R0603-N" value="1M" x="33.02" y="20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="31.993921875" y="18.12609375" size="1.016" layer="25" font="vector" ratio="16" rot="R90"/>
 </element>
 <element name="R5" library="passives-7351" package="R0603-N" value="10k" x="8.89" y="26.67" smashed="yes" rot="R270">

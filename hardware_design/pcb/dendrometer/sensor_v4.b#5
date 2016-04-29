@@ -13,12 +13,12 @@
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
@@ -1247,7 +1247,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="4.64271875" y="58.972125" size="1" layer="25" font="vector" ratio="11" rot="R180"/>
 </element>
 <element name="C2" library="passives-7351" package="C0805-N" value="10uF" x="13.843" y="58.547" smashed="yes">
-<attribute name="NAME" x="12.12128125" y="59.772875" size="1" layer="25" font="vector" ratio="11"/>
+<attribute name="NAME" x="15.80428125" y="59.010875" size="1" layer="25" font="vector" ratio="11"/>
 </element>
 <element name="C3" library="passives-7351" package="C0603-N" value="0.1uF" x="28.448" y="40.64" smashed="yes" rot="R270">
 <attribute name="NAME" x="28.077078125" y="39.15090625" size="1" layer="25" font="vector" ratio="11" rot="R270"/>
@@ -1256,7 +1256,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="28.712078125" y="33.43590625" size="1" layer="25" font="vector" ratio="11" rot="R270"/>
 </element>
 <element name="C5" library="passives-7351" package="C0603-N" value="0.1uF" x="16.764" y="42.672" smashed="yes" rot="R270">
-<attribute name="NAME" x="16.09409375" y="40.015078125" size="1" layer="25" font="vector" ratio="11"/>
+<attribute name="NAME" x="18.658921875" y="42.00209375" size="1" layer="25" font="vector" ratio="11" rot="R90"/>
 </element>
 <element name="J1" library="SparkFun-Connectors" package="2X3" value="AVR_SPI_PRG_6PTH" x="9.144" y="6.604" smashed="yes" rot="R180">
 <attribute name="NAME" x="10.414" y="2.159" size="1" layer="25" ratio="11" rot="R180"/>
@@ -1267,7 +1267,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="27.686" y="23.368" size="1" layer="27" ratio="11"/>
 </element>
 <element name="LED1" library="SparkFun-LED" package="LED-0603" value="" x="10.16" y="46.228" smashed="yes" rot="R90">
-<attribute name="NAME" x="12.065" y="47.8155" size="1" layer="25" ratio="11" rot="R180"/>
+<attribute name="NAME" x="11.811" y="45.5295" size="1" layer="25" ratio="11" rot="R180"/>
 <attribute name="VALUE" x="11.176" y="47.3075" size="0.4064" layer="27" rot="R180"/>
 </element>
 <element name="PGRM" library="SparkFun-Connectors" package="1X06_LONGPADS" value="" x="10.16" y="30.48" smashed="yes" rot="R90">
@@ -1278,20 +1278,20 @@ design rules under a new name.</description>
 <attribute name="NAME" x="20.15809375" y="44.333078125" size="1" layer="25" font="vector" ratio="11"/>
 </element>
 <element name="R2" library="passives-7351" package="R0603-N" value="10k" x="23.368" y="44.704" smashed="yes" rot="R180">
-<attribute name="NAME" x="21.37090625" y="43.423921875" size="1" layer="25" font="vector" ratio="11" rot="R180"/>
+<attribute name="NAME" x="19.52309375" y="42.555078125" size="1" layer="25" font="vector" ratio="11"/>
 </element>
-<element name="R3" library="passives-7351" package="R0603-N" value="10k" x="30.48" y="40.64" smashed="yes" rot="R90">
+<element name="R3" library="passives-7351" package="R0603-N" value="100k" x="30.48" y="40.64" smashed="yes" rot="R90">
 <attribute name="NAME" x="31.231921875" y="37.43009375" size="1" layer="25" font="vector" ratio="11" rot="R90"/>
 </element>
 <element name="R5" library="passives-7351" package="R0603-N" value="10k" x="16.764" y="46.228" smashed="yes" rot="R90">
-<attribute name="NAME" x="17.81490625" y="48.884921875" size="1" layer="25" font="vector" ratio="11" rot="R180"/>
+<attribute name="NAME" x="17.663078125" y="47.27890625" size="1" layer="25" font="vector" ratio="11" rot="R270"/>
 </element>
 <element name="R6" library="passives-7351" package="R0603-N" value="10k" x="13.208" y="47.752" smashed="yes" rot="R90">
-<attribute name="NAME" x="14.13190625" y="46.090921875" size="1" layer="25" font="vector" ratio="11" rot="R180"/>
+<attribute name="NAME" x="14.107078125" y="48.80290625" size="1" layer="25" font="vector" ratio="11" rot="R270"/>
 </element>
 <element name="U$1" library="_my-parts" package="KEYSTONEAAHOLDER_2CELL" value="KEYSTONEAAHOLDER_2CELL" x="17.78" y="30.48" smashed="yes"/>
 <element name="U$2" library="_my-parts" package="SOT23-5" value="TPS61097-33" x="11.557" y="53.086" smashed="yes" rot="R90">
-<attribute name="NAME" x="10.165" y="51.915" size="1" layer="25" ratio="11" rot="R90"/>
+<attribute name="NAME" x="13.236" y="51.313" size="1" layer="25" ratio="11" rot="R180"/>
 <attribute name="VALUE" x="14.122" y="51.566" size="1" layer="27" ratio="11" rot="R90"/>
 </element>
 <element name="U$3" library="Microchip_By_element14_Batch_1" package="SOT95P270X145-6N" value="MCP3425A0T-E/CH" x="22.86" y="47.752" smashed="yes">
@@ -1300,7 +1300,7 @@ design rules under a new name.</description>
 <attribute name="MPN" value="MCP3425A0T-E/CH" x="22.86" y="47.752" size="1.778" layer="27" display="off"/>
 <attribute name="SUPPLIER" value="Microchip" x="22.86" y="47.752" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="1578433" x="22.86" y="47.752" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="21.844" y="49.784" size="1" layer="25" ratio="11" rot="SR0"/>
+<attribute name="NAME" x="22.098" y="49.784" size="1" layer="25" ratio="11" rot="SR0"/>
 <attribute name="VALUE" x="17.3228" y="43.7134" size="1" layer="27" ratio="11" rot="SR0"/>
 </element>
 <element name="U$4" library="_my-parts" package="WURTH_10UH_650MA" value="INDUCTORS_WURTH" x="6.223" y="52.832" smashed="yes"/>
@@ -1313,16 +1313,35 @@ design rules under a new name.</description>
 <attribute name="NAME" x="23.495" y="35.814" size="1" layer="25" ratio="11"/>
 <attribute name="VALUE" x="20.32" y="28.194" size="1" layer="27" ratio="11"/>
 </element>
-<element name="Q2" library="SparkFun-DiscreteSemi" package="SOT23-3" value="MOSFET-PCHANNELIRLML2244" x="29.464" y="44.45">
+<element name="Q2" library="SparkFun-DiscreteSemi" package="SOT23-3" value="MOSFET-PCHANNELIRLML2244" x="29.464" y="44.45" smashed="yes">
 <attribute name="PROD_ID" value="TRANS-11153" x="29.464" y="44.45" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="30.4165" y="45.593" size="1" layer="25" ratio="11"/>
+<attribute name="VALUE" x="28.448" y="44.2595" size="1" layer="27" ratio="11"/>
 </element>
-<element name="C6" library="passives-7351" package="C0603-N" value="0.1uF" x="6.096" y="56.388" rot="R180"/>
-<element name="C7" library="passives-7351" package="C0603-N" value="0.1uF" x="13.589" y="56.388"/>
-<element name="R4" library="passives-7351" package="R0603-N" value="5.7-5.9k" x="27.94" y="48.133" rot="R270"/>
-<element name="SENS" library="SparkFun-Connectors" package="1X03" value="" x="32.893" y="51.435" rot="R180"/>
-<element name="SJ1" library="SparkFun-Retired" package="SJ_2S" value="SOLDERJUMPERNC" x="16.637" y="54.229" rot="R270"/>
-<element name="R10" library="passives-7351" package="R0603-N" value="5.7-5.9k" x="19.558" y="55.499"/>
-<element name="J2" library="SparkFun-Connectors" package="1X02" value="" x="20.701" y="57.658" rot="R180"/>
+<element name="C6" library="passives-7351" package="C0603-N" value="0.1uF" x="6.096" y="56.388" smashed="yes" rot="R180">
+<attribute name="NAME" x="4.47990625" y="56.885921875" size="1" layer="25" font="vector" ratio="11" rot="R180"/>
+</element>
+<element name="C7" library="passives-7351" package="C0603-N" value="0.1uF" x="13.589" y="56.388" smashed="yes">
+<attribute name="NAME" x="13.17309375" y="54.493078125" size="1" layer="25" font="vector" ratio="11"/>
+</element>
+<element name="R4" library="passives-7351" package="R0603-N" value="5.7-5.9k" x="27.94" y="48.133" smashed="yes" rot="R270">
+<attribute name="NAME" x="25.918078125" y="49.05690625" size="1" layer="25" font="vector" ratio="11" rot="R270"/>
+</element>
+<element name="SENS" library="SparkFun-Connectors" package="1X03" value="" x="32.893" y="51.435" smashed="yes" rot="R180">
+<attribute name="NAME" x="32.2072" y="54.1782" size="1" layer="25" ratio="11" rot="R180"/>
+<attribute name="VALUE" x="34.163" y="54.61" size="1.27" layer="27" rot="R180"/>
+</element>
+<element name="SJ1" library="SparkFun-Retired" package="SJ_2S" value="SOLDERJUMPERNC" x="16.637" y="54.229" smashed="yes" rot="R270">
+<attribute name="NAME" x="15.5602" y="51.943" size="1" layer="25" ratio="11"/>
+<attribute name="VALUE" x="14.986" y="55.1788" size="1" layer="27" ratio="11" rot="R270"/>
+</element>
+<element name="R10" library="passives-7351" package="R0603-N" value="10ohm" x="19.558" y="55.499" smashed="yes">
+<attribute name="NAME" x="21.24390625" y="54.472921875" size="1" layer="25" font="vector" ratio="11" rot="R180"/>
+</element>
+<element name="I" library="SparkFun-Connectors" package="1X02" value="" x="20.701" y="57.658" smashed="yes" rot="R180">
+<attribute name="NAME" x="22.5298" y="57.2008" size="1" layer="25" ratio="11"/>
+<attribute name="VALUE" x="21.971" y="60.833" size="1.27" layer="27" rot="R180"/>
+</element>
 </elements>
 <signals>
 <signal name="N$1">
@@ -1391,7 +1410,9 @@ design rules under a new name.</description>
 <contactref element="C7" pad="2"/>
 <contactref element="C6" pad="2"/>
 <contactref element="SENS" pad="1"/>
-<wire x1="24.1554" y1="48.6918" x2="21.5646" y2="47.752" width="0" layer="19" extent="1-1"/>
+<wire x1="24.1554" y1="48.6918" x2="23.2918" y2="48.6918" width="0.4064" layer="1"/>
+<wire x1="23.2918" y1="48.6918" x2="22.352" y2="47.752" width="0.4064" layer="1"/>
+<wire x1="22.352" y1="47.752" x2="21.5646" y2="47.752" width="0.4064" layer="1"/>
 </signal>
 <signal name="V3.3">
 <contactref element="U$3" pad="5"/>
@@ -1452,7 +1473,7 @@ design rules under a new name.</description>
 <via x="30.353" y="30.353" extent="1-16" drill="0.6" shape="square"/>
 <contactref element="SJ1" pad="2"/>
 <contactref element="R10" pad="2"/>
-<contactref element="J2" pad="1"/>
+<contactref element="I" pad="1"/>
 <wire x1="20.32" y1="54.864" x2="20.32" y2="55.842" width="0.4064" layer="1"/>
 <wire x1="20.32" y1="55.842" x2="20.358" y2="55.499" width="0.4064" layer="1"/>
 <wire x1="20.358" y1="55.499" x2="20.358" y2="57.442" width="0.4064" layer="1"/>
@@ -1759,7 +1780,7 @@ design rules under a new name.</description>
 <contactref element="C7" pad="1"/>
 <contactref element="SJ1" pad="1"/>
 <contactref element="R10" pad="1"/>
-<contactref element="J2" pad="2"/>
+<contactref element="I" pad="2"/>
 <wire x1="12.943" y1="58.547" x2="12.943" y2="56.542" width="0.4064" layer="1"/>
 <wire x1="12.943" y1="56.542" x2="12.789" y2="56.388" width="0.4064" layer="1"/>
 <wire x1="12.789" y1="56.388" x2="12.573" y2="56.388" width="0.4064" layer="1"/>

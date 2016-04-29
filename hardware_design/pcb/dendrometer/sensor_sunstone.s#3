@@ -190,6 +190,12 @@
 <package name="WURTH_10UH_650MA">
 <smd name="P$1" x="0" y="-1.1" dx="3.2" dy="1" layer="1"/>
 <smd name="P$2" x="0" y="1.1" dx="3.2" dy="1" layer="1"/>
+<text x="-2.54" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.27" layer="27">&gt;VALUE</text>
+<wire x1="-1.8" y1="0.9" x2="-1.8" y2="-0.9" width="0.127" layer="21"/>
+<wire x1="1.8" y1="0.9" x2="1.8" y2="-0.9" width="0.127" layer="21"/>
+<wire x1="-0.9" y1="1.8" x2="0.9" y2="1.8" width="0.127" layer="21"/>
+<wire x1="-0.9" y1="-1.8" x2="0.9" y2="-1.8" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -3684,7 +3690,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="U3" library="Microchip_By_element14_Batch_1" deviceset="MCP3425A0T-E/CH" device=""/>
 <part name="U$5" library="LowPowerLab" deviceset="RFM69" device=""/>
 <part name="U2" library="_my-parts" deviceset="TPS61097-33" device=""/>
-<part name="U$4" library="_my-parts" deviceset="INDUCTORS" device="_WURTH"/>
+<part name="U4" library="_my-parts" deviceset="INDUCTORS" device="_WURTH"/>
 <part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C2" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C3" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
@@ -3716,7 +3722,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="U3" gate="A" x="147.32" y="25.4"/>
 <instance part="U$5" gate="G$1" x="177.8" y="116.84"/>
 <instance part="U2" gate="TPS61097-33" x="55.88" y="17.78"/>
-<instance part="U$4" gate="G$1" x="35.56" y="20.32"/>
+<instance part="U4" gate="G$1" x="35.56" y="20.32"/>
 <instance part="C1" gate="G$1" x="30.48" y="7.62"/>
 <instance part="C2" gate="G$1" x="68.58" y="7.62"/>
 <instance part="C3" gate="G$1" x="119.38" y="55.88" rot="R90"/>
@@ -3744,13 +3750,13 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <net name="N$1" class="0">
 <segment>
 <pinref part="U2" gate="TPS61097-33" pin="L"/>
-<pinref part="U$4" gate="G$1" pin="P$1"/>
+<pinref part="U4" gate="G$1" pin="P$1"/>
 <wire x1="43.18" y1="20.32" x2="40.64" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
 <segment>
-<pinref part="U$4" gate="G$1" pin="P$2"/>
+<pinref part="U4" gate="G$1" pin="P$2"/>
 <wire x1="30.48" y1="20.32" x2="27.94" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="20.32" x2="27.94" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="U2" gate="TPS61097-33" pin="VIN"/>

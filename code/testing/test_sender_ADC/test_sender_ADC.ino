@@ -45,14 +45,15 @@ float start_position;
 void setup() {
   Wire.begin();
   Serial.begin(SERIAL_BAUD);
+  Serial.println("TEST!!!");
 
-  radio.initialize(FREQUENCY,NODE_ID,NETWORK_ID);
-  radio.setHighPower(); //uncomment only for RFM69HW!
-  radio.encrypt(KEY);
-  radio.sleep();
-  char buff[50];
-  sprintf(buff, "\nListening at %d Mhz...", FREQUENCY==RF69_433MHZ ? 433 : FREQUENCY==RF69_868MHZ ? 868 : 915);
-  Serial.println(buff);
+  //  radio.initialize(FREQUENCY,NODE_ID,NETWORK_ID);
+  //  radio.setHighPower(); //uncomment only for RFM69HW!
+  //  radio.encrypt(KEY);
+  //  radio.sleep();
+  //  char buff[50];
+  //  sprintf(buff, "\nListening at %d Mhz...", FREQUENCY==RF69_433MHZ ? 433 : FREQUENCY==RF69_868MHZ ? 868 : 915);
+  //  Serial.println(buff);
   Serial.println(myADC.testConnection() ? "MCP342X connection successful" : "MCP342X connection failed");
   myADC.configure( MCP342X_MODE_ONESHOT|
     MCP342X_CHANNEL_1 |
@@ -64,68 +65,19 @@ void setup() {
   randomSeed(analogRead(0));
 
   //read initial value from ADC
-  start_position = getSensorValue();
+  //  start_position = getSensorValue();
 }
 
 long lastPeriod = -1;
 
 void loop() {
-  int nAttempt = 0; //number of sends attempted
-  payload.num_attempts = nAttempt;
-  bool flag_ACK_received = false; //is the acknowledgement recieved?
-  payload.nodeID = NODE_ID;
-  int tempTemp = radio.readTemperature();
-  if(tempTemp > 100) tempTemp -= 255;
-  payload.temp = tempTemp;
-  Serial.print("temp, ");
-  Serial.println(payload.temp);
-  Serial.flush();
-  // payload.temp = radio.readTemperature();
-  payload.voltage = checkVoltage(V_BAT_PIN);
-  Serial.print("batVoltage, ");
-  Serial.println(payload.voltage);
-  Serial.flush();
-  payload.sens_val = getSensorValue();
-  Serial.print("SensorValue, ");
-  Serial.println(payload.sens_val);
-  Serial.flush();
-  //  payload.sens_val = start_position - getSensorValue();
-  // Serial.println(payload.sens_val);
-  digitalWrite(LED, LOW); //start Sending!
-  while(nAttempt < NB_ATTEMPTS_ACK && !flag_ACK_received) { //resend package # of times if it doesn't go through
-    Serial.println("sending payload");
-    if (radio.sendWithRetry(GATEWAY_ID, (const void*)(&payload), sizeof(payload))){  //send payload is successful
-      Serial.println("got ACK"); 
-      Serial.flush();
-      flag_ACK_received = true;
-      digitalWrite(LED, HIGH); //turn LED off to signal completion of transmission
-    } 
-    else {
-      Serial.println("did not get ACK"); 
-      Serial.flush();
-      analogWrite(LED, 200);
-      if(radio.sendWithRetry(GATEWAY_ID, (const void*)(&payload), sizeof(payload))) {
-        Serial.print(nAttempt);
-        Serial.println(" Got ACK"); 
-        Serial.flush();
-        flag_ACK_received = true;
-        digitalWrite(LED, HIGH); //turn LED off to signal completion of transmission
-      }
-      nAttempt++;
-      payload.num_attempts = nAttempt;
-      ACK_FAIL_WAIT_PERIOD = random(300, 600); //sets a random wait period to not interfere with other sensors
-      delay(10); //wait to finish before sleeping
-      Sleepy::loseSomeTime(ACK_FAIL_WAIT_PERIOD);  //wait for a few moments before trying again
-    }
-  }
-  Serial.println("NOW I SLEEP!"); 
-  Serial.flush();
-  delay(10); //Let everything Finish before Sleeping
-  radio.sleep(); //Sleep the Radio
-  digitalWrite(LED, HIGH);
-  for(int i = 0; i < TRANSMIT_PERIOD_MINUTES; i++) { //Sleep the µC 
-    Sleepy::loseSomeTime(TRANSMIT_PERIOD);
-  }
+  unsigned int val = 32900;
+  Serial.println(val);
+  //  payload.sens_val = `getSensorValue();
+  //  Serial.print("SensorValue, ");
+  Serial.println(getSensorValue());
+  //  Serial.flush();
+  delay(5000);
 }
 
 void Blink(byte PIN, int DELAY_MS) { //blink and LED
@@ -148,21 +100,24 @@ float checkVoltage(int pin) { //takes 100ms
   return v; //return value
 }
 
-int getSensorValue() { //takes 350ms
-  int  r;
+int16_t getSensorValue() { //takes 350ms
+  int16_t  r;
   float v;
   pinMode(SENS_EN, OUTPUT);
   digitalWrite(SENS_EN, HIGH); //write enable high for 10 ms
-  Sleepy::loseSomeTime(100); //let the Capacitor charge for a moment
+  //  Sleepy::loseSomeTime(100); //let the Capacitor charge for a moment
+  delay(100);
   digitalWrite(SENS_EN, LOW); //write enable low. Falling edge triggers FET
-  v = analogRead(A1);
+  //  v = analogRead(A1);
   myADC.startConversion(); 
   myADC.getResult(&r);
-  v = (3.3*v/1024.0);
-  Serial.print("excite Voltage, ");
-  Serial.println(v);
+  //  v = (3.3*v/1024.0);
+  //  Serial.print("excite Voltage, ");
+  //  Serial.println(v);
   return r;
 }
+
+
 
 
 

@@ -6,7 +6,7 @@
 
 MCP342X myADC;
 
-#define NODE_ID      3
+#define NODE_ID      4
 #define NETWORK_ID   100
 #define GATEWAY_ID   0
 #define FREQUENCY   RF69_433MHZ 
@@ -156,8 +156,6 @@ int getSensorValue() { //takes 100ms
   payload.excite_v = v;
   return r;
 }
-
-
 
 
 

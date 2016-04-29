@@ -3688,7 +3688,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C2" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C3" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
-<part name="R3" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="100k"/>
+<part name="R3" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="1M"/>
 <part name="JP2" library="SparkFun-Connectors" deviceset="M01" device="PTH"/>
 <part name="J1" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="PTH"/>
 <part name="R1" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>

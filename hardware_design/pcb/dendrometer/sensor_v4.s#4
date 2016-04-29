@@ -4997,9 +4997,9 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <label x="116.84" y="38.1" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="U1" gate="G$1" pin="PC0(ADC0)"/>
-<wire x1="96.52" y1="167.64" x2="101.6" y2="167.64" width="0.1524" layer="91"/>
-<label x="99.06" y="167.64" size="1.778" layer="95"/>
+<pinref part="U1" gate="G$1" pin="PC1(ADC1)"/>
+<wire x1="96.52" y1="165.1" x2="106.68" y2="165.1" width="0.1524" layer="91"/>
+<label x="99.06" y="165.1" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$6" class="0">

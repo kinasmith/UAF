@@ -4656,7 +4656,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <segment>
 <pinref part="J1" gate="G$1" pin="6"/>
 <wire x1="38.1" y1="48.26" x2="55.88" y2="48.26" width="0.1524" layer="91"/>
-<label x="55.88" y="48.26" size="1.778" layer="95"/>
+<label x="50.8" y="48.26" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="GND@2"/>
@@ -4717,7 +4717,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <segment>
 <pinref part="J1" gate="G$1" pin="2"/>
 <wire x1="38.1" y1="53.34" x2="55.88" y2="53.34" width="0.1524" layer="91"/>
-<label x="55.88" y="53.34" size="1.778" layer="95"/>
+<label x="50.8" y="53.34" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="R1" gate="G$1" pin="P$2"/>
@@ -4902,7 +4902,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <label x="149.86" y="116.84" size="1.778" layer="95"/>
 </segment>
 <segment>
-<label x="55.88" y="50.8" size="1.778" layer="95"/>
+<label x="50.8" y="50.8" size="1.778" layer="95"/>
 <wire x1="38.1" y1="50.8" x2="55.88" y2="50.8" width="0.1524" layer="91"/>
 <pinref part="J1" gate="G$1" pin="4"/>
 </segment>
@@ -4983,7 +4983,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <pinref part="R4" gate="G$1" pin="P$2"/>
 </segment>
 </net>
-<net name="+3V3/2" class="0">
+<net name="V-EXCITE" class="0">
 <segment>
 <pinref part="R4" gate="G$1" pin="P$1"/>
 <pinref part="SENS" gate="J$1" pin="3"/>
@@ -4991,6 +4991,15 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <wire x1="111.76" y1="20.32" x2="111.76" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="35.56" x2="104.14" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="35.56" x2="104.14" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="35.56" x2="116.84" y2="35.56" width="0.1524" layer="91"/>
+<junction x="111.76" y="35.56"/>
+<wire x1="116.84" y1="35.56" x2="116.84" y2="43.18" width="0.1524" layer="91"/>
+<label x="116.84" y="38.1" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="PC0(ADC0)"/>
+<wire x1="96.52" y1="167.64" x2="101.6" y2="167.64" width="0.1524" layer="91"/>
+<label x="99.06" y="167.64" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$6" class="0">

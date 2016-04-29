@@ -1,6 +1,6 @@
 (RS-274 Compatible G-code generated for UCCNC controller and Stepcraft 2 Mill)
 (Created by in EagleCAD with the stepcraft.ulp 0.2.)
-(File: "sensor_v4.brd" created on: 4/6/16 3:48 PM)
+(File: "sensor_v4.brd" created on: 4/26/16 7:52 AM)
 (Use a 1/32inch Bit)
 
 G90 G94 G49
