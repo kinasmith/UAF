@@ -6,8 +6,8 @@
 
 MCP342X myADC;
 
-#define NODE_ID         3
-#define NETWORK_ID      101
+#define NODE_ID         6
+#define NETWORK_ID      100
 #define GATEWAY_ID      0
 #define FREQUENCY       RF69_433MHZ
 #define KEY             "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes, not more not less!
