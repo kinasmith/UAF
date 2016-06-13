@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -150,18 +150,18 @@
 <packages>
 <package name="ARDUINO_UNO">
 <description>Footprint for representing an Arduino Uno board in an EAGLE schematic. Created by Dave Young for Element14. More EAGLE documentation at: http://www.element14.com/community/community/knode/cadsoft_eagle</description>
-<wire x1="66.04" y1="2.54" x2="66.04" y2="1.016" width="0.127" layer="20"/>
-<wire x1="66.04" y1="1.016" x2="65.024" y2="0" width="0.127" layer="20" curve="-90"/>
-<wire x1="65.024" y1="0" x2="1.016" y2="0" width="0.127" layer="20"/>
-<wire x1="1.016" y1="0" x2="0" y2="1.016" width="0.127" layer="20" curve="-90"/>
-<wire x1="0" y1="1.016" x2="0" y2="52.2986" width="0.127" layer="20"/>
-<wire x1="0" y1="52.2986" x2="1.016" y2="53.3146" width="0.127" layer="20" curve="-90"/>
-<wire x1="1.016" y1="53.3146" x2="64.77" y2="53.3146" width="0.127" layer="20"/>
-<wire x1="64.77" y1="53.3146" x2="66.04" y2="52.0446" width="0.127" layer="20"/>
-<wire x1="66.04" y1="52.0446" x2="66.04" y2="40.6146" width="0.127" layer="20"/>
-<wire x1="66.04" y1="40.6146" x2="68.58" y2="38.0746" width="0.127" layer="20"/>
-<wire x1="68.58" y1="38.0746" x2="68.58" y2="5.08" width="0.127" layer="20"/>
-<wire x1="68.58" y1="5.08" x2="66.04" y2="2.54" width="0.127" layer="20"/>
+<wire x1="66.04" y1="2.54" x2="66.04" y2="1.016" width="0.127" layer="21"/>
+<wire x1="66.04" y1="1.016" x2="65.024" y2="0" width="0.127" layer="21" curve="-90"/>
+<wire x1="65.024" y1="0" x2="1.016" y2="0" width="0.127" layer="21"/>
+<wire x1="1.016" y1="0" x2="0" y2="1.016" width="0.127" layer="21" curve="-90"/>
+<wire x1="0" y1="1.016" x2="0" y2="52.2986" width="0.127" layer="21"/>
+<wire x1="0" y1="52.2986" x2="1.016" y2="53.3146" width="0.127" layer="21" curve="-90"/>
+<wire x1="1.016" y1="53.3146" x2="64.77" y2="53.3146" width="0.127" layer="21"/>
+<wire x1="64.77" y1="53.3146" x2="66.04" y2="52.0446" width="0.127" layer="21"/>
+<wire x1="66.04" y1="52.0446" x2="66.04" y2="40.6146" width="0.127" layer="21"/>
+<wire x1="66.04" y1="40.6146" x2="68.58" y2="38.0746" width="0.127" layer="21"/>
+<wire x1="68.58" y1="38.0746" x2="68.58" y2="5.08" width="0.127" layer="22"/>
+<wire x1="68.58" y1="5.08" x2="66.04" y2="2.54" width="0.127" layer="21"/>
 <hole x="66.04" y="7.62" drill="3.2"/>
 <hole x="66.04" y="35.56" drill="3.2"/>
 <hole x="15.24" y="50.8" drill="3.2"/>
@@ -494,8 +494,8 @@
 <rectangle x1="63.373" y1="30.226" x2="63.881" y2="30.734" layer="51" rot="R90"/>
 <rectangle x1="65.913" y1="30.226" x2="66.421" y2="30.734" layer="51" rot="R90"/>
 <wire x1="64.77" y1="3.175" x2="64.77" y2="1.905" width="0.2032" layer="21"/>
-<text x="24.3332" y="32.4358" size="2.54" layer="20">Arduino</text>
-<text x="24.3332" y="28.5496" size="2.54" layer="20">Uno</text>
+<text x="24.3332" y="32.4358" size="2.54" layer="25">Arduino</text>
+<text x="24.3332" y="28.5496" size="2.54" layer="25">Uno</text>
 <text x="62.865" y="48.895" size="1.4224" layer="21" font="vector" ratio="15" rot="R270">0</text>
 <text x="60.325" y="48.895" size="1.4224" layer="21" font="vector" ratio="15" rot="R270">1</text>
 <text x="57.785" y="48.895" size="1.4224" layer="21" font="vector" ratio="15" rot="R270">2</text>

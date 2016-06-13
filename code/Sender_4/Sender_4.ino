@@ -101,7 +101,8 @@ void loop() {
       payload.num_attempts = nAttempt;
       ACK_FAIL_WAIT_PERIOD = random(300, 600); //sets a random wait period to not interfere with other sensors
       delay(10); //wait to finish before sleeping
-      Sleepy::loseSomeTime(ACK_FAIL_WAIT_PERIOD);  //wait for a few moments before trying again
+      //Sleepy::loseSomeTime(ACK_FAIL_WAIT_PERIOD);  //wait for a few moments before trying again
+      delay(ACK_FAIL_WAIT_PERIOD);
     }
   }
   Serial.println(payload.nodeID);
@@ -118,7 +119,8 @@ void loop() {
   radio.sleep(); //Sleep the Radio
   digitalWrite(LED, HIGH); //Turn LED off
   for(int i = 0; i < TRANSMIT_PERIOD_MINUTES; i++) { //Sleep the µC 
-    Sleepy::loseSomeTime(TRANSMIT_PERIOD);
+    //Sleepy::loseSomeTime(TRANSMIT_PERIOD);
+    delay(TRANSMIT_PERIOD);
   }
 }
 
@@ -134,7 +136,8 @@ float checkVoltage(int pin) { //takes 100ms
   float v = 0;
   for (int i = 0; i < 10; i++) {
     v += analogRead(pin);
-    Sleepy::loseSomeTime(10);
+    //Sleepy::loseSomeTime(10);
+    delay(10);
   }
   //convert analog reading into actual voltage
   v = v/10; 
@@ -147,7 +150,8 @@ int getSensorValue() { //takes 100ms
   float v;
   pinMode(SENS_EN, OUTPUT);
   digitalWrite(SENS_EN, HIGH); //write enable high for 10 ms
-  Sleepy::loseSomeTime(100); //let the Capacitor charge for a moment
+//  Sleepy::loseSomeTime(100); //let the Capacitor charge for a moment
+delay(100);
   digitalWrite(SENS_EN, LOW); //write enable low. Falling edge triggers FET
   v = analogRead(V_EXCITE_PIN);
   myADC.startConversion(); 

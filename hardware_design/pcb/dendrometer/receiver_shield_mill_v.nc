@@ -1,6 +1,6 @@
 (RS-274 Compatible G-code generated for UCCNC controller and Stepcraft 2 Mill)
 (Created by in EagleCAD with the stepcraft.ulp 0.2.)
-(File: "receiver_shield.brd" created on: 3/28/16 10:39 AM)
+(File: "receiver_shield.brd" created on: 5/24/16 5:31 PM)
 (Use a V Bit)
 
 G90 G94 G49
@@ -10,1146 +10,1006 @@ G00 X0Y0
 S19500 M03
 G04 P4000
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X15.558Y40.481
+G00 Z1.000
+G00 X52.324Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X15.558Y37.433 F1500
+G01 X52.324Y35.560 F1500
+(-->Cutting Line)
+G01 X50.038Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X16.828Y40.227
+G00 Z1.000
+G00 X58.420Y42.164
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.828Y37.433 F1500
+G01 X58.420Y30.480 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X18.098Y39.973
+G00 Z1.000
+G00 X60.452Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X18.098Y37.433 F1500
+G01 X60.452Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X19.367Y39.973
+G00 Z1.000
+G00 X62.230Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X19.367Y37.433 F1500
+G01 X62.230Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X14.288Y33.877
+G00 Z1.000
+G00 X64.262Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X14.288Y30.829 F1500
+G01 X64.262Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X15.558Y33.877
+G00 Z1.000
+G00 X50.292Y22.352
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X15.558Y30.829 F1500
+G01 X50.292Y13.716 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X16.828Y33.877
+G00 Z1.000
+G00 X52.324Y22.352
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.828Y30.829 F1500
+G01 X52.324Y15.494 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X18.098Y33.877
+G00 Z1.000
+G00 X60.452Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X18.098Y30.829 F1500
+G01 X59.944Y41.656 F1500
+(-->Cutting Line)
+G01 X59.944Y43.180 F1500
+(-->Cutting Line)
+G01 X60.452Y43.688 F1500
+(-->Cutting Line)
+G01 X60.960Y43.688 F1500
+(-->Cutting Line)
+G01 X62.230Y43.688 F1500
+(-->Cutting Line)
+G01 X62.738Y43.180 F1500
+(-->Cutting Line)
+G01 X62.738Y41.656 F1500
+(-->Cutting Line)
+G01 X62.230Y41.148 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X19.367Y33.877
+G00 Z1.000
+G00 X60.452Y35.560
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X19.367Y30.829 F1500
+G01 X62.230Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X19.367Y33.877
+G00 Z1.000
+G00 X54.356Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.828Y33.877 F1500
+G01 X52.324Y41.148 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X16.828Y30.829
+G00 Z1.000
+G00 X34.290Y54.356
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X19.367Y30.829 F1500
+G01 X34.290Y22.098 F1500
+(-->Cutting Line)
+G01 X36.830Y22.098 F1500
+(-->Cutting Line)
+G01 X36.830Y22.606 F1500
+(-->Cutting Line)
+G01 X36.830Y33.020 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X15.558Y30.829
+G00 Z1.000
+G00 X36.830Y35.560
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X14.288Y30.829 F1500
+G01 X36.830Y45.466 F1500
+(-->Cutting Line)
+G01 X36.830Y48.006 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X14.288Y33.877
+G00 Z1.000
+G00 X39.370Y54.356
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X15.558Y33.877 F1500
+G01 X39.370Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X15.558Y37.433
+G00 Z1.000
+G00 X46.228Y51.816
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X12.256Y37.433 F1500
-(-->Cutting Line)
-G01 X12.256Y35.655 F1500
+G01 X45.720Y52.324 F1500
 (-->Cutting Line)
-G01 X10.478Y35.655 F1500
+G01 X45.720Y54.864 F1500
 (-->Cutting Line)
-G01 X10.478Y37.687 F1500
-(-->Cutting Line)
-G01 X11.240Y38.449 F1500
+G01 X45.720Y56.134 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X39.370Y54.356
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X41.910Y54.356 F1500
 (-->Cutting Line)
-G01 X13.526Y38.449 F1500
+G01 X44.450Y54.356 F1500
 (-->Cutting Line)
-G01 X14.288Y39.211 F1500
+G01 X44.450Y51.816 F1500
 (-->Cutting Line)
-G01 X14.288Y40.735 F1500
+G01 X41.910Y51.816 F1500
 (-->Cutting Line)
-G01 X15.812Y42.259 F1500
+G01 X39.370Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X12.256Y35.655
+G00 Z1.000
+G00 X41.910Y54.356
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X13.780Y35.655 F1500
-(-->Cutting Line)
-G01 X13.780Y36.417 F1500
-(-->Cutting Line)
-G01 X15.812Y36.417 F1500
-(-->Cutting Line)
-G01 X16.828Y37.433 F1500
+G01 X41.910Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X18.098Y37.433
+G00 Z1.000
+G00 X31.750Y54.356
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.828Y37.433 F1500
+G01 X31.750Y21.082 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X16.828Y40.227
+G00 Z1.000
+G00 X29.210Y56.134
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X17.335Y40.735 F1500
+G01 X37.338Y56.134 F1500
 (-->Cutting Line)
-G01 X19.876Y40.735 F1500
-(-->Cutting Line)
-G01 X19.876Y41.497 F1500
-(-->Cutting Line)
-G01 X23.431Y41.497 F1500
-(-->Cutting Line)
-G01 X23.431Y34.639 F1500
-(-->Cutting Line)
-G01 X19.876Y34.639 F1500
-(-->Cutting Line)
-G01 X19.876Y36.925 F1500
-(-->Cutting Line)
-G01 X19.367Y37.433 F1500
+G01 X45.720Y56.134 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X19.367Y39.973
+G00 Z1.000
+G00 X50.292Y22.352
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X18.098Y39.973 F1500
+G01 X52.324Y22.352 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X15.812Y42.259
+G00 Z1.000
+G00 X52.324Y15.494
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X17.844Y42.259 F1500
-(-->Cutting Line)
-G01 X18.860Y43.275 F1500
+G01 X67.310Y15.494 F1500
 (-->Cutting Line)
-G01 X19.367Y43.275 F1500
+G01 X68.580Y16.764 F1500
 (-->Cutting Line)
-G01 X19.367Y46.323 F1500
+G01 X68.580Y40.386 F1500
 (-->Cutting Line)
-G01 X20.892Y46.323 F1500
+G01 X59.944Y49.022 F1500
 (-->Cutting Line)
-G01 X20.892Y42.513 F1500
+G01 X58.674Y50.292 F1500
 (-->Cutting Line)
-G01 X19.367Y42.513 F1500
+G01 X58.674Y52.070 F1500
 (-->Cutting Line)
-G01 X18.352Y41.497 F1500
+G01 X58.674Y54.864 F1500
 (-->Cutting Line)
-G01 X16.573Y41.497 F1500
+G01 X61.214Y54.864 F1500
 (-->Cutting Line)
-G01 X15.558Y40.481 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X23.431Y41.497
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X24.448Y41.497 F1500
+G01 X61.214Y51.816 F1500
 (-->Cutting Line)
-G01 X25.972Y43.021 F1500
+G01 X61.214Y51.054 F1500
 (-->Cutting Line)
-G01 X25.972Y46.323 F1500
+G01 X68.326Y43.942 F1500
 (-->Cutting Line)
-G01 X24.448Y46.323 F1500
+G01 X68.326Y42.926 F1500
 (-->Cutting Line)
-G01 X24.448Y43.529 F1500
+G01 X70.866Y40.386 F1500
 (-->Cutting Line)
-G01 X24.448Y43.021 F1500
+G01 X70.866Y15.748 F1500
 (-->Cutting Line)
-G01 X23.940Y42.513 F1500
-(-->Cutting Line)
-G01 X20.892Y42.513 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X29.527Y46.323
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X31.052Y46.323 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X34.608Y43.529
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X34.608Y46.323 F1500
+G01 X67.818Y12.700 F1500
 (-->Cutting Line)
-G01 X36.132Y46.323 F1500
+G01 X51.308Y12.700 F1500
 (-->Cutting Line)
-G01 X36.132Y43.021 F1500
+G01 X50.292Y13.716 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X39.688Y43.529
+G00 Z1.000
+G00 X64.262Y24.638
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X39.688Y46.323 F1500
-(-->Cutting Line)
-G01 X41.212Y46.323 F1500
+G01 X60.452Y28.448 F1500
 (-->Cutting Line)
-G01 X41.212Y42.513 F1500
+G01 X60.452Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X44.768Y43.021
+G00 Z1.000
+G00 X62.230Y23.114
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X44.768Y46.323 F1500
+G01 X58.420Y26.924 F1500
 (-->Cutting Line)
-G01 X45.529Y46.323 F1500
+G01 X47.752Y26.924 F1500
 (-->Cutting Line)
-G01 X46.291Y46.323 F1500
+G01 X47.752Y17.272 F1500
 (-->Cutting Line)
-G01 X46.291Y43.021 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X29.527Y43.529
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X29.527Y46.323 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X24.448Y43.529
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X22.924Y43.529 F1500
+G01 X45.466Y14.986 F1500
 (-->Cutting Line)
-G01 X22.924Y46.323 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X29.527Y43.529
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X28.004Y43.529 F1500
+G01 X40.894Y14.986 F1500
 (-->Cutting Line)
-G01 X28.004Y46.323 F1500
+G01 X26.416Y14.986 F1500
 (-->Cutting Line)
-G01 X25.972Y46.323 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X34.608Y43.529
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X33.084Y43.529 F1500
+G01 X24.130Y17.272 F1500
 (-->Cutting Line)
-G01 X33.084Y46.323 F1500
+G01 X24.130Y25.146 F1500
 (-->Cutting Line)
-G01 X31.052Y46.323 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X39.688Y43.529
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X38.163Y43.529 F1500
+G01 X17.526Y25.146 F1500
 (-->Cutting Line)
-G01 X38.163Y46.323 F1500
+G01 X15.494Y27.178 F1500
 (-->Cutting Line)
-G01 X36.132Y46.323 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X31.052Y46.323
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X31.052Y26.003 F1500
+G01 X15.494Y31.242 F1500
 (-->Cutting Line)
-G01 X32.068Y24.987 F1500
+G01 X15.494Y34.290 F1500
 (-->Cutting Line)
-G01 X32.068Y21.177 F1500
+G01 X14.224Y34.290 F1500
 (-->Cutting Line)
-G01 X34.099Y19.145 F1500
+G01 X14.224Y33.782 F1500
 (-->Cutting Line)
-G01 X54.419Y19.145 F1500
+G01 X9.652Y33.782 F1500
 (-->Cutting Line)
-G01 X55.944Y17.621 F1500
+G01 X9.652Y38.608 F1500
 (-->Cutting Line)
-G01 X55.944Y14.573 F1500
+G01 X12.954Y41.910 F1500
 (-->Cutting Line)
-G01 X57.976Y14.573 F1500
+G01 X12.954Y47.244 F1500
 (-->Cutting Line)
-G01 X57.976Y17.875 F1500
+G01 X13.716Y47.244 F1500
 (-->Cutting Line)
-G01 X55.944Y19.907 F1500
+G01 X16.510Y47.244 F1500
 (-->Cutting Line)
-G01 X36.894Y19.907 F1500
+G01 X16.510Y48.006 F1500
 (-->Cutting Line)
-G01 X34.608Y22.193 F1500
+G01 X18.034Y48.006 F1500
 (-->Cutting Line)
-G01 X34.608Y41.497 F1500
+G01 X18.034Y44.196 F1500
 (-->Cutting Line)
-G01 X36.132Y43.021 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X41.212Y42.513
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X37.148Y38.449 F1500
+G01 X16.510Y44.196 F1500
 (-->Cutting Line)
-G01 X37.148Y27.273 F1500
+G01 X16.510Y46.482 F1500
 (-->Cutting Line)
-G01 X37.148Y21.685 F1500
+G01 X14.478Y46.482 F1500
 (-->Cutting Line)
-G01 X38.163Y20.669 F1500
+G01 X14.478Y39.878 F1500
 (-->Cutting Line)
-G01 X39.688Y20.669 F1500
+G01 X13.716Y39.116 F1500
 (-->Cutting Line)
-G01 X56.960Y20.669 F1500
+G01 X11.938Y39.116 F1500
 (-->Cutting Line)
-G01 X60.008Y17.621 F1500
+G01 X10.668Y37.846 F1500
 (-->Cutting Line)
-G01 X60.008Y14.573 F1500
+G01 X10.668Y35.560 F1500
 (-->Cutting Line)
-G01 X57.976Y14.573 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X55.944Y14.573
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X53.912Y14.573 F1500
+G01 X12.192Y35.560 F1500
 (-->Cutting Line)
-G01 X53.912Y17.367 F1500
+G01 X16.764Y35.560 F1500
 (-->Cutting Line)
-G01 X53.150Y18.129 F1500
+G01 X16.764Y34.036 F1500
 (-->Cutting Line)
-G01 X51.880Y18.129 F1500
+G01 X16.764Y31.242 F1500
 (-->Cutting Line)
-G01 X49.848Y18.129 F1500
+G01 X16.764Y30.226 F1500
 (-->Cutting Line)
-G01 X33.084Y18.129 F1500
+G01 X17.272Y29.718 F1500
 (-->Cutting Line)
-G01 X29.527Y21.685 F1500
+G01 X17.272Y27.178 F1500
 (-->Cutting Line)
-G01 X29.527Y27.273 F1500
+G01 X18.034Y26.416 F1500
 (-->Cutting Line)
-G01 X29.527Y29.813 F1500
+G01 X26.670Y26.416 F1500
 (-->Cutting Line)
-G01 X29.527Y43.529 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X49.848Y18.129
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X49.848Y14.065 F1500
+G01 X26.670Y17.526 F1500
 (-->Cutting Line)
-G01 X49.340Y13.557 F1500
+G01 X27.686Y16.510 F1500
 (-->Cutting Line)
-G01 X49.340Y11.779 F1500
+G01 X43.942Y16.510 F1500
 (-->Cutting Line)
-G01 X49.594Y11.525 F1500
+G01 X45.974Y18.542 F1500
 (-->Cutting Line)
-G01 X51.880Y11.525 F1500
+G01 X45.974Y21.082 F1500
 (-->Cutting Line)
-G01 X52.388Y12.033 F1500
+G01 X45.974Y28.702 F1500
 (-->Cutting Line)
-G01 X52.388Y14.065 F1500
+G01 X56.642Y28.702 F1500
 (-->Cutting Line)
-G01 X51.880Y14.573 F1500
+G01 X58.420Y30.480 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X38.354Y3.556
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X40.894Y3.556 F1500
 (-->Cutting Line)
-G01 X51.880Y18.129 F1500
+G01 X40.894Y14.986 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X60.008Y14.573
+G00 Z1.000
+G00 X38.354Y3.556
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X62.040Y14.573 F1500
+G01 X38.354Y6.350 F1500
 (-->Cutting Line)
-G01 X62.040Y18.383 F1500
+G01 X38.354Y12.192 F1500
 (-->Cutting Line)
-G01 X53.150Y27.273 F1500
+G01 X37.084Y13.462 F1500
 (-->Cutting Line)
-G01 X53.150Y34.893 F1500
+G01 X19.304Y13.462 F1500
 (-->Cutting Line)
-G01 X49.848Y38.195 F1500
+G01 X16.510Y16.256 F1500
 (-->Cutting Line)
-G01 X46.546Y38.195 F1500
+G01 X16.510Y23.876 F1500
 (-->Cutting Line)
-G01 X46.038Y38.703 F1500
+G01 X7.874Y32.512 F1500
 (-->Cutting Line)
-G01 X46.038Y42.767 F1500
+G01 X7.874Y39.370 F1500
 (-->Cutting Line)
-G01 X46.291Y43.021 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X44.768Y43.021
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X45.022Y42.767 F1500
+G01 X11.430Y42.926 F1500
 (-->Cutting Line)
-G01 X45.022Y38.195 F1500
+G01 X11.430Y53.848 F1500
 (-->Cutting Line)
-G01 X46.038Y37.179 F1500
+G01 X14.478Y53.848 F1500
 (-->Cutting Line)
-G01 X49.594Y37.179 F1500
+G01 X14.478Y51.562 F1500
 (-->Cutting Line)
-G01 X49.848Y36.925 F1500
+G01 X14.224Y51.308 F1500
 (-->Cutting Line)
-G01 X51.880Y34.893 F1500
+G01 X14.224Y49.276 F1500
 (-->Cutting Line)
-G01 X51.880Y25.749 F1500
+G01 X13.716Y48.768 F1500
 (-->Cutting Line)
-G01 X56.960Y20.669 F1500
+G01 X13.716Y47.244 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X49.848Y36.925
+G00 Z1.000
+G00 X15.494Y31.242
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X49.848Y34.385 F1500
+G01 X14.224Y31.242 F1500
+(-->Cutting Line)
+G01 X14.224Y33.782 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X47.816Y35.401
+G00 Z1.000
+G00 X15.494Y41.910
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X45.022Y35.401 F1500
-(-->Cutting Line)
-G01 X44.260Y36.163 F1500
-(-->Cutting Line)
-G01 X44.260Y41.243 F1500
+G01 X15.494Y37.338 F1500
 (-->Cutting Line)
-G01 X44.260Y42.259 F1500
+G01 X12.192Y37.338 F1500
 (-->Cutting Line)
-G01 X43.244Y43.275 F1500
-(-->Cutting Line)
-G01 X43.244Y46.323 F1500
-(-->Cutting Line)
-G01 X41.212Y46.323 F1500
+G01 X12.192Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X44.768Y46.323
+G00 Z1.000
+G00 X15.494Y41.910
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X43.752Y47.339 F1500
-(-->Cutting Line)
-G01 X40.450Y47.339 F1500
-(-->Cutting Line)
-G01 X38.925Y47.339 F1500
-(-->Cutting Line)
-G01 X35.370Y47.339 F1500
-(-->Cutting Line)
-G01 X33.846Y47.339 F1500
-(-->Cutting Line)
-G01 X30.290Y47.339 F1500
+G01 X16.510Y42.926 F1500
 (-->Cutting Line)
-G01 X28.258Y47.339 F1500
+G01 X16.510Y44.196 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X16.764Y35.560
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X16.764Y37.084 F1500
 (-->Cutting Line)
-G01 X24.956Y47.339 F1500
+G01 X16.764Y41.148 F1500
 (-->Cutting Line)
-G01 X23.686Y47.339 F1500
+G01 X17.780Y42.164 F1500
 (-->Cutting Line)
-G01 X20.130Y47.339 F1500
+G01 X18.796Y42.164 F1500
 (-->Cutting Line)
-G01 X18.605Y47.339 F1500
+G01 X19.812Y43.180 F1500
 (-->Cutting Line)
-G01 X18.352Y47.339 F1500
+G01 X19.812Y48.006 F1500
 (-->Cutting Line)
-G01 X17.590Y46.577 F1500
+G01 X18.034Y48.006 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X21.590Y54.356
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X21.590Y52.070 F1500
 (-->Cutting Line)
-G01 X17.590Y44.799 F1500
+G01 X21.590Y49.784 F1500
 (-->Cutting Line)
-G01 X16.828Y44.799 F1500
+G01 X19.812Y48.006 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X21.590Y54.356
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X18.796Y54.356 F1500
 (-->Cutting Line)
-G01 X13.272Y41.243 F1500
+G01 X18.796Y49.022 F1500
 (-->Cutting Line)
-G01 X13.272Y39.973 F1500
+G01 X17.272Y49.022 F1500
 (-->Cutting Line)
-G01 X12.764Y39.465 F1500
+G01 X17.272Y51.308 F1500
 (-->Cutting Line)
-G01 X10.732Y39.465 F1500
+G01 X14.224Y51.308 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X21.590Y52.070
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X24.130Y52.070 F1500
 (-->Cutting Line)
-G01 X9.207Y37.941 F1500
+G01 X24.130Y54.610 F1500
 (-->Cutting Line)
-G01 X9.207Y34.893 F1500
+G01 X24.130Y55.372 F1500
 (-->Cutting Line)
-G01 X10.224Y33.877 F1500
+G01 X16.002Y55.372 F1500
 (-->Cutting Line)
-G01 X14.288Y33.877 F1500
+G01 X14.478Y53.848 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X16.828Y33.877
+G00 Z1.000
+G00 X24.130Y52.070
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.828Y35.147 F1500
+G01 X26.670Y52.070 F1500
 (-->Cutting Line)
-G01 X16.320Y35.655 F1500
+G01 X26.670Y54.610 F1500
 (-->Cutting Line)
-G01 X13.780Y35.655 F1500
+G01 X24.130Y54.610 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X16.828Y30.829
+G00 Z1.000
+G00 X30.480Y25.908
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.828Y30.575 F1500
+G01 X29.210Y24.638 F1500
 (-->Cutting Line)
-G01 X17.844Y29.559 F1500
+G01 X29.210Y21.336 F1500
 (-->Cutting Line)
-G01 X20.130Y29.559 F1500
+G01 X30.734Y19.812 F1500
 (-->Cutting Line)
-G01 X20.130Y30.829 F1500
+G01 X43.180Y19.812 F1500
 (-->Cutting Line)
-G01 X21.654Y30.829 F1500
+G01 X44.450Y21.082 F1500
 (-->Cutting Line)
-G01 X21.654Y29.559 F1500
-(-->Cutting Line)
-G01 X24.194Y29.559 F1500
+G01 X45.974Y21.082 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X45.974Y28.702
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X45.974Y29.718 F1500
 (-->Cutting Line)
-G01 X26.988Y26.765 F1500
+G01 X43.942Y29.718 F1500
 (-->Cutting Line)
-G01 X26.988Y11.525 F1500
+G01 X43.942Y24.638 F1500
 (-->Cutting Line)
-G01 X29.527Y8.985 F1500
+G01 X43.180Y23.876 F1500
 (-->Cutting Line)
-G01 X36.132Y8.985 F1500
+G01 X43.180Y21.844 F1500
 (-->Cutting Line)
-G01 X37.148Y7.969 F1500
+G01 X42.418Y21.082 F1500
 (-->Cutting Line)
-G01 X38.418Y6.699 F1500
+G01 X31.750Y21.082 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X34.290Y54.356
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X31.750Y54.356 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X36.830Y48.006
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X36.068Y48.768 F1500
 (-->Cutting Line)
-G01 X38.418Y3.651 F1500
+G01 X36.068Y52.324 F1500
 (-->Cutting Line)
-G01 X35.878Y3.651 F1500
+G01 X36.576Y52.832 F1500
 (-->Cutting Line)
-G01 X35.878Y6.445 F1500
+G01 X36.576Y54.356 F1500
 (-->Cutting Line)
-G01 X35.116Y7.207 F1500
+G01 X34.290Y54.356 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X36.830Y45.466
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X39.116Y45.466 F1500
 (-->Cutting Line)
-G01 X33.337Y7.207 F1500
+G01 X39.116Y47.498 F1500
 (-->Cutting Line)
-G01 X30.798Y7.207 F1500
+G01 X37.338Y49.276 F1500
 (-->Cutting Line)
-G01 X28.766Y7.207 F1500
+G01 X37.338Y54.356 F1500
 (-->Cutting Line)
-G01 X24.702Y11.271 F1500
+G01 X39.370Y54.356 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X39.370Y51.816
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X39.370Y49.784 F1500
 (-->Cutting Line)
-G01 X24.702Y22.701 F1500
+G01 X42.164Y46.736 F1500
 (-->Cutting Line)
-G01 X24.448Y22.955 F1500
+G01 X49.530Y46.736 F1500
 (-->Cutting Line)
-G01 X24.448Y25.241 F1500
+G01 X50.800Y45.466 F1500
 (-->Cutting Line)
-G01 X24.448Y27.273 F1500
+G01 X50.800Y43.942 F1500
 (-->Cutting Line)
-G01 X23.431Y28.289 F1500
+G01 X49.276Y43.942 F1500
 (-->Cutting Line)
-G01 X17.335Y28.289 F1500
+G01 X49.276Y45.466 F1500
 (-->Cutting Line)
-G01 X15.558Y30.067 F1500
+G01 X44.196Y45.466 F1500
 (-->Cutting Line)
-G01 X15.558Y30.829 F1500
+G01 X39.116Y45.466 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X24.448Y25.241
+G00 Z1.000
+G00 X50.800Y43.942
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X21.908Y25.241 F1500
+G01 X51.308Y43.942 F1500
 (-->Cutting Line)
-G01 X21.908Y22.701 F1500
+G01 X52.578Y45.212 F1500
 (-->Cutting Line)
-G01 X24.702Y22.701 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X45.784Y28.035
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X45.022Y27.273 F1500
+G01 X54.356Y45.212 F1500
 (-->Cutting Line)
-G01 X37.148Y27.273 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X47.816Y27.527
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X46.038Y25.749 F1500
+G01 X55.372Y46.228 F1500
 (-->Cutting Line)
-G01 X39.688Y25.749 F1500
+G01 X59.944Y46.228 F1500
 (-->Cutting Line)
-G01 X39.688Y22.701 F1500
+G01 X60.960Y45.212 F1500
 (-->Cutting Line)
-G01 X39.688Y20.669 F1500
+G01 X60.960Y43.688 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X47.816Y40.989
+G00 Z1.000
+G00 X58.420Y42.164
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X53.658Y46.831 F1500
+G01 X57.404Y43.180 F1500
 (-->Cutting Line)
-G01 X53.658Y51.911 F1500
+G01 X57.404Y44.704 F1500
 (-->Cutting Line)
-G01 X53.658Y54.451 F1500
+G01 X55.626Y44.704 F1500
 (-->Cutting Line)
-G01 X56.198Y54.451 F1500
+G01 X54.356Y43.434 F1500
 (-->Cutting Line)
-G01 X56.198Y51.911 F1500
+G01 X52.578Y43.434 F1500
 (-->Cutting Line)
-G01 X56.198Y44.545 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X58.738Y54.451
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X61.278Y54.451 F1500
+G01 X52.070Y42.926 F1500
 (-->Cutting Line)
-G01 X61.278Y51.911 F1500
+G01 X50.038Y42.926 F1500
 (-->Cutting Line)
-G01 X61.278Y38.195 F1500
+G01 X50.038Y35.560 F1500
 (-->Cutting Line)
-G01 X62.040Y37.433 F1500
+G01 X43.942Y35.560 F1500
 (-->Cutting Line)
-G01 X62.040Y34.385 F1500
+G01 X43.942Y36.830 F1500
 (-->Cutting Line)
-G01 X59.754Y34.385 F1500
+G01 X46.482Y36.830 F1500
 (-->Cutting Line)
-G01 X59.754Y51.149 F1500
+G01 X46.482Y38.354 F1500
 (-->Cutting Line)
-G01 X58.992Y51.911 F1500
+G01 X44.196Y38.354 F1500
 (-->Cutting Line)
-G01 X58.738Y52.165 F1500
-(-->Cutting Line)
-G01 X58.738Y54.451 F1500
-(-->Cutting Line)
-G01 X56.198Y54.451 F1500
+G01 X44.196Y45.466 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X54.356Y41.148
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X54.356Y43.434 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X53.658Y54.451
+G00 Z1.000
+G00 X54.356Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X51.117Y54.451 F1500
+G01 X54.356Y35.560 F1500
 (-->Cutting Line)
-G01 X48.578Y54.451 F1500
+G01 X53.340Y34.544 F1500
 (-->Cutting Line)
-G01 X46.038Y54.451 F1500
+G01 X44.958Y34.544 F1500
 (-->Cutting Line)
-G01 X46.038Y51.911 F1500
+G01 X41.910Y34.544 F1500
 (-->Cutting Line)
-G01 X48.578Y51.911 F1500
+G01 X41.910Y36.576 F1500
 (-->Cutting Line)
-G01 X51.117Y51.911 F1500
+G01 X41.910Y38.354 F1500
 (-->Cutting Line)
-G01 X53.658Y51.911 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X51.117Y54.451
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X51.117Y51.911 F1500
+G01 X44.196Y38.354 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X48.578Y54.451
+G00 Z1.000
+G00 X41.910Y36.576
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X48.578Y51.911 F1500
+G01 X39.624Y36.576 F1500
+(-->Cutting Line)
+G01 X38.608Y35.560 F1500
+(-->Cutting Line)
+G01 X36.830Y35.560 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X61.278Y54.451
+G00 Z1.000
+G00 X54.356Y41.148
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X63.818Y54.451 F1500
+G01 X56.388Y41.148 F1500
 (-->Cutting Line)
-G01 X66.358Y54.451 F1500
+G01 X56.388Y33.528 F1500
 (-->Cutting Line)
-G01 X66.358Y51.911 F1500
+G01 X54.102Y31.242 F1500
 (-->Cutting Line)
-G01 X63.818Y51.911 F1500
+G01 X45.974Y31.242 F1500
 (-->Cutting Line)
-G01 X61.278Y51.911 F1500
+G01 X45.974Y29.718 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X63.818Y54.451
+G00 Z1.000
+G00 X39.370Y33.020
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X63.818Y51.911 F1500
+G01 X39.370Y22.606 F1500
+(-->Cutting Line)
+G01 X41.910Y22.606 F1500
+(-->Cutting Line)
+G01 X41.910Y33.020 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X56.198Y51.911
+G00 Z1.000
+G00 X39.370Y22.606
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X58.992Y51.911 F1500
+G01 X36.830Y22.606 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X44.514Y54.451
+G00 Z1.000
+G00 X44.958Y34.544
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X41.974Y54.451 F1500
-(-->Cutting Line)
-G01 X39.434Y54.451 F1500
-(-->Cutting Line)
-G01 X36.894Y54.451 F1500
+G01 X44.958Y33.020 F1500
 (-->Cutting Line)
-G01 X34.354Y54.451 F1500
+G01 X41.910Y33.020 F1500
 (-->Cutting Line)
-G01 X31.814Y54.451 F1500
+G01 X39.370Y33.020 F1500
 (-->Cutting Line)
-G01 X29.274Y54.451 F1500
+G01 X36.830Y33.020 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X26.734Y54.451
+G00 Z1.000
+G00 X18.034Y40.640
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X24.194Y54.451 F1500
-(-->Cutting Line)
-G01 X21.654Y54.451 F1500
-(-->Cutting Line)
-G01 X19.114Y54.451 F1500
-(-->Cutting Line)
-G01 X19.114Y52.673 F1500
-(-->Cutting Line)
-G01 X18.860Y52.419 F1500
+G01 X18.034Y37.084 F1500
 (-->Cutting Line)
-G01 X18.860Y50.133 F1500
-(-->Cutting Line)
-G01 X18.098Y50.133 F1500
-(-->Cutting Line)
-G01 X18.098Y48.609 F1500
-(-->Cutting Line)
-G01 X18.605Y48.609 F1500
-(-->Cutting Line)
-G01 X18.605Y47.339 F1500
+G01 X16.764Y37.084 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X20.130Y47.339
+G00 Z1.000
+G00 X18.034Y40.640
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X20.130Y48.609 F1500
-(-->Cutting Line)
-G01 X19.876Y48.609 F1500
-(-->Cutting Line)
-G01 X19.876Y50.387 F1500
+G01 X18.288Y40.894 F1500
 (-->Cutting Line)
-G01 X21.654Y52.165 F1500
-(-->Cutting Line)
-G01 X21.654Y54.451 F1500
+G01 X21.590Y40.894 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X24.194Y54.451
+G00 Z1.000
+G00 X22.860Y43.180
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X24.194Y52.419 F1500
-(-->Cutting Line)
-G01 X24.956Y51.657 F1500
-(-->Cutting Line)
-G01 X24.956Y50.133 F1500
-(-->Cutting Line)
-G01 X24.956Y47.339 F1500
+G01 X19.812Y43.180 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X23.686Y47.339
+G00 Z1.000
+G00 X29.210Y56.134
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X23.686Y48.609 F1500
-(-->Cutting Line)
-G01 X23.178Y48.609 F1500
+G01 X29.210Y52.578 F1500
 (-->Cutting Line)
-G01 X23.178Y51.657 F1500
+G01 X29.972Y51.816 F1500
 (-->Cutting Line)
-G01 X22.924Y51.911 F1500
+G01 X30.480Y51.816 F1500
 (-->Cutting Line)
-G01 X21.908Y51.911 F1500
-(-->Cutting Line)
-G01 X21.654Y52.165 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X28.258Y47.339
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X28.258Y50.133 F1500
+G01 X30.480Y45.974 F1500
 (-->Cutting Line)
-G01 X24.956Y50.133 F1500
+G01 X29.718Y45.212 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X26.734Y54.451
+G00 Z1.000
+G00 X30.480Y25.908
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X26.734Y51.911 F1500
-(-->Cutting Line)
-G01 X25.210Y51.911 F1500
+G01 X30.480Y31.496 F1500
 (-->Cutting Line)
-G01 X24.956Y51.657 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X29.274Y54.451
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X29.274Y51.149 F1500
+G01 X29.718Y32.258 F1500
 (-->Cutting Line)
-G01 X28.258Y50.133 F1500
+G01 X29.718Y45.212 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X30.290Y47.339
+G00 Z1.000
+G00 X16.764Y34.036
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X30.290Y50.387 F1500
+G01 X18.034Y34.036 F1500
 (-->Cutting Line)
-G01 X31.814Y51.911 F1500
+G01 X18.034Y31.242 F1500
 (-->Cutting Line)
-G01 X31.814Y54.451 F1500
+G01 X16.764Y31.242 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X34.354Y54.451
+G00 Z1.000
+G00 X18.034Y34.036
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X34.354Y52.419 F1500
-(-->Cutting Line)
-G01 X35.116Y51.657 F1500
+G01 X19.304Y34.036 F1500
 (-->Cutting Line)
-G01 X35.116Y48.863 F1500
+G01 X19.304Y31.242 F1500
 (-->Cutting Line)
-G01 X35.370Y48.609 F1500
-(-->Cutting Line)
-G01 X35.370Y47.339 F1500
+G01 X18.034Y31.242 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X33.846Y47.339
+G00 Z1.000
+G00 X19.304Y40.132
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X33.846Y48.609 F1500
-(-->Cutting Line)
-G01 X33.337Y48.609 F1500
-(-->Cutting Line)
-G01 X33.337Y51.657 F1500
-(-->Cutting Line)
-G01 X33.084Y51.911 F1500
-(-->Cutting Line)
-G01 X31.814Y51.911 F1500
+G01 X19.304Y37.338 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X36.894Y54.451
+G00 Z1.000
+G00 X45.720Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X36.894Y52.673 F1500
-(-->Cutting Line)
-G01 X38.163Y51.403 F1500
-(-->Cutting Line)
-G01 X39.180Y51.403 F1500
+G01 X48.514Y54.864 F1500
 (-->Cutting Line)
-G01 X39.688Y50.895 F1500
+G01 X51.054Y54.864 F1500
 (-->Cutting Line)
-G01 X40.196Y50.387 F1500
+G01 X51.816Y54.864 F1500
 (-->Cutting Line)
-G01 X40.196Y48.863 F1500
+G01 X53.594Y54.864 F1500
 (-->Cutting Line)
-G01 X40.450Y48.609 F1500
-(-->Cutting Line)
-G01 X40.450Y47.339 F1500
+G01 X56.134Y54.864 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X38.925Y47.339
+G00 Z1.000
+G00 X61.214Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X38.925Y48.609 F1500
-(-->Cutting Line)
-G01 X38.418Y48.609 F1500
-(-->Cutting Line)
-G01 X38.418Y50.387 F1500
+G01 X63.754Y54.864 F1500
 (-->Cutting Line)
-G01 X37.656Y50.387 F1500
+G01 X66.294Y54.864 F1500
 (-->Cutting Line)
-G01 X36.132Y51.911 F1500
+G01 X66.294Y51.816 F1500
 (-->Cutting Line)
-G01 X35.370Y51.911 F1500
+G01 X63.754Y51.816 F1500
 (-->Cutting Line)
-G01 X35.116Y51.657 F1500
+G01 X61.214Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X39.688Y50.895
+G00 Z1.000
+G00 X63.754Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X44.006Y50.895 F1500
-(-->Cutting Line)
-G01 X44.006Y50.133 F1500
-(-->Cutting Line)
-G01 X43.498Y50.133 F1500
-(-->Cutting Line)
-G01 X43.498Y48.609 F1500
-(-->Cutting Line)
-G01 X44.006Y48.609 F1500
-(-->Cutting Line)
-G01 X44.006Y47.339 F1500
+G01 X63.754Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X45.529Y46.323
+G00 Z1.000
+G00 X53.848Y51.816
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X45.529Y51.403 F1500
-(-->Cutting Line)
-G01 X44.768Y52.165 F1500
+G01 X53.848Y50.038 F1500
 (-->Cutting Line)
-G01 X44.514Y52.165 F1500
+G01 X53.848Y48.260 F1500
 (-->Cutting Line)
-G01 X41.974Y52.165 F1500
+G01 X59.182Y48.260 F1500
 (-->Cutting Line)
-G01 X39.434Y52.165 F1500
-(-->Cutting Line)
-G01 X39.434Y54.451 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X41.974Y54.451
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X41.974Y52.165 F1500
+G01 X59.944Y49.022 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X44.514Y54.451
+G00 Z1.000
+G00 X56.134Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X44.514Y52.165 F1500
+G01 X56.134Y52.070 F1500
+(-->Cutting Line)
+G01 X58.674Y52.070 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X47.816Y40.989
+G00 Z1.000
+G00 X53.848Y51.816
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X47.816Y39.465 F1500
+G01 X53.594Y51.816 F1500
 (-->Cutting Line)
-G01 X51.117Y39.465 F1500
-(-->Cutting Line)
-G01 X56.198Y44.545 F1500
+G01 X53.594Y54.864 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X47.816Y17.621
+G00 Z1.000
+G00 X51.054Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X47.816Y14.573 F1500
+G01 X51.054Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X37.148Y14.065
+G00 Z1.000
+G00 X48.514Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X37.148Y7.969 F1500
+G01 X48.514Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X37.148Y14.065
+G00 Z1.000
+G00 X62.230Y23.114
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X40.958Y14.065 F1500
+G01 X62.230Y17.018 F1500
 (-->Cutting Line)
-G01 X40.958Y3.651 F1500
+G01 X64.262Y17.018 F1500
 (-->Cutting Line)
-G01 X38.418Y3.651 F1500
+G01 X64.262Y24.638 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X46.038Y3.651
+G00 Z1.000
+G00 X38.354Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X48.578Y3.651 F1500
+G01 X35.814Y6.350 F1500
 (-->Cutting Line)
-G01 X48.578Y6.191 F1500
+G01 X33.274Y6.350 F1500
 (-->Cutting Line)
-G01 X46.038Y6.191 F1500
+G01 X30.734Y6.350 F1500
 (-->Cutting Line)
-G01 X46.038Y3.651 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X28.766Y7.207
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X28.004Y7.207 F1500
+G01 X28.194Y6.350 F1500
 (-->Cutting Line)
-G01 X28.004Y3.651 F1500
+G01 X28.194Y3.556 F1500
 (-->Cutting Line)
-G01 X30.798Y3.651 F1500
+G01 X30.734Y3.556 F1500
 (-->Cutting Line)
-G01 X33.337Y3.651 F1500
+G01 X33.274Y3.556 F1500
 (-->Cutting Line)
-G01 X35.878Y3.651 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X33.337Y3.651
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X33.337Y7.207 F1500
-(-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X30.798Y3.651
-(-->Plunging, then Cutting Line)
-G01 Z-0.070 F500
-G01 X30.798Y7.207 F1500
+G01 X35.814Y3.556 F1500
+(-->Cutting Line)
+G01 X38.354Y3.556 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X51.117Y6.445
+G00 Z1.000
+G00 X50.800Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X53.658Y6.445 F1500
+G01 X53.594Y6.350 F1500
 (-->Cutting Line)
-G01 X56.198Y6.445 F1500
+G01 X56.134Y6.350 F1500
 (-->Cutting Line)
-G01 X58.738Y6.445 F1500
+G01 X58.674Y6.350 F1500
 (-->Cutting Line)
-G01 X61.278Y6.445 F1500
+G01 X61.214Y6.350 F1500
 (-->Cutting Line)
-G01 X63.818Y6.445 F1500
+G01 X63.754Y6.350 F1500
 (-->Cutting Line)
-G01 X66.358Y6.445 F1500
+G01 X66.548Y6.350 F1500
 (-->Cutting Line)
-G01 X66.358Y3.651 F1500
+G01 X66.548Y3.302 F1500
 (-->Cutting Line)
-G01 X63.818Y3.651 F1500
+G01 X63.754Y3.302 F1500
 (-->Cutting Line)
-G01 X61.278Y3.651 F1500
+G01 X61.214Y3.302 F1500
 (-->Cutting Line)
-G01 X58.738Y3.651 F1500
+G01 X58.674Y3.302 F1500
 (-->Cutting Line)
-G01 X56.198Y3.651 F1500
+G01 X56.134Y3.302 F1500
 (-->Cutting Line)
-G01 X53.658Y3.651 F1500
+G01 X53.594Y3.302 F1500
 (-->Cutting Line)
-G01 X51.117Y3.651 F1500
+G01 X50.800Y3.302 F1500
 (-->Cutting Line)
-G01 X51.117Y6.445 F1500
+G01 X50.800Y6.350 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X53.594Y6.350
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X53.594Y3.302 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X53.658Y6.445
+G00 Z1.000
+G00 X56.134Y3.302
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X53.658Y3.651 F1500
+G01 X56.134Y6.350 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X56.198Y6.445
+G00 Z1.000
+G00 X58.674Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X56.198Y3.651 F1500
+G01 X58.674Y3.302 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X58.738Y6.445
+G00 Z1.000
+G00 X61.214Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X58.738Y3.651 F1500
+G01 X61.214Y3.302 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X61.278Y6.445
+G00 Z1.000
+G00 X63.754Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X61.278Y3.651 F1500
+G01 X63.754Y3.302 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X63.818Y6.445
+G00 Z1.000
+G00 X45.974Y6.858
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X63.818Y3.651 F1500
+G01 X45.974Y2.794 F1500
+(-->Cutting Line)
+G01 X48.768Y2.794 F1500
+(-->Cutting Line)
+G01 X48.768Y6.858 F1500
+(-->Cutting Line)
+G01 X45.974Y6.858 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X20.130Y30.829
+G00 Z1.000
+G00 X43.434Y6.858
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X20.130Y32.099 F1500
+G01 X43.434Y3.048 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X21.654Y30.829
+G00 Z1.000
+G00 X35.814Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X21.654Y32.099 F1500
+G01 X35.814Y3.556 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X18.098Y50.133
+G00 Z1.000
+G00 X33.274Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X16.066Y50.133 F1500
-(-->Cutting Line)
-G01 X15.558Y50.641 F1500
-(-->Cutting Line)
-G01 X14.034Y50.641 F1500
-(-->Cutting Line)
-G01 X13.780Y50.387 F1500
-(-->Cutting Line)
-G01 X13.780Y47.847 F1500
-(-->Cutting Line)
-G01 X14.034Y47.593 F1500
-(-->Cutting Line)
-G01 X15.812Y47.593 F1500
-(-->Cutting Line)
-G01 X16.066Y47.847 F1500
-(-->Cutting Line)
-G01 X16.066Y48.609 F1500
-(-->Cutting Line)
-G01 X18.098Y48.609 F1500
+G01 X33.274Y3.556 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X29.527Y29.813
+G00 Z1.000
+G00 X30.734Y6.350
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X26.988Y29.813 F1500
+G01 X30.734Y3.556 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X29.527Y27.273
+G00 Z1.000
+G00 X8.382Y26.416
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X28.004Y27.273 F1500
+G01 X11.684Y26.416 F1500
+(-->Cutting Line)
+G01 X11.684Y22.606 F1500
+(-->Cutting Line)
+G01 X8.128Y22.606 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X43.498Y3.397
+G00 Z1.000
+G00 X37.338Y54.356
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X43.498Y5.937 F1500
+G01 X37.338Y56.134 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X45.022Y35.401
+G00 Z1.000
+G00 X53.848Y48.260
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X45.022Y34.639 F1500
-(-->Cutting Line)
-G01 X44.768Y34.385 F1500
-(-->Cutting Line)
-G01 X40.704Y34.385 F1500
+G01 X46.228Y48.260 F1500
 (-->Cutting Line)
-G01 X40.704Y41.243 F1500
+G01 X46.228Y51.816 F1500
 (-->Cutting Line)
-G01 X44.260Y41.243 F1500
+G01 X48.514Y51.816 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X49.848Y34.385
+G00 Z1.000
+G00 X51.054Y51.816
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X47.816Y34.385 F1500
+G01 X48.514Y51.816 F1500
 (-->Cutting Line)
-G01 X47.816Y35.401 F1500
+G01 X48.514Y50.038 F1500
+(-->Cutting Line)
+G01 X53.848Y50.038 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X47.816Y27.527
+G00 Z1.000
+G00 X58.674Y54.864
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X47.816Y33.115 F1500
+G01 X58.674Y56.134 F1500
 (-->Cutting Line)
-G01 X44.768Y33.115 F1500
+G01 X57.912Y56.896 F1500
 (-->Cutting Line)
-G01 X44.768Y31.591 F1500
+G01 X51.816Y56.896 F1500
 (-->Cutting Line)
-G01 X45.784Y30.575 F1500
+G01 X51.816Y54.864 F1500
+(-->next line out of position. Retracting, and repositioning)
+G00 Z1.000
+G00 X51.816Y56.896
+(-->Plunging, then Cutting Line)
+G01 Z-0.070 F500
+G01 X46.482Y56.896 F1500
 (-->Cutting Line)
-G01 X45.784Y28.035 F1500
+G01 X45.720Y56.134 F1500
 (-->next line out of position. Retracting, and repositioning)
-G00 Z4.000
-G00 X42.227Y25.495
+G00 Z1.000
+G00 X22.860Y43.180
 (-->Plunging, then Cutting Line)
 G01 Z-0.070 F500
-G01 X42.227Y22.701 F1500
+G01 X23.876Y44.196 F1500
+(-->Cutting Line)
+G01 X25.908Y44.196 F1500
+(-->Cutting Line)
+G01 X26.670Y43.434 F1500
+(-->Cutting Line)
+G01 X26.670Y38.354 F1500
+(-->Cutting Line)
+G01 X25.908Y37.592 F1500
+(-->Cutting Line)
+G01 X22.860Y37.592 F1500
+(-->Cutting Line)
+G01 X22.352Y38.100 F1500
+(-->Cutting Line)
+G01 X22.352Y40.132 F1500
 (-->Cutting Line)
-G01 X39.688Y22.701 F1500
+G01 X21.590Y40.894 F1500

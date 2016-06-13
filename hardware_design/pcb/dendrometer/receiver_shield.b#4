@@ -12,9 +12,9 @@
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="no" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
@@ -197,7 +197,8 @@
 <wire x1="41.91" y1="51.816" x2="39.37" y2="51.816" width="0.4064" layer="46"/>
 <wire x1="41.91" y1="54.356" x2="41.91" y2="51.816" width="0.4064" layer="46"/>
 <wire x1="31.75" y1="54.356" x2="31.75" y2="21.082" width="0.4064" layer="46"/>
-<wire x1="29.21" y1="56.134" x2="45.72" y2="56.134" width="0.4064" layer="46"/>
+<wire x1="29.21" y1="56.134" x2="37.338" y2="56.134" width="0.4064" layer="46"/>
+<wire x1="37.338" y1="56.134" x2="45.72" y2="56.134" width="0.4064" layer="46"/>
 <wire x1="50.292" y1="22.352" x2="52.324" y2="22.352" width="0.4064" layer="46"/>
 <wire x1="52.324" y1="15.494" x2="67.31" y2="15.494" width="0.4064" layer="46"/>
 <wire x1="67.31" y1="15.494" x2="68.58" y2="16.764" width="0.4064" layer="46"/>
@@ -491,6 +492,7 @@
 <wire x1="8.382" y1="26.416" x2="11.684" y2="26.416" width="0.4064" layer="46"/>
 <wire x1="11.684" y1="26.416" x2="11.684" y2="22.606" width="0.4064" layer="46"/>
 <wire x1="11.684" y1="22.606" x2="8.128" y2="22.606" width="0.4064" layer="46"/>
+<wire x1="37.338" y1="54.356" x2="37.338" y2="56.134" width="0.4064" layer="46"/>
 </plain>
 <libraries>
 <library name="Arduino_revB">

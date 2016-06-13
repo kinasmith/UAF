@@ -779,7 +779,7 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <element name="R2" library="passives-7351" package="R0603-N" value="10k" x="24.13" y="30.48" smashed="yes" rot="R90">
 <attribute name="NAME" x="23.33309375" y="27.823078125" size="1.016" layer="25" font="vector" ratio="16"/>
 </element>
-<element name="R3" library="passives-7351" package="R0603-N" value="1M" x="33.02" y="20.32" smashed="yes" rot="R90">
+<element name="R3" library="passives-7351" package="R0603-N" value="2M" x="33.02" y="20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="31.993921875" y="18.12609375" size="1.016" layer="25" font="vector" ratio="16" rot="R90"/>
 </element>
 <element name="R5" library="passives-7351" package="R0603-N" value="10k" x="8.89" y="26.67" smashed="yes" rot="R270">
@@ -823,14 +823,14 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <element name="C7" library="passives-7351" package="C0603-N" value="0.1uF" x="21.59" y="35.56" smashed="yes" rot="R90">
 <attribute name="NAME" x="20.828" y="32.512" size="1.016" layer="25" font="vector" ratio="16"/>
 </element>
-<element name="R4" library="passives-7351" package="R0603-N" value="6.8k" x="29.972" y="25.4" smashed="yes" rot="R270">
+<element name="R4" library="passives-7351" package="R0603-N" value="DNP" x="29.972" y="25.4" smashed="yes" rot="R270">
 <attribute name="NAME" x="27.950078125" y="26.32390625" size="1.016" layer="25" font="vector" ratio="16" rot="R270"/>
 </element>
 <element name="SENS" library="SparkFun-Connectors" package="1X03" value="" x="33.02" y="29.21" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.4508" y="30.8102" size="1.016" layer="25" ratio="16" rot="R270"/>
 <attribute name="VALUE" x="34.29" y="32.385" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="R7" library="passives-7351" package="R0603-N" value="43k" x="33.02" y="25.4" smashed="yes" rot="R270">
+<element name="R7" library="passives-7351" package="R0603-N" value="5.9k" x="33.02" y="25.4" smashed="yes" rot="R270">
 <attribute name="NAME" x="32.374921875" y="24.60309375" size="1.016" layer="25" font="vector" ratio="16" rot="R90"/>
 </element>
 </elements>

@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -3696,7 +3696,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C2" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C3" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
-<part name="R3" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="1M"/>
+<part name="R3" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="2M"/>
 <part name="ANT" library="SparkFun-Connectors" deviceset="M01" device="PTH"/>
 <part name="ICSP" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="PTH"/>
 <part name="R1" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>
@@ -3710,9 +3710,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="Q2" library="SparkFun-DiscreteSemi" deviceset="MOSFET-PCHANNEL" device="IRLML2244" value="PFET"/>
 <part name="C6" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
 <part name="C7" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
-<part name="R4" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="6.8k"/>
+<part name="R4" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="DNP"/>
 <part name="SENS" library="SparkFun-Connectors" deviceset="M03" device="PTH"/>
-<part name="R7" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="43k"/>
+<part name="R7" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="5.9k"/>
 </parts>
 <sheets>
 <sheet>

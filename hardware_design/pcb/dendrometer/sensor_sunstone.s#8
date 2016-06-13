@@ -3702,8 +3702,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="Q2" library="SparkFun-DiscreteSemi" deviceset="MOSFET-PCHANNEL" device="IRLML2244"/>
 <part name="C6" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
 <part name="C7" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
-<part name="R4" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="5.7-5.9k"/>
+<part name="R4" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="6.8k"/>
 <part name="SENS" library="SparkFun-Connectors" deviceset="M03" device="PTH"/>
+<part name="R7" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="43k"/>
 </parts>
 <sheets>
 <sheet>
@@ -3733,8 +3734,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="Q2" gate="G$1" x="104.14" y="55.88" rot="R180"/>
 <instance part="C6" gate="G$1" x="22.86" y="7.62"/>
 <instance part="C7" gate="G$1" x="78.74" y="7.62"/>
-<instance part="R4" gate="G$1" x="104.14" y="45.72" rot="R90"/>
+<instance part="R4" gate="G$1" x="104.14" y="43.18" rot="R90"/>
 <instance part="SENS" gate="J$1" x="99.06" y="17.78"/>
+<instance part="R7" gate="G$1" x="96.52" y="43.18" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -4145,6 +4147,11 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <pinref part="Q2" gate="G$1" pin="D"/>
 <pinref part="R4" gate="G$1" pin="P$2"/>
+<wire x1="104.14" y1="48.26" x2="104.14" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="R7" gate="G$1" pin="P$2"/>
+<wire x1="96.52" y1="48.26" x2="96.52" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="50.8" x2="104.14" y2="50.8" width="0.1524" layer="91"/>
+<junction x="104.14" y="50.8"/>
 </segment>
 </net>
 <net name="V-EXCITE" class="0">
@@ -4154,11 +4161,15 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <wire x1="106.68" y1="20.32" x2="111.76" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="20.32" x2="111.76" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="35.56" x2="104.14" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="104.14" y1="35.56" x2="104.14" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="35.56" x2="104.14" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="35.56" x2="116.84" y2="35.56" width="0.1524" layer="91"/>
 <junction x="111.76" y="35.56"/>
 <wire x1="116.84" y1="35.56" x2="116.84" y2="43.18" width="0.1524" layer="91"/>
 <label x="116.84" y="38.1" size="1.778" layer="95" rot="R90"/>
+<pinref part="R7" gate="G$1" pin="P$1"/>
+<wire x1="96.52" y1="38.1" x2="96.52" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="35.56" x2="104.14" y2="35.56" width="0.1524" layer="91"/>
+<junction x="104.14" y="35.56"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="PC1(ADC1)"/>
