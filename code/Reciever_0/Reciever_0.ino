@@ -1,20 +1,24 @@
 #include <RFM69.h>
 #include <SPI.h>
 #include "RTClib.h"
-#include <SD.h>
+#include <SdFat.h>
 
 #define NODE_ID     0 //Network Node ID. All Senders must send to this ID #
 #define NETWORK_ID  101 //Network ID. All Nodes must be on the same Network
 #define FREQUENCY   RF69_433MHZ //Match this to the frequency of your radio
 #define KEY         "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes.
 #define LED         3 //LED Pin Number
-#define debug       1 //debug false/true
+#define debug       0 //debug false/true
 
 /*==============|| DS3231_RTC ||==============*/
 RTC_DS3231 rtc; //Initialize the Real Time Clock
-DateTime now;
+DateTime now; //initialize a DateTime Object
+
+
 
 /*==============|| SD ||==============*/
+SdFat SD; //This is the SD Card
+SdFile dataFile; //this is the DatFile
 const int CHIP_SELECT = 4; //SPI SS pin for SD card
 const int CARD_DETECT = 5; //Card Detect Pin
 int CARD_PRESENT; //var for Card Detect sensor reading
@@ -42,13 +46,16 @@ void setup() {
   if (!SD.begin(CHIP_SELECT)) { //Checks the SD card to make sure it responds. On success, it initializes it.
     if (debug) Serial.println("Card failed, or not present");
     CARD_PRESENT = digitalRead(CARD_DETECT);  //read CD pin
+    //this delays the program while there is no card inserted.
     while (CARD_PRESENT == 0) { //The CD pin is 0 if there is no card inserted
       CARD_PRESENT = digitalRead(CARD_DETECT); //read it the value for every loop, or we will never exit the While Loop
-      Blink(LED, 50); //blink!
+      Blink(LED, 50); //blink to show an error.
     }
-    if (!SD.begin(CHIP_SELECT))
-      Blink(LED, 50);
-    if (debug) Serial.println("SD card initialized"); //when the SD card is re-inserted, intiliaze it!
+    delay(10); //wait for card to stablize from insertion before initializing
+
+    if (!SD.begin(CHIP_SELECT)) //when the SD card is re-inserted, intiliaze it!
+      Blink(LED, 50); //if it fails again....well, you're probably out of luck.
+    if (debug) Serial.println("SD card initialized");
   }
   if (debug) Serial.println("SD card initialized"); ///Victory
 
@@ -59,11 +66,6 @@ void setup() {
     Serial.print("RFM69 initialized");
     Serial.print(", key: ");
     Serial.println(KEY);
-  }
-  if(debug) {
-    DateTime now = rtc.now();
-    Serial.print("Current time is: ");
-    Serial.println(now.unixtime());
   }
 }
 
@@ -79,62 +81,43 @@ void loop() {
         radio.sendACK();
       }
       if (debug) printData(); //Print the data out to the Serial Monitor
-      //ID, time, sensor, temp, excite volts, battery volts, number of attempts
-      if (writeDataToCard(data_rcv.nodeID, now.unixtime(), data_rcv.sens_val, data_rcv.temp, data_rcv.excite_v, data_rcv.batt_v, data_rcv.num_attempts)) { //Write the data to the SD card
+      //and write the data to the SD card
+      if (writeDataToCard(data_rcv.nodeID, now.unixtime(), data_rcv.sens_val, data_rcv.temp, data_rcv.excite_v, data_rcv.batt_v, data_rcv.num_attempts)) {
         Blink(LED, 100); //Blink the LED on success
       }
     }
     else { //if the data is an unexpected size
       if (debug) Serial.println("Invalid packet received!!");
-      if (badPacket(now.unixtime())) {
-        Blink(LED, 100);
-        Blink(LED, 100);
+      if (badPacket(now.unixtime())) { //note that int he log.txt file and blink thrice
+        Blink(LED, 50);
+        Blink(LED, 50);
+        Blink(LED, 50);
       }
     }
   }
+  checkSdCard();
 }
 
 int writeDataToCard(int id, long utm, int s_v, float t, float e_v, float b_v, int num_a) {
-  //ID, time, sensor, temp, excite volts, battery volts, number of attempts
-  CARD_PRESENT = digitalRead(CARD_DETECT);
-  if (CARD_PRESENT == 0) {
-    Blink(LED, 25);
-    Blink(LED, 25);
-    if (debug) Serial.println("Card Not Present");
-    while (CARD_PRESENT == 0) {
-      CARD_PRESENT = digitalRead(CARD_DETECT);
-      Blink(LED, 100);
-    }
-    if (!SD.begin(CHIP_SELECT))  Blink(LED, 25); //Serial.println("SD card initialized");
-    else Blink(LED, 25); Blink(LED, 25); //Serial.println("SD Card Failed to Initialize");
-  }
-  //Write data to card
+//  CARD_PRESENT = digitalRead(CARD_DETECT); //Check for card insertion
+//  if (CARD_PRESENT == 0) { //if card NOT present....Wait and blink until it is
+//    if (debug) Serial.println("Card Not Present");
+//    while (CARD_PRESENT == 0) {
+//      CARD_PRESENT = digitalRead(CARD_DETECT);
+//      Blink(LED, 50);
+//    }
+//    if (!SD.begin(CHIP_SELECT))
+//      Blink(LED, 25);
+//    if (debug) Serial.println("SD card initialized");
+//  }
+
+  //creates filename to store data based on the Node Address
   String address = String(String(NETWORK_ID) + "_" + String(id));
-  String fileName = String(address + ".csv"); //creates filename based on Node Address
+  String fileName = String(address + ".csv");
   char __fileName[fileName.length() + 1];
   fileName.toCharArray(__fileName, sizeof(__fileName));
-  File dataFile = SD.open(__fileName, FILE_WRITE); //Opens file (creates if it doesn't exist) and Appends data to the end of it
-  if (dataFile) {
-    dataFile.print(NETWORK_ID);
-    dataFile.print("_");
-    dataFile.print(id);
-    dataFile.print(",");
-    dataFile.print(utm);
-    dataFile.print(",");
-    dataFile.print(s_v);
-    dataFile.print(",");
-    dataFile.print(t);
-    dataFile.print(",");
-    dataFile.print(b_v);
-    dataFile.print(",");
-    dataFile.print(e_v);
-    dataFile.print(",");
-    dataFile.print(num_a);
-    dataFile.println();
-    dataFile.close();
-    return 1; //returns a 1, Success
-  }
-  else {
+  //Opens and checks file
+  if (!dataFile.open(__fileName, O_RDWR | O_CREAT | O_AT_END)) {
     if (debug) {
       Serial.print("Error opening: ");
       Serial.println(fileName);
@@ -143,6 +126,25 @@ int writeDataToCard(int id, long utm, int s_v, float t, float e_v, float b_v, in
     Blink(LED, 100);
     return 0; //returns a 0, failure
   }
+  //Print data to new line
+  dataFile.print(NETWORK_ID);
+  dataFile.print("_");
+  dataFile.print(id);
+  dataFile.print(",");
+  dataFile.print(utm);
+  dataFile.print(",");
+  dataFile.print(s_v);
+  dataFile.print(",");
+  dataFile.print(t);
+  dataFile.print(",");
+  dataFile.print(b_v);
+  dataFile.print(",");
+  dataFile.print(e_v);
+  dataFile.print(",");
+  dataFile.print(num_a);
+  dataFile.println();
+  dataFile.close();
+  return 1; //returns a 1, Success
 }
 
 void printData() {
@@ -173,56 +175,40 @@ void Blink(byte PIN, int DELAY_MS) {
 }
 
 int badPacket(long utm) {
-  //ID, time, sensor, temp, excite volts, battery volts, number of attempts
   CARD_PRESENT = digitalRead(CARD_DETECT);
   if (CARD_PRESENT == 0) {
-    Blink(LED, 25);
-    Blink(LED, 25);
     if (debug) Serial.println("Card Not Present");
     while (CARD_PRESENT == 0) {
       CARD_PRESENT = digitalRead(CARD_DETECT);
       Blink(LED, 100);
     }
-    if (!SD.begin(CHIP_SELECT))  Blink(LED, 25); //Serial.println("SD card initialized");
-    else Blink(LED, 25); Blink(LED, 25); //Serial.println("SD Card Failed to Initialize");
+    if (!SD.begin(CHIP_SELECT))  Blink(LED, 25);
+    if (debug) Serial.println("SD card initialized");
   }
-  //Write data to card
-  String fileName = String("log.txt");
-  char __fileName[fileName.length() + 1];
-  fileName.toCharArray(__fileName, sizeof(__fileName));
-  File dataFile = SD.open(__fileName, FILE_WRITE); //Opens file (creates if it doesn't exist) and Appends data to the end of it
-  if (dataFile) {
-    dataFile.print("Bad Packet Recieved at: ");
-    dataFile.print(utm);
-    dataFile.println();
-    dataFile.close();
-    return 1; //returns a 1, Success
-  }
-  else {
-    if (debug) {
-      Serial.print("Error opening: ");
-      Serial.println(fileName);
-    }
+  if (!dataFile.open("log.txt", O_RDWR | O_CREAT | O_AT_END)) {
+    if (debug) Serial.println("Error opening: log.txt");
     Blink(LED, 100);
     Blink(LED, 100);
-    return 0; //returns a 0, failure
+    return 0;
   }
+  dataFile.print("Bad Packet Recieved at: ");
+  dataFile.print(utm);
+  dataFile.println();
+  dataFile.close();
+  return 1;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void checkSdCard() {
+  CARD_PRESENT = digitalRead(CARD_DETECT); //Check for card insertion
+  if (CARD_PRESENT == 0) { //if card NOT present....Wait and blink until it is
+    if (debug) Serial.println("Card Not Present");
+    while (CARD_PRESENT == 0) {
+//      CARD_PRESENT = digitalRead(CARD_DETECT);
+      Blink(LED, 50);
+    }
+//    if (!SD.begin(CHIP_SELECT))
+//      Blink(LED, 25);
+//    if (debug) Serial.println("SD card initialized");
+  }
+}
 
