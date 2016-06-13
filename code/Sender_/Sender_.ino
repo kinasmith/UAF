@@ -18,7 +18,7 @@ MCP342X myADC;
 #define V_BAT_PIN       A3
 #define V_EXCITE_PIN    A1
 #define SENS_EN         4
-#define debug           1
+#define debug           0
 
 
 int blinkCount = 1;
