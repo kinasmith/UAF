@@ -6,25 +6,25 @@
 
 MCP342X myADC;
 
-#define NODE_ID      1
-#define NETWORK_ID   101
-#define GATEWAY_ID   0
-#define FREQUENCY   RF69_433MHZ
-#define KEY "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes, not more not less!
-#define SERIAL_BAUD 9600
-
-#define ACK_TIME    100  // # of ms to wait for an ack
+#define NODE_ID         3
+#define NETWORK_ID      101
+#define GATEWAY_ID      0
+#define FREQUENCY       RF69_433MHZ
+#define KEY             "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes, not more not less!
+#define LED             3
+#define SERIAL_BAUD     9600
+#define ACK_TIME        100  // # of ms to wait for an ack
 #define NB_ATTEMPTS_ACK 5 //number of attempts to try before giving up
+#define V_BAT_PIN       A3
+#define V_EXCITE_PIN    A1
+#define SENS_EN         4
+#define debug           1
 
-#define V_BAT_PIN A3
-#define V_EXCITE_PIN A1
-#define SENS_EN 4
-#define LED         3
 
 int blinkCount = 1;
-int TRANSMIT_PERIOD = 60000; //transmit a packet to gateway so often (in ms)
+long TRANSMIT_PERIOD = 60000; //transmit a packet to gateway so often (in ms)
 int TRANSMIT_PERIOD_MINUTES = 15;
-int ACK_FAIL_WAIT_PERIOD = 500; 
+int ACK_FAIL_WAIT_PERIOD = 500;
 
 RFM69 radio;
 
@@ -47,25 +47,27 @@ float start_position;
 
 void setup() {
   Wire.begin(); //Begin i2c
-  Serial.begin(SERIAL_BAUD); //Begin Serial
+  if (debug) Serial.begin(SERIAL_BAUD); //Begin Serial
   radio.initialize(FREQUENCY, NODE_ID, NETWORK_ID); //Begin Radio
   radio.setHighPower(); //uncomment only for RFM69HW!
   radio.encrypt(KEY); //Encrypt
   radio.sleep(); //Sleep radio (saves power)
-  char buff[50];
-  sprintf(buff, "\nListening at %d Mhz...", FREQUENCY == RF69_433MHZ ? 433 : FREQUENCY == RF69_868MHZ ? 868 : 915);
-  Serial.println(buff);
-  Serial.println(myADC.testConnection() ? "MCP342X connection successful" : "MCP342X connection failed");
+  if (debug) {
+    char buff[50];
+    sprintf(buff, "\nListening at %d Mhz...", FREQUENCY == RF69_433MHZ ? 433 : FREQUENCY == RF69_868MHZ ? 868 : 915);
+    Serial.println(buff);
+    Serial.println(myADC.testConnection() ? "MCP342X connection successful" : "MCP342X connection failed");
+  }
   //configure ADC
   myADC.configure( MCP342X_MODE_ONESHOT |
                    MCP342X_CHANNEL_1 |
                    MCP342X_SIZE_16BIT |
                    MCP342X_GAIN_1X
                  );
-  Serial.println(myADC.getConfigRegShdw(), HEX);
+  if (debug) Serial.println(myADC.getConfigRegShdw(), HEX);
   pinMode(LED, OUTPUT); //Set LED Mode
   randomSeed(analogRead(0)); //Collect Random Seed for Delay Timing
-  Serial.flush();
+  if (debug) Serial.flush();
 
 }
 
@@ -84,51 +86,57 @@ void loop() {
     digitalWrite(LED, LOW); //Turns ON led to signal that Transmission has started
 
   while (nAttempt < NB_ATTEMPTS_ACK && !flag_ACK_received) { //resend package # of times if it doesn't go through
-    Serial.print("sending...");
+    if (debug) Serial.print("sending...");
     if (radio.sendWithRetry(GATEWAY_ID, (const void*)(&payload), sizeof(payload))) { //send payload, if it retuns a 1 it  successfully recieved the ACK
-      Serial.println("got ACK:");
-      Serial.flush();
+      if (debug) {
+        Serial.println("got ACK:");
+        Serial.flush();
+      }
       flag_ACK_received = true;
       digitalWrite(LED, HIGH); //turn LED off to signal completion of transmission
     }
     else { //DID not recieve ACK
-      Serial.println("did not get ACK");
-      Serial.flush();
+      if (debug) {
+        Serial.println("did not get ACK");
+        Serial.flush();
+      }
       if (blinkCount == 0)
         analogWrite(LED, 200); //turn on LED dimly to signal trying again
       if (radio.sendWithRetry(GATEWAY_ID, (const void*)(&payload), sizeof(payload))) { //Sending Again
-        Serial.println("got ACK");
-        Serial.flush();
+        if (debug) {
+          Serial.println("got ACK");
+          Serial.flush();
+        }
         flag_ACK_received = true; //mark as successful to exit While Loop
         digitalWrite(LED, HIGH); //turn LED off to signal completion of transmission
       }
       nAttempt++;
       payload.num_attempts = nAttempt;
       ACK_FAIL_WAIT_PERIOD = random(300, 600); //sets a random wait period to not interfere with other sensors
-      //delay(10); //wait to finish before sleeping
       Sleepy::loseSomeTime(ACK_FAIL_WAIT_PERIOD);  //wait for a few moments before trying again
     }
   }
-
-  //  Serial.print(payload.nodeID);
-  //  Serial.print(", ");
-  Serial.print(payload.sens_val);
-  Serial.print(", ");
-  //  Serial.print(payload.temp);
-  //  Serial.print(", ");
-  Serial.print(payload.excite_v);
-  Serial.println();
-  Serial.flush();
-  //  Serial.print(", ");
-  //  Serial.println(payload.batt_v);
-
+  if (debug) {
+    Serial.print(payload.nodeID);
+    Serial.print(", ");
+    Serial.print(payload.sens_val);
+    Serial.print(", ");
+    Serial.print(payload.temp);
+    Serial.print(", ");
+    Serial.print(payload.excite_v);
+    Serial.print(", ");
+    Serial.print(payload.batt_v);
+    Serial.println();
+    Serial.flush();
+  }
   //Transmission succesfully completed
   if (blinkCount == 0) blinkCount++;
-  Serial.print("Sleeping for ");
-  Serial.print((TRANSMIT_PERIOD * TRANSMIT_PERIOD_MINUTES) / 1000);
-  Serial.println("s");
-  Serial.flush();
-  //delay(10); //Let everything Finish before Sleeping
+  if (debug) {
+    Serial.print("Sleeping for ");
+    Serial.print((TRANSMIT_PERIOD/1000) * TRANSMIT_PERIOD_MINUTES);
+    Serial.println("s");
+    Serial.flush();
+  }
   radio.sleep(); //Sleep the Radio
   digitalWrite(LED, HIGH); //Turn LED off
   for (int i = 0; i < TRANSMIT_PERIOD_MINUTES; i++) { //Sleep the µC
@@ -140,10 +148,8 @@ void Blink(byte PIN, int DELAY_MS) { //blink and LED
   pinMode(PIN, OUTPUT);
   digitalWrite(PIN, LOW);
   Sleepy::loseSomeTime(DELAY_MS);
-  //  delay(DELAY_MS);
   digitalWrite(PIN, HIGH);
   Sleepy::loseSomeTime(DELAY_MS);
-  // delay(DELAY_MS);
 }
 
 float checkVoltage(int pin) { //takes 100ms
