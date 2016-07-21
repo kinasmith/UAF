@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.2.0">
+<eagle version="7.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
@@ -149,14 +163,14 @@
 <library name="_my-parts">
 <packages>
 <package name="KEYSTONEAAHOLDER_2CELL">
-<pad name="P$1" x="-7.493" y="27.178" drill="0.889" diameter="1.4224" shape="long" rot="R270"/>
-<pad name="P$2" x="7.493" y="27.178" drill="0.889" diameter="1.4224" shape="long" rot="R90"/>
+<pad name="P$1" x="-7.493" y="27.178" drill="1.016" diameter="1.524" shape="long" rot="R270"/>
+<pad name="P$2" x="7.493" y="27.178" drill="1.016" diameter="1.524" shape="long" rot="R90"/>
 <circle x="-7.493" y="0" radius="1.651" width="0.127" layer="48"/>
 <circle x="7.493" y="0" radius="1.651" width="0.127" layer="48"/>
-<wire x1="-16.51" y1="29.7561" x2="-16.51" y2="-29.7561" width="0.127" layer="21"/>
-<wire x1="-16.51" y1="-29.7561" x2="16.51" y2="-29.7561" width="0.127" layer="21"/>
-<wire x1="16.51" y1="-29.7561" x2="16.51" y2="29.7561" width="0.127" layer="21"/>
-<wire x1="16.51" y1="29.7561" x2="-16.51" y2="29.7561" width="0.127" layer="21"/>
+<wire x1="-16.51" y1="29.7561" x2="-16.51" y2="-29.7561" width="0.127" layer="48"/>
+<wire x1="-16.51" y1="-29.7561" x2="16.51" y2="-29.7561" width="0.127" layer="48"/>
+<wire x1="16.51" y1="-29.7561" x2="16.51" y2="29.7561" width="0.127" layer="48"/>
+<wire x1="16.51" y1="29.7561" x2="-16.51" y2="29.7561" width="0.127" layer="48"/>
 </package>
 <package name="SOT23-5">
 <smd name="P$1" x="-0.95" y="-1.2" dx="1.1" dy="0.6" layer="1" rot="R90"/>
@@ -170,6 +184,16 @@
 <wire x1="-1.5" y1="-0.9" x2="1.5" y2="-0.9" width="0.127" layer="21"/>
 <text x="-1.425" y="1.9" size="0.6096" layer="25" ratio="5">&gt;NAME</text>
 <text x="-1.52" y="-2.565" size="0.6096" layer="27" ratio="5">&gt;VALUE</text>
+</package>
+<package name="WURTH_10UH_650MA">
+<smd name="P$1" x="0" y="-1.1" dx="3.2" dy="1" layer="1"/>
+<smd name="P$2" x="0" y="1.1" dx="3.2" dy="1" layer="1"/>
+<text x="-2.54" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.27" layer="27">&gt;VALUE</text>
+<wire x1="-1.8" y1="0.9" x2="-1.8" y2="-0.9" width="0.127" layer="21"/>
+<wire x1="1.8" y1="0.9" x2="1.8" y2="-0.9" width="0.127" layer="21"/>
+<wire x1="-0.9" y1="1.8" x2="0.9" y2="1.8" width="0.127" layer="21"/>
+<wire x1="-0.9" y1="-1.8" x2="0.9" y2="-1.8" width="0.127" layer="21"/>
 </package>
 <package name="COILCRAFT_DO3314">
 <wire x1="-1.88" y1="1.88" x2="1.88" y2="1.88" width="0" layer="21"/>
@@ -186,10 +210,8 @@
 <smd name="P$2" x="1.6" y="0" dx="1.016" dy="0.508" layer="1" rot="R90"/>
 <wire x1="-1.27" y1="1.905" x2="1.27" y2="1.905" width="0.127" layer="21"/>
 <wire x1="-1.27" y1="-1.905" x2="1.27" y2="-1.905" width="0.127" layer="21"/>
-</package>
-<package name="WURTH_10UH_650MA">
-<smd name="P$1" x="0" y="-1.1" dx="3.2" dy="1" layer="1"/>
-<smd name="P$2" x="0" y="1.1" dx="3.2" dy="1" layer="1"/>
+<text x="-2.54" y="2.54" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.27" layer="27">&gt;VALUE</text>
 </package>
 </packages>
 <symbols>
@@ -3847,7 +3869,7 @@ Standard A4 size frame in Landscape</description>
 <part name="U1" library="SparkFun-DigitalIC" deviceset="ATMEGA328_SMT" device="" value="ATMEGA328P"/>
 <part name="U$5" library="LowPowerLab" deviceset="RFM69" device=""/>
 <part name="U$2" library="_my-parts" deviceset="TPS61097-33" device=""/>
-<part name="U$4" library="_my-parts" deviceset="INDUCTORS" device="_WURTH"/>
+<part name="U$4" library="_my-parts" deviceset="INDUCTORS" device="_WURTH" value="4.7uH"/>
 <part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C2" library="passives-7351" deviceset="CAPACITOR" device="0805-N" value="10uF"/>
 <part name="C3" library="passives-7351" deviceset="CAPACITOR" device="0603-N" value="0.1uF"/>
@@ -3871,6 +3893,7 @@ Standard A4 size frame in Landscape</description>
 <part name="R7" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="THERM"/>
 <part name="R4" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-A4L" device=""/>
+<part name="R8" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="330"/>
 </parts>
 <sheets>
 <sheet>
@@ -3889,6 +3912,7 @@ Standard A4 size frame in Landscape</description>
 <text x="218.44" y="172.72" size="2.54" layer="94">HEADERS</text>
 <text x="218.44" y="93.98" size="1.778" layer="94">ADC</text>
 <text x="129.54" y="93.98" size="1.778" layer="94">V_REF</text>
+<text x="50.8" y="48.26" size="1.778" layer="97">switch to 61097A</text>
 </plain>
 <instances>
 <instance part="U$1" gate="G$1" x="15.24" y="30.48"/>
@@ -3919,6 +3943,7 @@ Standard A4 size frame in Landscape</description>
 <instance part="R7" gate="G$1" x="111.76" y="25.4" rot="R270"/>
 <instance part="R4" gate="G$1" x="111.76" y="40.64" rot="R270"/>
 <instance part="FRAME1" gate="G$1" x="3.81" y="3.81"/>
+<instance part="R8" gate="G$1" x="124.46" y="45.72" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -4329,20 +4354,11 @@ Standard A4 size frame in Landscape</description>
 <wire x1="71.12" y1="114.3" x2="83.82" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="V_REF" class="0">
+<net name="S_EN" class="0">
 <segment>
-<pinref part="SENS" gate="J$1" pin="3"/>
-<wire x1="124.46" y1="17.78" x2="124.46" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="U2" gate="A" pin="CATHODE"/>
-<wire x1="127" y1="30.48" x2="124.46" y2="30.48" width="0.1524" layer="91"/>
+<pinref part="R8" gate="G$1" pin="P$1"/>
 <pinref part="Q2" gate="G$1" pin="D"/>
-<wire x1="124.46" y1="30.48" x2="124.46" y2="48.26" width="0.1524" layer="91"/>
-<junction x="124.46" y="30.48"/>
-<wire x1="124.46" y1="48.26" x2="124.46" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="P$1"/>
-<wire x1="111.76" y1="45.72" x2="111.76" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="111.76" y1="48.26" x2="124.46" y2="48.26" width="0.1524" layer="91"/>
-<junction x="124.46" y="48.26"/>
+<wire x1="124.46" y1="50.8" x2="124.46" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="THERM" class="0">
@@ -4371,6 +4387,23 @@ Standard A4 size frame in Landscape</description>
 <wire x1="208.28" y1="66.04" x2="218.44" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="U$6" gate="A" pin="CH1+"/>
 <label x="208.28" y="66.04" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="V_REF" class="0">
+<segment>
+<pinref part="U2" gate="A" pin="CATHODE"/>
+<wire x1="127" y1="30.48" x2="124.46" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="30.48" x2="124.46" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="R8" gate="G$1" pin="P$2"/>
+<pinref part="SENS" gate="J$1" pin="3"/>
+<wire x1="124.46" y1="38.1" x2="124.46" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="30.48" x2="124.46" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="38.1" x2="119.38" y2="38.1" width="0.1524" layer="91"/>
+<junction x="124.46" y="38.1"/>
+<wire x1="119.38" y1="38.1" x2="119.38" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="P$1"/>
+<wire x1="111.76" y1="48.26" x2="111.76" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="48.26" x2="111.76" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

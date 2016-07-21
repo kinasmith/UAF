@@ -1,13 +1,13 @@
-#include <RFM69.h>
-#include <SPI.h>
-#include <jeelib-sleepy.h>
 #include  <Wire.h>
-#include  <MCP342X.h>
+#include <SPI.h>
+#include "RFM69.h"
+#include "jeelib-sleepy.h"
+#include  "MCP342X.h"
 
 MCP342X myADC;
 
-#define NODE_ID         6
-#define NETWORK_ID      100
+#define NODE_ID         1
+#define NETWORK_ID      101
 #define GATEWAY_ID      0
 #define FREQUENCY       RF69_433MHZ
 #define KEY             "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes, not more not less!
@@ -18,7 +18,7 @@ MCP342X myADC;
 #define V_BAT_PIN       A3
 #define V_EXCITE_PIN    A1
 #define SENS_EN         4
-#define debug           0
+#define debug           1
 
 
 int blinkCount = 1;
@@ -46,9 +46,12 @@ Payload payload;
 float start_position;
 
 void setup() {
-  Wire.begin(); //Begin i2c
   if (debug) Serial.begin(SERIAL_BAUD); //Begin Serial
+  if (debug) Serial.println("Start");
+  Wire.begin(); //Begin i2c
+  if (debug) Serial.println("pre radio init");
   radio.initialize(FREQUENCY, NODE_ID, NETWORK_ID); //Begin Radio
+  if (debug) Serial.println("post radio init");
   radio.setHighPower(); //uncomment only for RFM69HW!
   radio.encrypt(KEY); //Encrypt
   radio.sleep(); //Sleep radio (saves power)
@@ -68,7 +71,6 @@ void setup() {
   pinMode(LED, OUTPUT); //Set LED Mode
   randomSeed(analogRead(0)); //Collect Random Seed for Delay Timing
   if (debug) Serial.flush();
-
 }
 
 void loop() {
@@ -84,7 +86,6 @@ void loop() {
 
   if (blinkCount == 0)
     digitalWrite(LED, LOW); //Turns ON led to signal that Transmission has started
-
   while (nAttempt < NB_ATTEMPTS_ACK && !flag_ACK_received) { //resend package # of times if it doesn't go through
     if (debug) Serial.print("sending...");
     if (radio.sendWithRetry(GATEWAY_ID, (const void*)(&payload), sizeof(payload))) { //send payload, if it retuns a 1 it  successfully recieved the ACK
@@ -133,7 +134,7 @@ void loop() {
   if (blinkCount == 0) blinkCount++;
   if (debug) {
     Serial.print("Sleeping for ");
-    Serial.print((TRANSMIT_PERIOD/1000) * TRANSMIT_PERIOD_MINUTES);
+    Serial.print((TRANSMIT_PERIOD / 1000) * TRANSMIT_PERIOD_MINUTES);
     Serial.println("s");
     Serial.flush();
   }

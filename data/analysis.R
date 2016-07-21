@@ -1,43 +1,46 @@
-
-
-setwd("~/Documents/Projects/UAF//uaf_dendrometer/data/2016.05.25_timing test/")
-setwd("~/Desktop/tmp/data/untitled folder/")
+setwd("~/Documents/Projects/UA_FAIRBANKS/uaf_dendrometer/data/20160708/")
 ##--Load In Data--##
-data1 = data.frame(read.csv("101_1.CSV"))
-names(data1) <- c("sensor_num", "time", "val", "temp", "batt_v", "ex_v", "n_at")
-data1$time_real = as.POSIXct(data1$time, origin="1970-01-01")
-##--caculate and plot the time interval between sensor readings--##
-diff1 = matrix(NA, nrow = (length(data1$time)-1))
-aa = (length(data1$time)-1)
-for(i in 1:aa){
-  diff2[i] <- data1$time[i+1] - data1$time[i]
-}
-plot(diff1)
-plot(data1$n_at)
-##--Calculate change in diameter--##
-sens_length <- 50
-data1$diam_mm <- (data1$val/32767)*sens_length
-plot(temp~time_real, data=data1, main="Temp")
-plot(diam_mm~time_real, data = data1, main="Diameter")
-plot(batt_v~time_real, data = data1, main = "battery")
+data = data.frame(read.csv("100_4.csv"))
+#Sensor Address, Unix Time Stamp, ADC Value, Temperature, Battery Voltage, Excitation Voltage, Number of send attamps
+names(data) <- c("sensor_num", "time", "val", "temp", "batt_v", "Ev", "n_at") 
+data$time_real = as.POSIXct(data$time, origin="1970-01-01") #Convert time to POSIX
+Vref = 2.048 #ADC Voltage Reference
+N = 16 #ADC Set to 16 bit resolution
+LSB = ((2*Vref)/2^N) #Least Significant Bit (in volts)
+PGA = 1 #Programmable Gain Amplifier (Set to 1)
+L = 50 #Length of Linear Sensor
+data$Iv = data$val*(LSB/PGA) #Caluclate Input Voltage (Iv)
+data$position = ((data$Iv/data$Ev)*L) #Calculate Position of Slider
 
-data2 = data.frame(read.csv("101_3.CSV"))
-names(data2) <- c("sensor_num", "time", "val", "temp", "batt_v", "ex_v", "n_at")
-data2$time_real = as.POSIXct(data2$time, origin="1970-01-01")
-##--caculate and plot the time interval between sensor readings--##
-diff2 = matrix(NA, nrow = (length(data2$time)-1))
-aa = (length(data2$time)-1)
-for(i in 1:aa){
-  diff2[i] <- data2$time[i+1] - data2$time[i]
-}
-plot(diff2)
-plot(data2$n_at)
-##--Calculate change in diameter--##
-sens_length <- 50
-data2$diam_mm <- (data2$val/32767)*sens_length
-plot(temp~time_real, data=data2, main="Temp")
-plot(diam_mm~time_real, data = data2, main="Diameter")
-plot(batt_v~time_real, data = data2, main = "battery")
+data$change = data[,10] - data[1,10] #calculate the change in diameter of the tree
+dataTrim = data[0:(nrow(data)-1),0:11]
+par(
+  cex = "1.1",
+  cex.sub="0.8",
+  lwd = "2"
+  )
+plot(
+  change~time_real, 
+  data = dataTrim, 
+  main="Change in Diameter",
+  sub="dendro_100.4",
+  xlab="Time",
+  ylab="Millimeters",
+  type = "l"
+  )
 
-par(mfrow=c(2,1)) # all plots on one page 
+help(plot)
+help(par)
 
+plot(val~time_real, data = dataTrim, main="val")
+plot(Ev~time_real, data = dataTrim, main = "exciitation Voltage")
+
+plot(temp~time_real, data=data, main="Temp")
+plot(val~time_real, data = data, main="val")
+plot(batt_v~time_real, data = data, main = "battery")
+
+
+ggplot(BOD, aes(x=data$time, y=data$position)) + geom_line()
+
+install.packages("ggplot2")
+library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")

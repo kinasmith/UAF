@@ -1,18 +1,20 @@
-#include <RFM69.h>
 #include <SPI.h>
+#include "RFM69.h"
 #include "RTClib.h"
-#include <SdFat.h>
+#include "SdFat.h"
 
 #define NODE_ID     0 //Network Node ID. All Senders must send to this ID #
-#define NETWORK_ID  101 //Network ID. All Nodes must be on the same Network
+#define NETWORK_ID  102 //Network ID. All Nodes must be on the same Network
 #define FREQUENCY   RF69_433MHZ //Match this to the frequency of your radio
 #define KEY         "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes.
-#define LED         3 //LED Pin Number
+#define LED         9 //LED Pin Number
 #define debug       0 //debug false/true
 
 /*==============|| DS3231_RTC ||==============*/
 RTC_DS3231 rtc; //Initialize the Real Time Clock
 DateTime now; //initialize a DateTime Object
+
+
 
 /*==============|| SD ||==============*/
 SdFat SD; //This is the SD Card
@@ -64,11 +66,6 @@ void setup() {
     Serial.print("RFM69 initialized");
     Serial.print(", key: ");
     Serial.println(KEY);
-  }
-  if(debug) {
-    now = rtc.now(); //get the current time
-    Serial.print("current time is: ");
-    Serial.println(now.unixtime());
   }
 }
 
@@ -178,7 +175,6 @@ void Blink(byte PIN, int DELAY_MS) {
 }
 
 int badPacket(long utm) {
-  /*
   CARD_PRESENT = digitalRead(CARD_DETECT);
   if (CARD_PRESENT == 0) {
     if (debug) Serial.println("Card Not Present");
@@ -195,7 +191,6 @@ int badPacket(long utm) {
     Blink(LED, 100);
     return 0;
   }
-  */
   dataFile.print("Bad Packet Recieved at: ");
   dataFile.print(utm);
   dataFile.println();
@@ -204,7 +199,6 @@ int badPacket(long utm) {
 }
 
 void checkSdCard() {
-  //If SD Card is Removed, Blink LED FOREVER!
   CARD_PRESENT = digitalRead(CARD_DETECT); //Check for card insertion
   if (CARD_PRESENT == 0) { //if card NOT present....Wait and blink until it is
     if (debug) Serial.println("Card Not Present");
