@@ -27,7 +27,8 @@ for (i in 1:length(data$temp)) {
   data$sensor_val_c[i] <- ((data$sensor_val[i] - s1) - 4.34 * (data$temp[i] - t1))
   data$mm[i] <- ((data$sensor_val[i] + data$sensor_val_c[i]) / 655.34) #should this be + or -?
 }
-  
+
+#data$time[]
 
 par(mfrow=c(2,2)) # all plots on one page 
 plot( data$temp ~ data$time )

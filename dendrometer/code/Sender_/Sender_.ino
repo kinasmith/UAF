@@ -5,9 +5,15 @@
 #include  "MCP342X.h"
 
 MCP342X myADC;
-
+/***********************    DON'T FORGET TO SET ME    ***********************/
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 #define NODE_ID         1
-#define NETWORK_ID      101
+#define NETWORK_ID      102
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+
 #define GATEWAY_ID      0
 #define FREQUENCY       RF69_433MHZ
 #define KEY             "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes, not more not less!
@@ -18,10 +24,10 @@ MCP342X myADC;
 #define V_BAT_PIN       A3
 #define V_EXCITE_PIN    A1
 #define SENS_EN         4
-#define debug           1
+#define debug           0
 
 
-int blinkCount = 1;
+int blinkCount = 10;
 long TRANSMIT_PERIOD = 60000; //transmit a packet to gateway so often (in ms)
 int TRANSMIT_PERIOD_MINUTES = 15;
 int ACK_FAIL_WAIT_PERIOD = 500;

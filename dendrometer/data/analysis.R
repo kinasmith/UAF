@@ -1,6 +1,8 @@
 setwd("~/Documents/Projects/UA_FAIRBANKS/uaf_dendrometer/data/20160708/")
+setwd("~/Desktop/tmp/")
 ##--Load In Data--##
 data = data.frame(read.csv("100_4.csv"))
+data = data.frame(read.csv("logfreeze3.csv"))
 #Sensor Address, Unix Time Stamp, ADC Value, Temperature, Battery Voltage, Excitation Voltage, Number of send attamps
 names(data) <- c("sensor_num", "time", "val", "temp", "batt_v", "Ev", "n_at") 
 data$time_real = as.POSIXct(data$time, origin="1970-01-01") #Convert time to POSIX
@@ -32,6 +34,8 @@ plot(
 help(plot)
 help(par)
 
+plot(data$time_real[1:100],)
+plot(n_at~time, data = data, main="n_at")
 plot(val~time_real, data = dataTrim, main="val")
 plot(Ev~time_real, data = dataTrim, main = "exciitation Voltage")
 

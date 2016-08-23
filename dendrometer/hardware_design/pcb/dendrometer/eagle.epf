@@ -9,14 +9,22 @@ Desktop="Desktop"
 AutoSaveProject=1
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Arduino_revB.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Atmel_By_element14_Batch_1.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/LTC_By_element14_Batch_1.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/LilyPad-Wearables.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/LowPowerLab.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Microchip_By_element14_Batch_1.lbr"
-UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Moteino.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/MoteinoMEGA.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/ST Microelctronics_By_element14_Batch_1.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Texas Instruments_By_element14_Batch_1.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/_my-parts.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/adafruit.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/electric_imp.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/hopeRF.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/led-lumiled.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/murata_electronics.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/passives-7351.lbr"
-UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/philips-lumileds-DRE002/led-lumiled.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/riffle-beta-0.1.8.lbr"
+UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/sensirion.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/GeekAmmo.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/LilyPad-Wearables.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/SparkFun-Aesthetics.lbr"
@@ -37,13 +45,11 @@ UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/Spa
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/SparkFun-Retired.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/SparkFun-Sensors.lbr"
 UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/SparkFun-Eagle-Libraries/User-Submitted.lbr"
-UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Adafruit-Eagle-Library/adafruit.lbr"
-UsedLibrary="/Applications/EAGLE-7.2.0/lbr_personal/Texas Instruments/Texas Instruments_By_element14_Batch_1.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="0 23 637 777"
-State=2
+Loc="0 23 1248 777"
+State=1
 Number=0
 
 [Desktop]
