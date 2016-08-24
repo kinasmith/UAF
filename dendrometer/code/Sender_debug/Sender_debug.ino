@@ -43,8 +43,6 @@ typedef struct {
 Payload;
 Payload payload;
 
-float start_position;
-
 void setup() {
   if (debug) Serial.begin(SERIAL_BAUD); //Begin Serial
   if (debug) Serial.print("Start--");

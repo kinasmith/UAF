@@ -3,12 +3,21 @@
 #include "RTClib.h"
 #include <SdFat.h>
 
+/****************************************************************************/
+/***********************    DON'T FORGET TO SET ME    ***********************/
+/****************************************************************************/
+#define NODE_ID         1
+#define NETWORK_ID      102
+//#define LED         9 //LED for Spruce Site ....Check this!
+#define LED         3 //LED for Birch Site is 3....Stupid
+/****************************************************************************/
+/****************************************************************************/
+
 #define NODE_ID     0 //Network Node ID. All Senders must send to this ID #
 #define NETWORK_ID  102 //Network ID. All Nodes must be on the same Network
 #define FREQUENCY   RF69_433MHZ //Match this to the frequency of your radio
 #define KEY         "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes.
-//#define LED         9 //LED Pin Number
-#define LED         3 //LED for Birch Site is 3....Stupid
+
 #define debug       1 //debug false/true
 
 /*==============|| DS3231_RTC ||==============*/
