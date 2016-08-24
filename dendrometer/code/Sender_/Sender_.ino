@@ -24,7 +24,7 @@ MCP342X myADC;
 #define V_BAT_PIN       A3
 #define V_EXCITE_PIN    A1
 #define SENS_EN         4
-#define debug           0
+#define debug           1
 
 
 int blinkCount = 10;
@@ -178,10 +178,11 @@ int getSensorValue() { //takes 100ms
   digitalWrite(SENS_EN, HIGH); //write enable high for 10 ms
   Sleepy::loseSomeTime(100); //let the Capacitor charge for a moment
   digitalWrite(SENS_EN, LOW); //write enable low. Falling edge triggers FET
+//  Sleepy::loseSomeTime(50); //wait for reference to stablize
   v = analogRead(V_EXCITE_PIN);
   myADC.startConversion();
   myADC.getResult(&r);
-  v = (3.3 * v / 1024.0);
+  v = 3.3 * v / 1023.0;
   payload.excite_v = v;
   return r;
 }

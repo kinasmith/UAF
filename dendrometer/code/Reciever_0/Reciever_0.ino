@@ -7,7 +7,8 @@
 #define NETWORK_ID  102 //Network ID. All Nodes must be on the same Network
 #define FREQUENCY   RF69_433MHZ //Match this to the frequency of your radio
 #define KEY         "p6ZNvTmGfdY2hUXb" //has to be same 16 characters/bytes on all nodes.
-#define LED         9 //LED Pin Number
+//#define LED         9 //LED Pin Number
+#define LED         3 //LED for Birch Site is 3....Stupid
 #define debug       1 //debug false/true
 
 /*==============|| DS3231_RTC ||==============*/
@@ -67,8 +68,14 @@ void setup() {
   }
   if(debug) {
     now = rtc.now(); //get the current time
-    Serial.print("current time is: ");
+    Serial.print("Current time is: ");
     Serial.println(now.unixtime());
+  }
+  if(debug) {
+    Serial.print("Network Address: ");
+    Serial.print(NETWORK_ID);
+    Serial.print(".");
+    Serial.println(NODE_ID);
   }
 }
 
