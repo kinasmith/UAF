@@ -8,7 +8,7 @@ MCP342X myADC;
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODE_ID         1
+#define NODE_ID         5
 #define NETWORK_ID      102
 /****************************************************************************/
 /****************************************************************************/
@@ -26,7 +26,7 @@ MCP342X myADC;
 
 
 int blinkCount = 1;
-long TRANSMIT_PERIOD = 5000; //transmit a packet to gateway so often (in ms)
+long TRANSMIT_PERIOD = 60000; //transmit a packet to gateway so often (in ms)
 int TRANSMIT_PERIOD_MINUTES = 1;
 int ACK_FAIL_WAIT_PERIOD = 500;
 

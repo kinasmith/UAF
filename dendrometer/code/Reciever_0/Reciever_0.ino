@@ -75,12 +75,12 @@ void setup() {
     Serial.print(", key: ");
     Serial.println(KEY);
   }
-  if(debug) {
+  if (debug) {
     now = rtc.now(); //get the current time
     Serial.print("Current time is: ");
     Serial.println(now.unixtime());
   }
-  if(debug) {
+  if (debug) {
     Serial.print("Network Address: ");
     Serial.print(NETWORK_ID);
     Serial.print(".");
@@ -89,8 +89,6 @@ void setup() {
 }
 
 void loop() {
-  //implement: If Card Present changes from a 0 (not inserted) to a 1 (inserted), run SD.begin()
-
   /*==============|| RADIO Recieve ||==============*/
   if (radio.receiveDone()) { //If the radio recieves data....
     now = rtc.now(); //get the current time
@@ -118,18 +116,6 @@ void loop() {
 }
 
 int writeDataToCard(int id, long utm, int s_v, float t, float e_v, float b_v, int num_a) {
-//  CARD_PRESENT = digitalRead(CARD_DETECT); //Check for card insertion
-//  if (CARD_PRESENT == 0) { //if card NOT present....Wait and blink until it is
-//    if (debug) Serial.println("Card Not Present");
-//    while (CARD_PRESENT == 0) {
-//      CARD_PRESENT = digitalRead(CARD_DETECT);
-//      Blink(LED, 50);
-//    }
-//    if (!SD.begin(CHIP_SELECT))
-//      Blink(LED, 25);
-//    if (debug) Serial.println("SD card initialized");
-//  }
-
   //creates filename to store data based on the Node Address
   String address = String(String(NETWORK_ID) + "_" + String(id));
   String fileName = String(address + ".csv");
@@ -147,7 +133,7 @@ int writeDataToCard(int id, long utm, int s_v, float t, float e_v, float b_v, in
   }
   //Print data to new line
   dataFile.print(NETWORK_ID);
-  dataFile.print("_");
+  dataFile.print(".");
   dataFile.print(id);
   dataFile.print(",");
   dataFile.print(utm);
@@ -167,20 +153,21 @@ int writeDataToCard(int id, long utm, int s_v, float t, float e_v, float b_v, in
 }
 
 void printData() {
+  Serial.print("Node: ");
   Serial.print(NETWORK_ID);
-  Serial.print("_");
+  Serial.print(".");
   Serial.print(data_rcv.nodeID);
-  Serial.print(", time: ");
+  Serial.print(", Time: ");
   Serial.print(now.unixtime());
-  Serial.print(", sensor_val: ");
+  Serial.print(", ADC: ");
   Serial.print(data_rcv.sens_val);
-  Serial.print(", RFM_temp: ");
+  Serial.print(", Temp: ");
   Serial.print(data_rcv.temp);
-  Serial.print(", Excite Voltage ");
+  Serial.print(", Ve: ");
   Serial.print(data_rcv.excite_v);
-  Serial.print(", Battery Voltage: ");
+  Serial.print(", Vb: ");
   Serial.print(data_rcv.batt_v);
-  Serial.print(", num_attempts, ");
+  Serial.print(", Send Attempts, ");
   Serial.print(data_rcv.num_attempts);
   Serial.println();
 }
@@ -194,24 +181,6 @@ void Blink(byte PIN, int DELAY_MS) {
 }
 
 int badPacket(long utm) {
-  /*
-  CARD_PRESENT = digitalRead(CARD_DETECT);
-  if (CARD_PRESENT == 0) {
-    if (debug) Serial.println("Card Not Present");
-    while (CARD_PRESENT == 0) {
-      CARD_PRESENT = digitalRead(CARD_DETECT);
-      Blink(LED, 100);
-    }
-    if (!SD.begin(CHIP_SELECT))  Blink(LED, 25);
-    if (debug) Serial.println("SD card initialized");
-  }
-  if (!dataFile.open("log.txt", O_RDWR | O_CREAT | O_AT_END)) {
-    if (debug) Serial.println("Error opening: log.txt");
-    Blink(LED, 100);
-    Blink(LED, 100);
-    return 0;
-  }
-  */
   dataFile.print("Bad Packet Recieved at: ");
   dataFile.print(utm);
   dataFile.println();
@@ -225,12 +194,8 @@ void checkSdCard() {
   if (CARD_PRESENT == 0) { //if card NOT present....Wait and blink until it is
     if (debug) Serial.println("Card Not Present");
     while (CARD_PRESENT == 0) {
-//      CARD_PRESENT = digitalRead(CARD_DETECT);
       Blink(LED, 50);
     }
-//    if (!SD.begin(CHIP_SELECT))
-//      Blink(LED, 25);
-//    if (debug) Serial.println("SD card initialized");
   }
 }
 
