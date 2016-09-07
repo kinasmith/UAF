@@ -6,7 +6,7 @@
 
 MCP342X myADC;
 
-#define NODE_ID         1
+#define NODE_ID         5
 #define NETWORK_ID      102
 #define GATEWAY_ID      0
 #define FREQUENCY       RF69_433MHZ

@@ -8,8 +8,8 @@ MCP342X myADC;
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODE_ID         5
-#define NETWORK_ID      102
+#define NODE_ID         7
+#define NETWORK_ID      100
 /****************************************************************************/
 /****************************************************************************/
 
@@ -27,7 +27,7 @@ MCP342X myADC;
 
 int blinkCount = 1;
 long TRANSMIT_PERIOD = 60000; //transmit a packet to gateway so often (in ms)
-int TRANSMIT_PERIOD_MINUTES = 1;
+int TRANSMIT_PERIOD_MINUTES = 15;
 int ACK_FAIL_WAIT_PERIOD = 500;
 
 RFM69 radio;
