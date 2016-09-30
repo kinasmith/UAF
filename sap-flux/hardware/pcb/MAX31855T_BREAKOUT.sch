@@ -1346,8 +1346,8 @@ Standard 1-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 </classes>
 <parts>
 <part name="U1" library="SparkFun-AnalogIC" deviceset="MAX31855K" device=""/>
-<part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-L"/>
-<part name="R1" library="passives-7351" deviceset="RESISTOR" device="0603-N"/>
+<part name="C1" library="passives-7351" deviceset="CAPACITOR" device="0805-L" value="0.1µF"/>
+<part name="R1" library="passives-7351" deviceset="RESISTOR" device="0603-N" value="10k"/>
 <part name="GND" library="SparkFun-Connectors" deviceset="M05" device="PTH"/>
 <part name="T-" library="SparkFun-Connectors" deviceset="M01" device="SMD"/>
 <part name="T+" library="SparkFun-Connectors" deviceset="M01" device="SMD"/>

@@ -1,0 +1,24 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/kina/Documents/Arduino/libraries/DS3231/examples/setTime"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Applications/Arduino_1.6.9.app/Contents/Java/libraries/SD/examples/CardInfo"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Applications/Arduino_1.6.9.app/Contents/Java/libraries/SD/examples/Datalogger"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger"
+		}
+	]
+}
