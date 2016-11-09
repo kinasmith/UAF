@@ -14,9 +14,9 @@ SdFile file; //this is the DataFile
 const int SD_CS = 3; //SPI SS pin for SD card
 
 /*==============|| ThermoCouples ||==============*/
-const int Tc1_CS = 5;
-const int Tc2_CS = 6;
-const int Tc3_CS = 7;
+const int Tc1_CS = 5; //downstream
+const int Tc2_CS = 6; //to the side
+const int Tc3_CS = 7; //upstream
 Nanoshield_Termopar Tc1(Tc1_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
 Nanoshield_Termopar Tc2(Tc2_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
 Nanoshield_Termopar Tc3(Tc3_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
@@ -42,10 +42,12 @@ float Tc3t;
 
 #define FILE_BASE_NAME "Data"
 
+// long utm = 0;
+
 void setup() {
   Serial.begin(9600);
   rtc.begin();
-  // rtc.adjust(DateTime((__DATE__), (__TIME__))); //Adjust automatically
+  rtc.adjust(DateTime((__DATE__), (__TIME__))); //Adjust automatically
   pinMode(SD_CS, OUTPUT);
   pinMode(H_EN, OUTPUT);
   Tc1.begin();
@@ -92,12 +94,15 @@ void setup() {
 
   startTime = rtc.now();
   Serial.print("Current time is: "); Serial.println(startTime.unixtime());
+  Serial.print("Writing to file: "); Serial.println(fileName);
+  file.print("time,downstream, side, upstream, h_status");
 }
 
 void loop() {
   current_time = millis();
   now = rtc.now();
   long utm = now.unixtime();
+  utm = millis()/1000;
   if (h_saved_time + h_interval < current_time) {
     //if heater is on, wait six seconds
     if (h_status == 0) { //if it's off, turn it on

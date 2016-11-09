@@ -1,0 +1,21 @@
+Supplier Part No,Mfg Part No,Mfg Name,Ref No,Quantity,Value,Description
+BK-885-CT-ND,BK-885-TR,MPD (Memory Protection Devices),BAT1 ,1,BATTERY_HOLDER12MM,HOLDER COIN CELL 12MM SMD
+490-3886-1-ND,GRM21BR61C106KE15L,Murata Electronics North America,C2 C3 C4 C7 C8 C9 C10 ,7,10uF,10µF 16V Ceramic Capacitor X5R 0805 (2012 Metric)Ê
+311-1088-1-ND,CC0603KRX7R7BB104,Yageo,C5 C6 C12 C13 ,4,0.1uF,0.10µF 16V Ceramic Capacitor X7R 0603 (1608 Metric)Ê
+160-1447-1-ND,LTST-C191KRKT,Lite-On Inc.,D1 ,1,MF-LED-0603-RED,Red 631nm LED Indication - Discrete 2V 0603Ê
+H11891CT-ND,U.FL-R-SMT-1(10),Hirose Electric Co Ltd,J2 ,1,U.FL,"U.FL, Ultra Miniature Coaxial Connector Receptacle,"
+931-1175-ND,EMPCB.SMAFSTJ.B.HT,Taoglas Limited,J4 ,1,ANTENNA_SMA_EDGE,"SMA Connector Jack, Female Socket 50 Ohm Board Edge"
+101-00660-68-6-1-ND,101-00660-68-6,Amphenol Commercial Products,JP2 ,1,SD_USD-SOCKET,10 (8 + 2) Position Card Connector Secure Digital - microSDª Surface Mount
+445-3670-1-ND,VLS252012T-2R2M1R3 ,TDK Corporation,L1 ,1,2.2uH,2.2µH Shielded Wirewound Inductor 1.3A 155 mOhm Max 1008 (2520 Metric)
+587-2617-1-ND,NR3015T1R5N,Taiyo Yuden,L2 ,1,1.5uH,1.5µH Shielded Wirewound Inductor 1.82A 48 mOhm Max Nonstandard
+SI2312BDS-T1-GE3CT-ND,SI2312BDS-T1-GE3,Vishay Siliconix,Q1 Q2 ,2,mfet-n,MOSFET N-CH 20V 3.9A SOT23-3
+311-10.0KHRCT-ND,RC0603FR-0710KL,Yageo,R1 R3 R4 ,3,10k,RES SMD 10K OHM 1% 1/10W 0603
+311-100HRCT-ND,RC0603FR-07100RL,Yageo,R2 ,1,100,RES SMD 100 OHM 1% 1/10W 0603
+311-100KHRCT-ND,RC0603FR-07100KL,Yageo,R5 ,1,100k,RES SMD 100K OHM 1% 1/10W 0603
+CKN10502CT-ND,PTS810 SJM 250 SMTR LFS,C&K Components,SW1 ,1,MF-SW-TACT-4.2MM,Tactile Switch SPST-NO Top Actuated Surface Mount
+1568-1391-ND,COM-13910,SparkFun Electronics,U1 ,1,RFM69HCW-433MHZ,RFM69HCW WIRELESS TRANSCEIVER 433MHZ
+296-39461-1-ND,TPS63031DSKR,Texas Instruments,U2 ,1,TPS63031,Buck-Boost Switching Regulator IC Positive Fixed 3.3V 1 Output 900mA (Switch) 10-WFDFN Exposed Pad
+DS3231MZ/V+-ND,DS3231MZ/V+,Maxim Integrated,U4 ,1,DS3231M,Real Time Clock (RTC) IC Clock/Calendar I_C
+ATMEGA328P-AU-ND,ATMEGA328P-AU,Atmel,U5 ,1,328P,AVR AVR¨ ATmega Microcontroller IC 8-Bit 20MHz 32KB (16K x 16) FLASH 32-TQFP (7x7)
+296-29896-1-ND,TPS62161DSGR,Texas Instruments,U6 ,1,TPS62161,Buck Switching Regulator IC Positive Fixed 1.8V 1 Output 1A 8-WFDFN Exposed Pad
+490-1195-1-ND,CSTCE8M00G55-R0,Murata Electronics North America,X1 ,1,8MHZ,8MHz Ceramic Resonator Built in Capacitor 33pF ±0.2% -20¡C ~ 80¡C Surface Mount

@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"backlight",
+				"backlight_last_time"
+			],
+			[
+				"bac",
+				"backlight_last_time"
+			],
+			[
+				"detach",
+				"detachInterrupt"
+			],
+			[
 				"AVG",
 				"AVG_MODE"
 			],
@@ -123,6 +135,38 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "rcv_test/rcv_test.ino",
+			"settings":
+			{
+				"buffer_size": 5586,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0/Reciever_0.ino",
+			"settings":
+			{
+				"buffer_size": 6814,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
+			"settings":
+			{
+				"buffer_size": 4977,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger/dataLogger.ino",
+			"settings":
+			{
+				"buffer_size": 3990,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -387,13 +431,33 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/kina/Documents/Arduino/libraries/MAX31856",
-		"/Users/kina/Documents/Arduino/libraries/pwfusion_max31856_r01",
-		"/Users/kina/Documents/Arduino/libraries/pwfusion_max31856_r01/examples",
-		"/Users/kina/Documents/Arduino/libraries/pwfusion_max31856_r01/examples/SEN30005_MAX31856_example"
+		"/Users/kina/Documents/Projects/UAF",
+		"/Users/kina/Documents/Projects/UAF/dendrometer",
+		"/Users/kina/Documents/Projects/UAF/dendrometer/code",
+		"/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0"
 	],
 	"file_history":
 	[
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/SdInfo/SdInfo.ino",
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/LowLatencyLogger/UserDataType.h",
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/LowLatencyLogger/LowLatencyLogger.ino",
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/ReadWrite/ReadWrite.ino",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/rcv_test/rcv_test.ino",
+		"/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0/Reciever_0.ino",
+		"/Users/kina/Documents/Arduino/libraries/Encoder/examples/TwoKnobs/TwoKnobs.pde",
+		"/Users/kina/Documents/Projects/PERSONAL/Incubator/temp/temp.ino",
+		"/Users/kina/Documents/Projects/UAF/dendrometer/data/20161102_fromSite_noRecordings/100_11.csv",
+		"/Users/kina/Documents/Arduino/libraries/LiquidTWI-1.5.1/examples/HelloWorld_i2c/HelloWorld_i2c.pde",
+		"/Users/kina/Documents/Arduino/libraries/Encoder/examples/Basic/Basic.pde",
+		"/Users/kina/Library/Arduino15/packages/arduino/hardware/avr/1.6.14/boards.txt",
+		"/Users/kina/Library/Arduino15/packages/UAF/hardware/avr/1.0.0/boards.txt",
+		"/Users/kina/Library/Arduino15/packages/UAF/hardware/avr/1.0.0/platform.txt",
+		"/Users/kina/Library/Arduino15/packages/arduino/hardware/avr/1.6.14/programmers.txt",
+		"/Users/kina/Library/Arduino15/packages/UAF/hardware/avr/1.0.0/programmers.txt",
+		"/Users/kina/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/kina/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/kina/Documents/Projects/PUBLIC_LAB/Riffle/testCode/RTCAlarm_Scheduler/RTCAlarm_Scheduler.ino",
 		"/Users/kina/Documents/Arduino/libraries/MAX31856/src/MAX31856.h",
 		"/Users/kina/Documents/Arduino/libraries/MAX31856/examples/single_shot/single_shot.ino",
 		"/Users/kina/Documents/Arduino/libraries/MAX31856/keywords.txt",
@@ -501,27 +565,7 @@
 		"/Users/kina/Documents/Arduino/libraries/MCP342X/MCP342X.cpp",
 		"/Users/kina/Documents/Projects/UAF/dendrometer/data/analysis.R",
 		"/Users/kina/Documents/Projects/UAF/dendrometer/hardware_design/pcb/dendrometer/AAT1217_BREAKOUT_pnl_mill_015.nc",
-		"/Users/kina/Documents/Projects/UAF/.gitignore",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/themocouple-welder/.gitignore",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data46.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data88.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data87.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data86.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data85.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data84.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data83.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data82.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data81.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data80.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data79.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data78.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data77.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data76.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data75.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data74.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data73.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data72.csv",
-		"/Users/kina/Documents/Projects/UA_FAIRBANKS/sap_flux/data/20160823-heaterTimingTests/data/Data71.csv"
+		"/Users/kina/Documents/Projects/UAF/.gitignore"
 	],
 	"find":
 	{
@@ -560,6 +604,35 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			".open",
+			"t",
+			"encoderPosition",
+			"unsigned long",
+			"CARD_DETECT",
+			"checkSdCard",
+			"CARD_DETECT",
+			"SD",
+			"myFile",
+			"dataFile",
+			"Time",
+			"NODE_ID",
+			"NETWORK_ID",
+			"NETWORKID",
+			"NETWORK_ID",
+			"NODEID",
+			"NODE_ID",
+			"ack",
+			"build.mcu",
+			"BOARD.build.mcu",
+			"pro",
+			"printDate",
+			"Serial",
+			"Button Escape",
+			"Button Escape\n",
+			"twentyFourHours",
+			"alarm",
+			"enterSleep",
+			"tab",
 			"internal",
 			"tc_3",
 			"tc_1",
@@ -658,36 +731,7 @@
 			"\"(\\d+/\\d\\d/)",
 			"      ",
 			"\"ID\": \\d*,\\n",
-			"\"ID\": \\d*,",
-			"\"ID\"",
-			"\"ID\": \\d*,",
-			"MBR Type",
-			"Zip",
-			"Address1",
-			"LN",
-			"FN",
-			"SR_FAULT_OPEN",
-			"verifyMAX31856",
-			"_registers",
-			"WRITE_OPERATION",
-			"unit",
-			"READ_OPERATION",
-			"writeByte",
-			"hspiread32",
-			"Membership status",
-			"SPI",
-			"Fabrizio",
-			"Nikki",
-			"Bell",
-			"Wikoff",
-			"Kleinleder",
-			"Larson",
-			"patty",
-			"Dandurand",
-			"Van Dommelen",
-			"Kristian",
-			"kina",
-			"Kina"
+			"\"ID\": \\d*,"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -695,6 +739,11 @@
 		"regex": true,
 		"replace_history":
 		[
+			"sd",
+			"dataFile",
+			"NODEID",
+			"NETWORKID",
+			"board",
 			"tc",
 			"tc_3",
 			"tc_1",
@@ -778,25 +827,156 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": false,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "rcv_test/rcv_test.ino",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5586,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4477,
+								4477
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 298,
+								"modified": false,
+								"selection": false,
+								"status": -1,
+								"syntax": "plain text"
+							},
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2378.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0/Reciever_0.ino",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 6814,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4979,
+								5006
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1970.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		},
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 2,
+					"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4977,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3700,
+								3705
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2045.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger/dataLogger.ino",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3990,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2712,
+								2681
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1162.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 39.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -822,7 +1002,7 @@
 		"cols":
 		[
 			0.0,
-			0.933479817708,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -915,6 +1095,10 @@
 	"output.build|/Users/kina/Documents/Arduino/libraries/SHT2x-Arduino-Library/examples/ReadSHT2x|1424368670.665758":
 	{
 		"height": 134.0
+	},
+	"output.build|/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger|1478132213.408191":
+	{
+		"height": 122.0
 	},
 	"output.build|/Users/kina/Documents/Arduino/libraries/jeelib-sleepy|1427320438.084548":
 	{
@@ -3911,6 +4095,10 @@
 	"output.upload|/Users/kina/Documents/Arduino/libraries/SHT2x-Arduino-Library/examples/ReadSHT2x|1425780016.28757":
 	{
 		"height": 134.0
+	},
+	"output.upload|/Users/kina/Documents/Arduino/libraries/SdFat/examples/ReadWrite|1478127807.344728":
+	{
+		"height": 122.0
 	},
 	"output.upload|/Users/kina/Documents/Projects/Arduino/RFM96_testing/initial_RD_client|1436914069.883912":
 	{
@@ -12021,7 +12209,7 @@
 		"height": 0.0
 	},
 	"pinned_build_system": "Packages/Python/Python.sublime-build",
-	"project": "sapFlux.sublime-project",
+	"project": "DataLogger.sublime-project",
 	"replace":
 	{
 		"height": 50.0
@@ -12069,7 +12257,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 214.0,
 	"status_bar_visible": true,
 	"template_settings":

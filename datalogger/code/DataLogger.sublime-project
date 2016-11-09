@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/kina/Documents/Arduino/libraries"
+		},
+		{
+			"path": "/Users/kina/Documents/Projects/UAF"
+		},
+		{
+			"path": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart"
+		},
+		{
+			"path": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/ReadWrite"
+		},
+		{
+			"path": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/LowLatencyLogger"
+		},
+		{
+			"path": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger"
+		},
+		{
+			"path": "/Users/kina/Documents/Projects/PERSONAL/Home Automation"
+		}
+	]
+}
