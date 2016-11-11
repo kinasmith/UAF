@@ -1,21 +1,19 @@
 #include <RFM69_ATC.h>//get it here: https://www.github.com/lowpowerlab/rfm69
-// #include <RFM69.h>
 #include <SPI.h>
 #include "DS3231.h"
 #include "SdFat.h"
 
-#define NODEID        0    //unique for each node on same network
-#define FREQUENCY     RF69_433MHZ
-#define ATC_RSSI      -90
-#define SERIAL_BAUD   9600
-#define LED           9 // Moteinos have LEDs on D9, but for MotionMote we are using the external led on D5
-#define SD_CS_PIN 4
+#define NODEID                 0
+#define FREQUENCY       RF69_433MHZ
+#define ATC_RSSI            -90
+#define SERIAL_BAUD    9600
+#define LED                        9 
+#define SD_CS_PIN         4
 #define CARD_DETECT 5
-#define debug 1
+#define debug                    1
 
 /*==============|| RFM69 ||==============*/
 RFM69_ATC radio; //Initialize Radio
-// RFM69 radio;
 uint8_t NETWORKID = 100; //base network address
 
 /*==============|| DS3231_RTC ||==============*/
@@ -33,11 +31,12 @@ typedef struct TimeStamp {
 TimeStamp theTimeStamp;
 
 typedef struct Payload {
-   int16_t temp;
-   int16_t humidity;
-   int16_t voltage;
+    uint32_t timestamp;
+    int16_t temp;  
+    int16_t humidity;
+    int16_t voltage;
 };
-Payload theData;
+Payload thePayload;
 
 void setup() {
     pinMode(LED, OUTPUT);
@@ -51,7 +50,7 @@ void setup() {
     radio.enableAutoPower(ATC_RSSI);
     radio.encrypt(null);
     if (debug) {
-        Serial.print("RFM69 initialized");
+        Serial.println("RFM69 initialized");
         Serial.print("Network Address: ");
         Serial.print(NETWORKID);
         Serial.print(".");
@@ -88,24 +87,26 @@ void loop() {
         now = rtc.now();
         theTimeStamp.timestamp = now.unixtime();
         if(debug) {
-            Serial.print("rcv - ");Serial.print('[');Serial.print(radio.SENDERID);Serial.print("] ");
-            Serial.print("   [RX_RSSI:");Serial.print(radio.RSSI);Serial.println("]");
+            // Serial.print("rcv - ");Serial.print('[');Serial.print(radio.SENDERID);Serial.print("] ");
+            // Serial.print("   [RX_RSSI:");Serial.print(radio.RSSI);Serial.println("]");
         }
         if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
+            if(debug) Serial.println("- t");
             reportTimeRequest = true;
         }
-        if (radio.DATALEN == sizeof(theData)) {
-            theData = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
+        if (radio.DATALEN == sizeof(thePayload)) {
+            thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
             writeDataBool = true;
             if(debug) {
                 Serial.print("rcv - ");Serial.print('[');Serial.print(radio.SENDERID);Serial.print("] ");
-                printDate(now);
+                // printDate(now);
+                Serial.print(thePayload.timestamp);
                 Serial.print(" t:");
-                Serial.print(theData.temp/100.0);
+                Serial.print(thePayload.temp/100.0);
                 Serial.print(" h: ");
-                Serial.print(theData.humidity/100.0);
+                Serial.print(thePayload.humidity/100.0);
                 Serial.print(" v: ");
-                Serial.print(theData.voltage/100.0);
+                Serial.print(thePayload.voltage/100.0);
                 Serial.println();
             }
         }
@@ -115,12 +116,12 @@ void loop() {
         if(reportTimeRequest) {
             if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp))) {
                 if(debug) {
-                    Serial.print("snd - "); Serial.print('[');Serial.print(lastRequesterNodeID);Serial.print("] ");
-                    Serial.println(theTimeStamp.timestamp);
+                    // Serial.print("snd - "); Serial.print('[');Serial.print(lastRequesterNodeID);Serial.print("] ");
+                    // Serial.println(theTimeStamp.timestamp);
                 }
                 reportTimeRequest = false;
             } else {
-                if(debug) Serial.println("snd - Failed . . . no ack");
+                if(debug) Serial.println("- t - snd - Failed . . . no ack");
             }
         if(writeDataBool)
             writeData();
@@ -178,13 +179,14 @@ void writeData() {
     f.print(".");
     f.print(radio.SENDERID);
     f.print(",");
-    f.print(now.unixtime());
+    // f.print(now.unixtime());
+    f.print(thePayload.timestamp);
     f.print(",");
-    f.print(theData.temp/100.0);
+    f.print(thePayload.temp/100.0);
     f.print(",");
-    f.print(theData.humidity/100.0);
+    f.print(thePayload.humidity/100.0);
     f.print(",");
-    f.print(theData.voltage/100.0);
+    f.print(thePayload.voltage/100.0);
     f.println();
     // close the file:
     f.close();
@@ -218,8 +220,7 @@ void printDate(DateTime n) {
       Serial.print(n.second());
 }
 
-void Blink(byte PIN, int DELAY_MS)
-{
+void Blink(byte PIN, int DELAY_MS) {
   pinMode(PIN, OUTPUT);
   digitalWrite(PIN,HIGH);
   delay(DELAY_MS);
