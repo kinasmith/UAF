@@ -93,7 +93,7 @@ void loop() {
             float h = theData.humidity/100.0; 
             float t = theData.temp/100.0;
             float v = theData.voltage/100.0;
-            // writeData(now.unixtime(), thisNodeID, t, h, v);
+            writeData(now.unixtime(), thisNodeID, t, h, v);
             Serial.print(thisNodeID);
             Serial.print(" -- ");
             Serial.print("time: ");
