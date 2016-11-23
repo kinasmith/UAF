@@ -184,7 +184,6 @@ void sendStoredEEPROMData() {
 			attempt_cnt ++;
 			DEBUG(" failed . . . no ack");
 			DEBUG(attempt_cnt);
-			// attempt_cnt ++;
 			Blink(50);
 			Blink(50);
 			if(attempt_cnt >10) {

@@ -143,6 +143,7 @@ void loop() {
             DEBUGln(fan);
             last_fan = fan;
         }else {
+            //create some sort of escape here. If there is no ACK the whole system dies because the logic never resolves.
             DEBUGln(" Failed . . . no ack");
         }
     }

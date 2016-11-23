@@ -136,34 +136,34 @@
 	"buffers":
 	[
 		{
-			"file": "rcv_test/rcv_test.ino",
+			"file": "/Users/kina/Documents/Projects/PERSONAL/Home Automation/code/rcv_relay/rcv_relay.ino",
 			"settings":
 			{
-				"buffer_size": 5586,
+				"buffer_size": 1269,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0/Reciever_0.ino",
+			"file": "/Users/kina/Documents/Projects/PERSONAL/Home Automation/code/snd_relay_test/snd_relay_test.ino",
 			"settings":
 			{
-				"buffer_size": 6814,
+				"buffer_size": 1332,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
+			"file": "ATC_rcv/ATC_rcv.ino",
 			"settings":
 			{
-				"buffer_size": 4977,
+				"buffer_size": 7622,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger/dataLogger.ino",
+			"file": "ATC_snd/ATC_snd.ino",
 			"settings":
 			{
-				"buffer_size": 3990,
+				"buffer_size": 10672,
 				"line_ending": "Unix"
 			}
 		}
@@ -431,19 +431,25 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/kina/Documents/Projects/UAF",
-		"/Users/kina/Documents/Projects/UAF/dendrometer",
-		"/Users/kina/Documents/Projects/UAF/dendrometer/code",
-		"/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0"
+		"/Users/kina/Documents/Projects/PERSONAL/Home Automation",
+		"/Users/kina/Documents/Projects/PERSONAL/Home Automation/code",
+		"/Users/kina/Documents/Projects/PERSONAL/Home Automation/code/snd_relay_test",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/ATC_rcv",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/ATC_snd",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/snd_test"
 	],
 	"file_history":
 	[
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/ATC_snd/ATC_snd.ino",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/ATC_rcv/ATC_rcv.ino",
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
+		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger/dataLogger.ino",
+		"/Users/kina/Documents/Projects/UAF/datalogger/code/rcv_test/rcv_test.ino",
 		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/SdInfo/SdInfo.ino",
 		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/LowLatencyLogger/UserDataType.h",
 		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/LowLatencyLogger/LowLatencyLogger.ino",
-		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
 		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/ReadWrite/ReadWrite.ino",
-		"/Users/kina/Documents/Projects/UAF/datalogger/code/rcv_test/rcv_test.ino",
 		"/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0/Reciever_0.ino",
 		"/Users/kina/Documents/Arduino/libraries/Encoder/examples/TwoKnobs/TwoKnobs.pde",
 		"/Users/kina/Documents/Projects/PERSONAL/Incubator/temp/temp.ino",
@@ -477,7 +483,6 @@
 		"/Users/kina/Documents/Projects/UAF/sap-flux/code/SPI_31856_libTesting/SPI_31856_libTesting.ino",
 		"/Applications/Arduino_1.6.9.app/Contents/Java/libraries/SD/examples/Datalogger/Datalogger.ino",
 		"/Users/kina/Documents/Projects/UAF/sap-flux/code/fourNeedle_rcv/fourNeedle_rcv.ino",
-		"/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger/dataLogger.ino",
 		"/Applications/Arduino_1.6.9.app/Contents/Java/libraries/SD/examples/CardInfo/CardInfo.ino",
 		"/Users/kina/Documents/Projects/UAF/sap-flux/sapFlux.sublime-project",
 		"/Users/kina/Documents/Projects/UAF/sap-flux/SapFlux.sublime-project",
@@ -563,9 +568,7 @@
 		"/Users/kina/Documents/Projects/UAF/dendrometer/code/Sender_/Sender_.ino",
 		"/Users/kina/Documents/Arduino/libraries/MCP342X/MCP342X.h",
 		"/Users/kina/Documents/Arduino/libraries/MCP342X/MCP342X.cpp",
-		"/Users/kina/Documents/Projects/UAF/dendrometer/data/analysis.R",
-		"/Users/kina/Documents/Projects/UAF/dendrometer/hardware_design/pcb/dendrometer/AAT1217_BREAKOUT_pnl_mill_015.nc",
-		"/Users/kina/Documents/Projects/UAF/.gitignore"
+		"/Users/kina/Documents/Projects/UAF/dendrometer/data/analysis.R"
 	],
 	"find":
 	{
@@ -601,9 +604,32 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"boolean",
+			"DEBUG(_file",
+			"_fileName",
+			"reportTime",
+			"writeData",
+			"sendWithRetry",
+			"setAddress",
+			"boolean",
+			"radio.sendWithRetry(55, 0, sizeof(0), ACK_RETRIES, ACK_WAIT_TIME);",
+			"sendWithRetry",
+			"		sendWithRetry",
+			"		if (radio.sendWithRetry(GATEWAYID, \"t\", 1)) {\n			DEBUG(\"snd . . \"); \n			HANDSHAKE_SENT = true;\n		}",
+			"sendWithRetry",
+			"ackCount",
+			"thePayload.temp",
+			"pinMode",
+			"Blink",
+			"BLINK",
+			" Failed . . . no ack",
+			"theData",
+			"attempt_cnt",
+			"Blink",
+			"DEBUG",
 			".open",
 			"t",
 			"encoderPosition",
@@ -708,30 +734,7 @@
 			"Gustafson",
 			"\" \"",
 			"Kina",
-			"Wiley",
-			" Wiley",
-			"Area Code",
-			"Heim",
-			"Luper",
-			"Dandurand",
-			"renewing",
-			"Renewing",
-			"            ",
-			"\"Area Code\": \"\\d\\d\\d\"\\n",
-			"cell phone",
-			"\\d*- ",
-			"\\d-\\d- ",
-			"\\d-\\d- 20",
-			"\\d-\\d- ",
-			" 201(\\d)",
-			" 201\\d",
-			" 201/d",
-			"/",
-			"\"(\\d+/\\d+/)",
-			"\"(\\d+/\\d\\d/)",
-			"      ",
-			"\"ID\": \\d*,\\n",
-			"\"ID\": \\d*,"
+			"Wiley"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -739,6 +742,7 @@
 		"regex": true,
 		"replace_history":
 		[
+			"bool",
 			"sd",
 			"dataFile",
 			"NODEID",
@@ -833,24 +837,81 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "rcv_test/rcv_test.ino",
+					"file": "/Users/kina/Documents/Projects/PERSONAL/Home Automation/code/rcv_relay/rcv_relay.ino",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5586,
+						"buffer_size": 1269,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4477,
-								4477
+								642,
+								642
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 24.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/kina/Documents/Projects/PERSONAL/Home Automation/code/snd_relay_test/snd_relay_test.ino",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1332,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1148,
+								1150
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "ATC_rcv/ATC_rcv.ino",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7622,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2659,
+								2659
 							]
 						],
 						"settings":
@@ -858,117 +919,50 @@
 							"WordCount":
 							{
 								"changes": 0,
-								"count": 298,
+								"count": 372,
 								"modified": false,
 								"selection": false,
 								"status": -1,
 								"syntax": "plain text"
 							},
 							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
-							"tab_size": 3,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2378.0,
+						"translation.y": 1360.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/Users/kina/Documents/Projects/UAF/dendrometer/code/Reciever_0/Reciever_0.ino",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 6814,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4979,
-								5006
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1970.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 1,
-			"sheets":
-			[
-				{
-					"buffer": 2,
-					"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/QuickStart/QuickStart.ino",
+					"buffer": 3,
+					"file": "ATC_snd/ATC_snd.ino",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4977,
+						"buffer_size": 10672,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3700,
-								3705
+								3600,
+								3639
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2045.0,
+						"translation.y": 1411.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/Users/kina/Documents/Arduino/libraries/SdFat/examples/dataLogger/dataLogger.ino",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3990,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2712,
-								2681
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/Stino/Arduino.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1162.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -991,18 +985,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
