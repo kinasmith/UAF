@@ -16,17 +16,20 @@ data$time_real = as.POSIXct(data$time, origin="1970-01-01") #Convert time to POS
 for (i in 1:length(data$time)) {
   data$log_interval[i] = data$time[i+1] - data$time[i]
 }
+#plot all of Upstream
 par(mfrow=c(1,1))
 plot(data$tc_1)
+#plot single event of Upstream
 start = (30*60)*0
-end = start+400
+#end = start+400
+end =- start+2000
 subData = data[start:end,]
 min = min(subData$tc_1) - 0.1
 #max = max(subData$tc_1) + 0.1
 max = min + 1.2
 par(mfrow=c(1,1))
 plot(subData$tc_1)
-
+#Plot all 4 Sensors
 par(mfrow=c(2,2))
 plot(subData$tc_1~subData$time_real, type='p', pch=1, cex=.5, ylim=c(min, max), main="downstream")
 plot(subData$tc_2~subData$time_real, type='p', pch=1, cex=.5, ylim=c(min, max), main="side")
