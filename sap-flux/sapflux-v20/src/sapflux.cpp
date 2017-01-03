@@ -122,6 +122,7 @@ void sendPacket() {
     }
   }
 }
+
 void printPacket() {
   Serial.print(payload.Tc1_t);
   Serial.print(", ");
