@@ -31,3 +31,7 @@ Temporary Items
 *.b#*
 *.s#*
 *.nc
+.pioenvs
+.piolibdeps
+.clang_complete
+.gcc-flags.json
