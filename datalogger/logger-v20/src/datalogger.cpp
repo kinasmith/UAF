@@ -3,15 +3,15 @@
 #include "DS3231.h"
 #include "SdFat.h"
 
-#define NODEID                 0
-#define FANID                     55
-#define FREQUENCY       RF69_433MHZ
-#define ATC_RSSI            -70
-#define ACK_WAIT_TIME   100 // # of ms to wait for an ack
+#define NODEID 0
+#define FANID 55
+#define FREQUENCY RF69_433MHZ
+#define ATC_RSSI -70
+#define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES     10 // # of attempts before giving up
 #define SERIAL_BAUD    9600
-#define LED                        9
-#define SD_CS_PIN         4
+#define LED 9
+#define SD_CS_PIN 4
 #define CARD_DETECT 5
 #define FAN_ON_TEMP 18 //Temp when fan turns on in Celcius
 #define FAN_OFF_TEMP 15 //Temp when fan turns on in Celcius
