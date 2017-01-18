@@ -995,51 +995,22 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 </package>
 <package name="USB-MICRO-MOLEX-105017-0001">
 <description>&lt;b&gt; Molex Micro USB 105017-0001&lt;/b&gt;</description>
-<wire x1="6.6" y1="-4.15" x2="-1.6" y2="-4.15" width="0" layer="49"/>
-<wire x1="-1.6" y1="-4.85" x2="6.6" y2="-4.85" width="0" layer="49"/>
-<pad name="P$1" x="0" y="0" drill="0.85" diameter="1.45"/>
-<pad name="P$2" x="5" y="0" drill="0.85" diameter="1.45"/>
-<smd name="3" x="2.5" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
-<smd name="4" x="3.15" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
-<smd name="5" x="3.8" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
-<smd name="2" x="1.85" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
-<smd name="1" x="1.2" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
-<smd name="P$3" x="3.5" y="-2.7" dx="1.9" dy="1.5" layer="1" rot="R90"/>
-<smd name="P$4" x="1.5" y="-2.7" dx="1.9" dy="1.5" layer="1" rot="R90"/>
-<text x="1.55" y="-4.15" size="0.3" layer="49">PCB EDGE</text>
-<text x="-0.8" y="-4.85" size="0.3" layer="49">CONNECTOR FRONT INTERFACE</text>
-<polygon width="0" layer="1">
-<vertex x="0.2" y="-1.75"/>
-<vertex x="0.2" y="-3.65"/>
-<vertex x="-1.1" y="-3.65" curve="-90"/>
-<vertex x="-1.6" y="-3.15"/>
-<vertex x="-1.6" y="-2.25" curve="-90"/>
-<vertex x="-1.1" y="-1.75"/>
-</polygon>
-<polygon width="0" layer="45">
-<vertex x="-0.7" y="-2.35"/>
-<vertex x="-0.7" y="-3.05" curve="-90"/>
-<vertex x="-1" y="-3.35" curve="-90"/>
-<vertex x="-1.3" y="-3.05"/>
-<vertex x="-1.3" y="-2.35" curve="-90"/>
-<vertex x="-1" y="-2.05" curve="-90"/>
-</polygon>
-<polygon width="0" layer="1">
-<vertex x="4.8" y="-3.65"/>
-<vertex x="4.8" y="-1.75"/>
-<vertex x="6.1" y="-1.75" curve="-90"/>
-<vertex x="6.6" y="-2.25"/>
-<vertex x="6.6" y="-3.15" curve="-90"/>
-<vertex x="6.1" y="-3.65"/>
-</polygon>
-<polygon width="0" layer="45">
-<vertex x="5.7" y="-3.05"/>
-<vertex x="5.7" y="-2.35" curve="-90"/>
-<vertex x="6" y="-2.05" curve="-90"/>
-<vertex x="6.3" y="-2.35"/>
-<vertex x="6.3" y="-3.05" curve="-90"/>
-<vertex x="6" y="-3.35" curve="-90"/>
-</polygon>
+<wire x1="4.1" y1="-4.15" x2="-4.1" y2="-4.15" width="0" layer="49"/>
+<wire x1="-4.1" y1="-4.85" x2="4.1" y2="-4.85" width="0" layer="49"/>
+<pad name="P$1" x="-2.5" y="0" drill="0.85" diameter="1.45"/>
+<pad name="P$2" x="2.5" y="0" drill="0.85" diameter="1.45"/>
+<smd name="3" x="0" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
+<smd name="4" x="0.65" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
+<smd name="5" x="1.3" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
+<smd name="2" x="-0.65" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
+<smd name="1" x="-1.3" y="0" dx="1.35" dy="0.4" layer="1" rot="R90"/>
+<smd name="P$3" x="1" y="-2.7" dx="1.9" dy="1.5" layer="1" rot="R90"/>
+<smd name="P$4" x="-1" y="-2.7" dx="1.9" dy="1.5" layer="1" rot="R90"/>
+<text x="-0.95" y="-4.15" size="0.3" layer="49">PCB EDGE</text>
+<text x="-3.3" y="-4.85" size="0.3" layer="49">CONNECTOR FRONT INTERFACE</text>
+<pad name="P$5" x="-3.5" y="-2.7" drill="1.3" shape="square"/>
+<pad name="P$6" x="3.5" y="-2.7" drill="1.3" shape="square"/>
+<text x="-2" y="1.5" size="1" layer="21" ratio="15">&gt;NAME</text>
 </package>
 <package name="1X02_TINY">
 <pad name="NEG" x="-1.27" y="0" drill="0.508" diameter="1.27" shape="square"/>
@@ -1729,7 +1700,7 @@ End launch SMA connector. The paste layer has been removed so that the connector
 <gate name="G$1" symbol="USB_5PIN" x="0" y="0"/>
 </gates>
 <devices>
-<device name="_MICRO_RIGHT" package="MICROUSB-RIGHT">
+<device name="_B-MICRO_R/A_WEAK" package="MICROUSB-RIGHT">
 <connects>
 <connect gate="G$1" pin="5V" pad="1"/>
 <connect gate="G$1" pin="D+" pad="3"/>
@@ -1749,7 +1720,7 @@ End launch SMA connector. The paste layer has been removed so that the connector
 </technology>
 </technologies>
 </device>
-<device name="_MINI_RIGHT" package="MINIUSB-RIGHT">
+<device name="_B-MINI_R/A_WEAK" package="MINIUSB-RIGHT">
 <connects>
 <connect gate="G$1" pin="5V" pad="1"/>
 <connect gate="G$1" pin="D+" pad="3"/>
@@ -1769,17 +1740,19 @@ End launch SMA connector. The paste layer has been removed so that the connector
 </technology>
 </technologies>
 </device>
-<device name="MICRO_STRONG" package="USB-MICRO-MOLEX-105017-0001">
+<device name="_B-MICRO_R/A_STRONG" package="USB-MICRO-MOLEX-105017-0001">
 <connects>
 <connect gate="G$1" pin="5V" pad="1"/>
 <connect gate="G$1" pin="D+" pad="3"/>
 <connect gate="G$1" pin="D-" pad="2"/>
 <connect gate="G$1" pin="GND" pad="5"/>
 <connect gate="G$1" pin="ID" pad="4"/>
-<connect gate="G$1" pin="SLD" pad="P$1 P$2 P$3 P$4"/>
+<connect gate="G$1" pin="SLD" pad="P$1 P$2 P$3 P$4 P$5 P$6"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="PARTNO" value="1050170001" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -4304,7 +4277,7 @@ High-power, low thermal resistance package.</description>
 <attribute name="PARTNO" value="RC0603FR-0710KL"/>
 </part>
 <part name="U2" library="My_IC_Digital" deviceset="FT232RL-BASIC" device="-SSOP"/>
-<part name="J1" library="My_Connectors" deviceset="USB-5PIN" device="MICRO_STRONG"/>
+<part name="J1" library="My_Connectors" deviceset="USB-5PIN" device="_B-MICRO_R/A_STRONG"/>
 <part name="C1" library="My_Passives" deviceset="CAPACITOR_NP" device="0603-N" value="0.1uF"/>
 <part name="C2" library="My_Passives" deviceset="CAPACITOR_NP" device="0603-N" value="0.1uF"/>
 <part name="C3" library="My_Passives" deviceset="CAPACITOR_NP" device="0603-N" value="0.1uF"/>
@@ -4341,7 +4314,11 @@ High-power, low thermal resistance package.</description>
 </part>
 <part name="J6" library="My_Connectors" deviceset="CON_01X03" device="_PTH_2.54MM" value="MF-CON-2.54mm-01x03"/>
 <part name="J7" library="My_Connectors" deviceset="CON_01X03" device="_PTH_2.54MM" value="MF-CON-2.54mm-01x03"/>
-<part name="J8" library="My_Connectors" deviceset="CON_01X03" device="_PTH_2.54MM" value="MF-CON-2.54mm-01x03"/>
+<part name="J8" library="My_Connectors" deviceset="CON_01X03" device="_PTH_2.54MM" value="MF-CON-2.54mm-01x03">
+<attribute name="LABEL01" value="-"/>
+<attribute name="LABEL02" value="data"/>
+<attribute name="LABEL03" value="+"/>
+</part>
 <part name="D6" library="My_LEDs" deviceset="LED_SINGLE" device="-0603"/>
 <part name="R13" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="680"/>
 <part name="J9" library="My_Connectors" deviceset="CON_01X03" device="_PTH_2.54MM" value="MF-CON-2.54mm-01x03"/>
@@ -4869,9 +4846,9 @@ High-power, low thermal resistance package.</description>
 <label x="127" y="35.56" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<wire x1="177.8" y1="144.78" x2="180.34" y2="144.78" width="0.1524" layer="91"/>
-<label x="180.34" y="144.78" size="1.27" layer="95" xref="yes"/>
-<pinref part="U3" gate="G$1" pin="PB4(PWM/SS)"/>
+<wire x1="132.08" y1="129.54" x2="129.54" y2="129.54" width="0.1524" layer="91"/>
+<label x="129.54" y="129.54" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="U3" gate="G$1" pin="PC2(TCK)"/>
 </segment>
 </net>
 <net name="TX0" class="0">
@@ -4966,26 +4943,26 @@ High-power, low thermal resistance package.</description>
 </net>
 <net name="NET_SEL_4" class="0">
 <segment>
-<wire x1="177.8" y1="119.38" x2="180.34" y2="119.38" width="0.1524" layer="91"/>
-<label x="180.34" y="119.38" size="1.27" layer="95" xref="yes"/>
-<pinref part="U3" gate="G$1" pin="PD6(PWM)"/>
-</segment>
-<segment>
 <pinref part="SJ1" gate="G$1" pin="2"/>
 <wire x1="236.22" y1="160.02" x2="236.22" y2="157.48" width="0.1524" layer="91"/>
 <label x="236.22" y="157.48" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
-</net>
-<net name="SD_LED_1" class="0">
 <segment>
 <wire x1="132.08" y1="127" x2="129.54" y2="127" width="0.1524" layer="91"/>
 <label x="129.54" y="127" size="1.27" layer="95" rot="R180" xref="yes"/>
 <pinref part="U3" gate="G$1" pin="PC3(TMS)"/>
 </segment>
+</net>
+<net name="SD_LED_1" class="0">
 <segment>
 <pinref part="R9" gate="G$1" pin="P$1"/>
 <wire x1="55.88" y1="83.82" x2="53.34" y2="83.82" width="0.1524" layer="91"/>
 <label x="53.34" y="83.82" size="1.27" layer="95" rot="R270" xref="yes"/>
+</segment>
+<segment>
+<wire x1="177.8" y1="144.78" x2="180.34" y2="144.78" width="0.1524" layer="91"/>
+<label x="180.34" y="144.78" size="1.27" layer="95" xref="yes"/>
+<pinref part="U3" gate="G$1" pin="PB4(PWM/SS)"/>
 </segment>
 </net>
 <net name="NET_SEL_2" class="0">
@@ -5056,14 +5033,14 @@ High-power, low thermal resistance package.</description>
 </net>
 <net name="SD_LED_0" class="0">
 <segment>
-<wire x1="132.08" y1="129.54" x2="129.54" y2="129.54" width="0.1524" layer="91"/>
-<label x="129.54" y="129.54" size="1.27" layer="95" rot="R180" xref="yes"/>
-<pinref part="U3" gate="G$1" pin="PC2(TCK)"/>
-</segment>
-<segment>
 <pinref part="R10" gate="G$1" pin="P$1"/>
 <wire x1="12.7" y1="83.82" x2="10.16" y2="83.82" width="0.1524" layer="91"/>
 <label x="10.16" y="83.82" size="1.27" layer="95" rot="R270" xref="yes"/>
+</segment>
+<segment>
+<wire x1="177.8" y1="119.38" x2="180.34" y2="119.38" width="0.1524" layer="91"/>
+<label x="180.34" y="119.38" size="1.27" layer="95" xref="yes"/>
+<pinref part="U3" gate="G$1" pin="PD6(PWM)"/>
 </segment>
 </net>
 <net name="SDI_DATA_3V3" class="0">
