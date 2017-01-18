@@ -1,5 +1,7 @@
 #include "Arduino.h"
 
+float getBatteryVoltage(uint8_t pin, uint8_t en);
+
 const int LED = A0;
 const int N_SEL_1 = A1;
 const int N_SEL_2 = A2;
@@ -16,15 +18,33 @@ const int LED_TX = 9;
 const int RFM_CS = 10;
 
 void setup() {
-  pinMode(LED_TX, OUTPUT);
-  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
 }
 
 void loop() {
-  digitalWrite(LED_TX, HIGH);
-  // digitalWrite(LED, HIGH);
-  delay(100);
-  digitalWrite(LED_TX, LOW);
-  // digitalWrite(LED, LOW);
-  delay(100);
+  Serial.println(getBatteryVoltage(BAT_V, BAT_V_EN));
+  delay(1000);
+
+}
+
+/**
+ * [getBatteryVoltage description]
+ * @param  pin [description]
+ * @param  en  [description]
+ * @return     [description]
+ */
+float getBatteryVoltage(uint8_t pin, uint8_t en) {
+  uint16_t R22 = 32650.0;
+  uint32_t R23 = 55300.0;
+	float readings = 0.0;
+  pinMode(en, OUTPUT);
+	digitalWrite(en, HIGH);
+	delay(10);
+	for (byte i=0; i<3; i++)
+		readings += analogRead(pin);
+  digitalWrite(en, LOW);
+  readings /= 3.3;
+	float v = (3.3 * (readings/1023.0));// * (R23/R22); //Calculate battery voltage
+  Serial.println(v);
+  return v;
 }
