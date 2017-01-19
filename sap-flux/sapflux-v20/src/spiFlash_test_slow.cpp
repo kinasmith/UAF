@@ -43,13 +43,17 @@
 
 void Blink(byte PIN, int DELAY_MS, byte loops);
 
-
 #define SERIAL_BAUD      115200
 char input = 0;
 long lastPeriod = -1;
 
-#define LED           9 // Moteinos have LEDs on D9
-#define FLASH_SS      8 // and FLASH SS on D8
+//#ifdef __AVR_ATmega1284P__
+//  #define LED           15 // Moteino MEGAs have LEDs on D15
+//  #define FLASH_SS      23 // and FLASH SS on D23
+//#else
+  #define LED           9 // Moteinos have LEDs on D9
+  #define FLASH_SS      8 // and FLASH SS on D8
+//#endif
 
 //////////////////////////////////////////
 // flash(SPI_CS, MANUFACTURER_ID)
@@ -60,11 +64,6 @@ long lastPeriod = -1;
 SPIFlash flash(FLASH_SS, 0xEF30);
 
 void setup(){
-  pinMode(5, INPUT_PULLUP);
-  pinMode(6, INPUT_PULLUP);
-  pinMode(7, INPUT_PULLUP);
-  pinMode(10, INPUT_PULLUP);
-  
   Serial.begin(SERIAL_BAUD);
   Serial.print("Start...");
 

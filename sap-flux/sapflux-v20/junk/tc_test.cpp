@@ -1,30 +1,9 @@
-#include "SPI.h"
 #include "Arduino.h"
-#include "RFM69.h"
+#include "Adafruit_MAX31856.h"
 
 float getBatteryVoltage(uint8_t pin, uint8_t en);
 bool getTime();
-
-#define SERIAL_EN
-
-#ifdef SERIAL_EN
-#define DEBUG(input)   {Serial.print(input); delay(1);}
-#define DEBUGln(input) {Serial.println(input); delay(1);}
-#define DEBUGFlush() { Serial.flush(); }
-#else
-#define DEBUG(input);
-#define DEBUGln(input);
-#define DEBUGFlush();
-#endif
-
-
-#define NODEID 				91   //unique for each node on same network
-#define NETWORKID 		100  //the same on all nodes that talk to each other
-#define GATEWAYID 		2 	//The address of the datalogger
-#define FREQUENCY 		RF69_433MHZ //frequency of radio
-#define ATC_RSSI 			-70 //ideal Signal Strength of trasmission
-#define ACK_WAIT_TIME	100 // # of ms to wait for an ack
-#define ACK_RETRIES		10 // # of attempts before giving up
+void tcFault(uint8_t fault, uint8_t tcNum);
 
 const uint8_t LED = A0;
 const uint8_t N_SEL_1 = A1;
@@ -40,30 +19,56 @@ const uint8_t TC1_CS = 7;
 const uint8_t FLASH_CS = 8;
 const uint8_t LED_TX = 9;
 const uint8_t RFM_CS = 10;
-bool LED_STATE;
-bool HANDSHAKE_SENT;
 
-//Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
-struct TimeStamp {
-    uint32_t timestamp;
-};
-TimeStamp theTimeStamp; //creates global instantiation of this
-
-RFM69 radio; //init radio
+Adafruit_MAX31856 tc1 = Adafruit_MAX31856(TC1_CS);
+Adafruit_MAX31856 tc2 = Adafruit_MAX31856(TC2_CS);
+Adafruit_MAX31856 tc3 = Adafruit_MAX31856(TC3_CS);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("begin");
-  radio.initialize(FREQUENCY,NODEID,NETWORKID);
-  Serial.begin("radio Good");
-	radio.setHighPower();
-	radio.encrypt(null);
+  Serial.println("MAX31856 thermocouple test");
+  tc1.begin();
+  tc2.begin();
+  tc3.begin();
+  tc1.setThermocoupleType(MAX31856_TCTYPE_E);
+  tc2.setThermocoupleType(MAX31856_TCTYPE_E);
+  tc3.setThermocoupleType(MAX31856_TCTYPE_E);
 }
 
 void loop() {
+  Serial.print("1: CJ: ");
+  Serial.print(tc1.readCJTemperature());
+  Serial.print(" TJ: ");
+  Serial.println(tc1.readThermocoupleTemperature());
+  Serial.print("2: CJ: ");
+  Serial.print(tc2.readCJTemperature());
+  Serial.print(" TJ: ");
+  Serial.println(tc2.readThermocoupleTemperature());
+  Serial.print("3: CJ: ");
+  Serial.print(tc3.readCJTemperature());
+  Serial.print(" TJ: ");
+  Serial.println(tc3.readThermocoupleTemperature());
+
+  tcFault(tc1.readFault(), 1);
+  tcFault(tc2.readFault(), 2);
+  tcFault(tc3.readFault(), 3);
   delay(1000);
 }
 
+void tcFault(uint8_t fault, uint8_t tcNum) {
+  // Check and print any faults
+  if (fault) {
+    if (fault & MAX31856_FAULT_CJRANGE) Serial.print(tcNum); Serial.println(" Cold Junction Range Fault");
+    if (fault & MAX31856_FAULT_TCRANGE) Serial.print(tcNum); Serial.println(" Thermocouple Range Fault");
+    if (fault & MAX31856_FAULT_CJHIGH)  Serial.print(tcNum); Serial.println(" Cold Junction High Fault");
+    if (fault & MAX31856_FAULT_CJLOW)   Serial.print(tcNum); Serial.println(" Cold Junction Low Fault");
+    if (fault & MAX31856_FAULT_TCHIGH)  Serial.print(tcNum); Serial.println(" Thermocouple High Fault");
+    if (fault & MAX31856_FAULT_TCLOW)   Serial.print(tcNum); Serial.println(" Thermocouple Low Fault");
+    if (fault & MAX31856_FAULT_OVUV)    Serial.print(tcNum); Serial.println(" Over/Under Voltage Fault");
+    if (fault & MAX31856_FAULT_OPEN)    Serial.print(tcNum); Serial.println(" Thermocouple Open Fault");
+  }
+}
+/*
 bool getTime() {
 	LED_STATE = true;
 	digitalWrite(LED, LED_STATE);
@@ -98,7 +103,7 @@ bool getTime() {
 	HANDSHAKE_SENT = false;
 	return true;
 }
-
+*/
 
 /**
  * --->THIS ISN'T WORKING RIGHT. CHECK THE MATH<---
