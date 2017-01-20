@@ -6,7 +6,7 @@
 #include "SPIFlash_Marzogh.h"
 #include "Adafruit_MAX31856.h"
 
-#define NODEID 17
+#define NODEID 10
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -66,7 +66,8 @@ bool LED_STATE;
 uint16_t count = 0;
 /*==============|| INTERVAL ||==============*/
 const uint8_t REC_MIN = 1; //record interval in minutes
-const uint16_t REC_INTERVAL = (10000*REC_MIN)/1000; //record interval in seconds
+const uint16_t REC_MS = 15000;
+const uint16_t REC_INTERVAL = (15000*REC_MIN)/1000; //record interval in seconds
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
 struct TimeStamp {
@@ -74,24 +75,25 @@ struct TimeStamp {
 };
 TimeStamp theTimeStamp; //creates global instantiation of this
 
-//Data structure for storing data in EEPROM (12 bytes)
+//Data structure for storing data locally (12 bytes)
 struct Data {
-	uint16_t count = 0;
-	int16_t tc1 = 0;
-	int16_t tc2 = 0;
-	int16_t tc3 = 0;
-	int16_t bat_v = 0;
-	int16_t brd_tmp = 0;
+	uint16_t count;
+	int16_t tc1;
+	int16_t tc2;
+	int16_t tc3;
+	int16_t brd_tmp;
+	int16_t bat_v;
 };
+
 //Data Structure for transmitting data packets to datalogger (16 bytes)
 struct Payload {
-	uint32_t timestamp = 182097834;
-	uint16_t count = 37;
-	int16_t tc1 = 1243;
-	int16_t tc2 = 1294;
-	int16_t tc3 = 1208;
-	int16_t brd_tmp = 1289;
-	int16_t bat_v = 4281;
+	uint32_t timestamp;
+	uint16_t count;
+	int16_t tc1;
+	int16_t tc2;
+	int16_t tc3;
+	int16_t brd_tmp;
+	int16_t bat_v;
 };
 Payload thePayload;
 
@@ -129,94 +131,189 @@ void setup() {
 }
 
 void loop() {
-	Payload thePayload; //Store the data to be transmitted in this struct
-	DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
-	DEBUGFlush();
-	radio.sleep();
-	count++;
-	for(int i = 0; i < REC_MIN; i++)
-		Sleepy::loseSomeTime(60000);
-	//===========|| MCU WAKES UP HERE ||===========
-	if(!getTime()) { //Ping Datalogger,
-		// if there is no response. Take readings, save readings to EEPROM.
-		DEBUGln("data - no response, saving data locally");
-		thePayload.count = count;
-		thePayload.tc1 = int(tc1.readThermocoupleTemperature()*100);
-		thePayload.tc2 = int(tc2.readThermocoupleTemperature()*100);
-		thePayload.tc3 = int(tc3.readThermocoupleTemperature()*100);
-		thePayload.brd_tmp = int(tc1.readCJTemperature()*100);
-		thePayload.bat_v = getBatteryVoltage(BAT_V, BAT_EN);
-		writeToFlash(); //save that data to EEPROM
-		Blink(50);
-		Blink(50);
-	} else {
-		//Check to see if there is data waiting to be sent
-		DEBUG("flash - byte 4 == "); DEBUGln(flash.readByte(4));
-		//flash memory clears to HIGH?...
-		if(flash.readByte(4) < 255) { //check the first byte of data, if there is data send all of it
-			sendFromFlash();
-		}
-		if(flash.readByte(4) == 255) { //Check again if there is no data, then take some readings and send them
-			thePayload.timestamp = theTimeStamp.timestamp; //this timestamp is updated whenever calling getTime().
-			thePayload.count = count;
-			thePayload.tc1 = int(tc1.readThermocoupleTemperature()*100);
-			thePayload.tc2 = int(tc2.readThermocoupleTemperature()*100);
-			thePayload.tc3 = int(tc3.readThermocoupleTemperature()*100);
-			thePayload.brd_tmp = int(tc1.readCJTemperature()*100);
-			thePayload.bat_v = getBatteryVoltage(BAT_V, BAT_EN);
-			//Note the ACK retry and wait times. Very important, and much slower for 433mhz radios that are doing stuff too
-			LED_STATE = true;
-			digitalWrite(LED, LED_STATE);
-			if (radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
-				DEBUG("data - snd - "); DEBUG('['); DEBUG(GATEWAYID); DEBUG("] ");
-				DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
-				LED_STATE = false;
-				digitalWrite(LED, LED_STATE);
-			} else {
-				DEBUGln("data - snd - Failed . . . no ack");
-				writeToFlash(); //if data fails to transfer, Save that data to eeprom to be sent later
-				Blink(50);
-				Blink(50);
-			}
-		}
-	}
+	getTime();
+	Data store;
+	Data read;
+	store.count = random(0, 100);
+	store.tc1 = random(0, 100);
+	store.tc2 = random(0, 100);
+	store.tc3 = random(0, 100);
+	store.brd_tmp = random(0, 100);
+	store.bat_v = random(0, 100);
+
+	TimeStamp storedTime; //place for stored time
+	DEBUG("Writing - "); DEBUGln(theTimeStamp.timestamp);
+	// for(byte i = 0; i < sizeof(theTimeStamp); i++) { //must erase sector before writing in new data
+	// 	DEBUG(i);
+	// 	DEBUG(" ");
+	// 	flash.eraseSector(i);
+	// }
+	DEBUGln();
+	if(flash.writeAnything(0, theTimeStamp))
+		DEBUGln("time written");
+
+	if(flash.writeAnything(1, 5, store)) {
+		DEBUGln("Data write successful");
+	} else DEBUGln("Data write failed");
+
+
+
+
+	// flash.writeAnything(4, store);
+	// delay(2000);
+	//
+	// flash.readAnything(4, read);
+	// DEBUG(read.count); DEBUG(",");
+	// DEBUG(read.tc1); DEBUG(",");
+	// DEBUG(read.tc2); DEBUG(",");
+	// DEBUG(read.tc3); DEBUG(",");
+	// DEBUG(read.brd_tmp); DEBUG(",");
+	// DEBUG(read.bat_v); DEBUG(",");
+	// delay(2000);
+
+
+	//
+	// delay(5000);
+	// flash.writeByte(4, 12);
+	// flash.writeByte(5, 12);
+	// flash.writeByte(6, 12);
+	// flash.writeByte(8, 22);
+	// flash.writeByte(7, 12);
+	// flash.writeByte(9, 12);
+	// flash.writeByte(10, 12);
+	// delay(1000);
+	//
+	// for(int i = 4; i < 11; i++){
+	// 	DEBUG(flash.readByte(i));
+	// 	DEBUG(" ");
+	// }
+	// DEBUGln();
+	// delay(1000);
+
+	flash.readAnything(0, storedTime);
+	DEBUG("Reading - "); DEBUGln(storedTime.timestamp);
+	delay(5000);
+
+	// DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
+	// DEBUGFlush();
+	// radio.sleep();
+	// count++;
+	// for(int i = 0; i < REC_MIN; i++)
+	// 	Sleepy::loseSomeTime(REC_MS);
+	// //===========|| MCU WAKES UP HERE ||===========
+	// if(!getTime()) { //Ping Datalogger,
+	// 	// if there is no response. Take readings, save readings to EEPROM.
+	// 	DEBUGln("data - no response, saving data locally");
+	// 	thePayload.count = count;
+	// 	thePayload.tc1 = int(tc1.readThermocoupleTemperature()*100);
+	// 	thePayload.tc2 = int(tc2.readThermocoupleTemperature()*100);
+	// 	thePayload.tc3 = int(tc3.readThermocoupleTemperature()*100);
+	// 	thePayload.brd_tmp = int(tc1.readCJTemperature()*100);
+	// 	thePayload.bat_v = getBatteryVoltage(BAT_V, BAT_EN);
+	// 	DEBUG("data - ");
+	// 	DEBUG(theTimeStamp.timestamp); DEBUG(",");
+	// 	DEBUG(thePayload.count); DEBUG(",");
+	// 	DEBUG(thePayload.tc1); DEBUG(",");
+	// 	DEBUG(thePayload.tc2); DEBUG(",");
+	// 	DEBUG(thePayload.tc3); DEBUG(",");
+	// 	DEBUG(thePayload.brd_tmp); DEBUG(",");
+	// 	DEBUG(thePayload.bat_v); DEBUGln();
+	// 	writeToFlash(); //save that data to EEPROM
+	// 	Blink(50);
+	// 	Blink(50);
+	// 	DEBUGln();
+	// } else {
+	// 	//Check to see if there is data waiting to be sent
+	// 	DEBUG("flash - byte 4 == "); DEBUGln(flash.readByte(4));
+	// 	//flash memory clears to HIGH?...
+	// 	if(flash.readByte(4) < 255) { //check the first byte of data, if there is data send all of it
+	// 		sendFromFlash();
+	// 	}
+	// 	if(flash.readByte(4) == 255) { //Check again if there is no data, then take some readings and send them
+	// 		thePayload.timestamp = theTimeStamp.timestamp; //this timestamp is updated whenever calling getTime().
+	// 		thePayload.count = count;
+	// 		thePayload.tc1 = int(tc1.readThermocoupleTemperature()*100);
+	// 		thePayload.tc2 = int(tc2.readThermocoupleTemperature()*100);
+	// 		thePayload.tc3 = int(tc3.readThermocoupleTemperature()*100);
+	// 		thePayload.brd_tmp = int(tc1.readCJTemperature()*100);
+	// 		thePayload.bat_v = getBatteryVoltage(BAT_V, BAT_EN);
+	// 		DEBUG("data - ");
+	// 		DEBUG(thePayload.timestamp); DEBUG(",");
+	// 		DEBUG(thePayload.count); DEBUG(",");
+	// 		DEBUG(thePayload.tc1); DEBUG(",");
+	// 		DEBUG(thePayload.tc2); DEBUG(",");
+	// 		DEBUG(thePayload.tc3); DEBUG(",");
+	// 		DEBUG(thePayload.brd_tmp); DEBUG(",");
+	// 		DEBUG(thePayload.bat_v); DEBUGln();
+	// 		//Note the ACK retry and wait times. Very important, and much slower for 433mhz radios that are doing stuff too
+	// 		LED_STATE = true;
+	// 		digitalWrite(LED, LED_STATE);
+	// 		if (radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
+	// 			DEBUG("data - snd - "); DEBUG('['); DEBUG(GATEWAYID); DEBUG("] ");
+	// 			DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
+	// 			LED_STATE = false;
+	// 			digitalWrite(LED, LED_STATE);
+	// 		} else {
+	// 			DEBUGln("data - snd - Failed . . . no ack");
+	// 			writeToFlash(); //if data fails to transfer, Save that data to eeprom to be sent later
+	// 			Blink(50);
+	// 			Blink(50);
+	// 		}
+	// 	}
+	// 	DEBUGln();
+	// }
 }
 
 void writeToFlash() {
+	TimeStamp storedTime; //place for stored time
 	Data theData; //Data struct to store data to be written to EEPROM
-	TimeStamp storedTime;
-	//pull data from Payload to save there
+	//pull data from Payload to save there. Is there Data in Payload?
 	theData.count = thePayload.count;
 	theData.tc1 = thePayload.tc1;
 	theData.tc2 = thePayload.tc2;
 	theData.tc3 = thePayload.tc3;
 	theData.bat_v = thePayload.bat_v;
 	theData.brd_tmp = thePayload.brd_tmp;
-	//update the saved time to the time of the last successful transaction (if they are different)
-	flash.readAnything(0, storedTime);
+
+	flash.readAnything(0, storedTime); //pull in stored time (4 bytes at address 0)
+	DEBUG("flash - saved time is: "); DEBUGln(storedTime.timestamp);
+	//compare to current time. If the time stamp is the same, no connection has been made with
+	//the datalogger yet.
 	if(theTimeStamp.timestamp != storedTime.timestamp) {
-		DEBUG("flash - saved time is: "); DEBUGln(storedTime.timestamp);
 		DEBUG("flash - updating to: "); DEBUGln(theTimeStamp.timestamp);
-		for(byte i = 0; i < sizeof(storedTime); i++) //must erase sector before writing in new data
+		for(byte i = 0; i < sizeof(storedTime); i++) { //must erase sector before writing in new data
+			DEBUG(i);
+			DEBUG(" ");
 			flash.eraseSector(i);
+		}
+		DEBUGln();
 		flash.writeAnything(0, theTimeStamp);
 	} else {
 		DEBUGln("flash - No New Time Stamp");
 	}
 	// //Make sure there is space to write the next recording
 	if(FLASH_ADDR < FLASH_CAPACITY - sizeof(theData)) {
+		//Print out data for DEBUG
 		DEBUG("flash - saving "); DEBUG(sizeof(theData));
 		DEBUG(" bytes to address "); DEBUGln(FLASH_ADDR);
+		DEBUG("flash - Data: ")
 		DEBUG(theData.count); DEBUG(",");
 		DEBUG(theData.tc1); DEBUG(",");
 		DEBUG(theData.tc2); DEBUG(",");
 		DEBUG(theData.tc3); DEBUG(",");
 		DEBUG(theData.brd_tmp); DEBUG(",");
 		DEBUG(theData.bat_v); DEBUGln();
-		for(byte i = FLASH_ADDR; i < sizeof(theData); i++) //must erase sector before writing in new data
+		DEBUG("flash - Size of theData "); DEBUGln(sizeof(theData));
+		//must erase sector before writing in new data
+		for(byte i = FLASH_ADDR; i < FLASH_ADDR + sizeof(theData); i++) {
+			DEBUG(i);
+			DEBUG(" ");
 			flash.eraseSector(i);
+		}
+		DEBUGln();
+		// Write data to sections
 		flash.writeAnything(FLASH_ADDR, theData);
-		FLASH_ADDR += sizeof(theData);
+		FLASH_ADDR += sizeof(theData); //increment address to next place
 		DEBUG("flash - new address is "); DEBUGln(FLASH_ADDR);
 	} else {
 		DEBUGln("flash - FULL!!!! Sleepying Forever");
@@ -227,18 +324,18 @@ void writeToFlash() {
 
 void sendFromFlash() {
 	DEBUGln("flash - Checking for Stored Data ");
-	Data blank; //init blank struct to erase data
-	Data storedData; //struct to save data in
 	TimeStamp storedTime;
+	Data storedData; //struct to save data in
 	/*
    The stored time is one record interval behind the actual time that the data was stored
    because time stamps are saved with successful transmissions and EEPROM data is stored when
    those transmissions are not successful
 	 */
 	uint8_t storeIndex = 1;
-	flash.readAnything(0,storedTime);//get previously stored time (at address 0)
+	flash.readAnything(0, storedTime);//get previously stored time (at address 0)
 	DEBUG("flash - Stored time: ");DEBUGln(storedTime.timestamp);
-	FLASH_ADDR = 0 + sizeof(storedTime.timestamp); //Set to next address
+	// FLASH_ADDR = 0 + sizeof(storedTime.timestamp); //Set to next address
+	FLASH_ADDR = 5;
 	//Read in saved data to the Data struct
 	flash.readAnything(FLASH_ADDR, storedData);
 	DEBUG("flash - Data: ");
@@ -274,8 +371,12 @@ void sendFromFlash() {
 		if (radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
 			DEBUG(" snd - "); DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
 			//if successfully sent, erase chunk of data
-			for(byte i = FLASH_ADDR; i < sizeof(storedData); i++) //must erase sector before writing in new data
+			for(byte i = FLASH_ADDR; i < FLASH_ADDR + sizeof(storedData); i++) { //must erase sector before writing in new data
+				DEBUG(i);
+				DEBUG(" ");
 				flash.eraseSector(i);
+			}
+			DEBUGln();
 			// flash.writeAnything(FLASH_ADDR, blank); //If successfully sent, erase that data chunk...
 			FLASH_ADDR += sizeof(storedData); //increment to next...
 			DEBUG(" snd - Reading in new data "); DEBUG(sizeof(storedData)); DEBUGln(" bytes");
@@ -293,8 +394,12 @@ void sendFromFlash() {
          to avoid infinite loops if the datalogger dies permanently while attempting to transmit saved data
          it will try 10 times before giving up on that specific sample
 				 */
-				for(byte i = FLASH_ADDR; i < sizeof(storedData); i++) //must erase sector before writing in new data
-				 	flash.eraseSector(i);
+				for(byte i = FLASH_ADDR; i < FLASH_ADDR + sizeof(storedData); i++) { //must erase sector before writing in new data
+					DEBUG(i);
+					DEBUG(" ");
+					flash.eraseSector(i);
+				}
+				DEBUGln();
 				// flash.writeAnything(FLASH_ADDR, blank);
 				FLASH_ADDR += sizeof(storedData);
 				flash.readAnything(FLASH_ADDR, storedData);
@@ -375,8 +480,8 @@ uint8_t setAddress() {
 }
 
 float getBatteryVoltage(uint8_t pin, uint8_t en) {
-  uint16_t R22 = 32650.0;
-  uint32_t R23 = 55300.0;
+  uint16_t R23 = 32650.0;
+  uint32_t R22 = 55300.0;
 	float readings = 0.0;
   pinMode(en, OUTPUT);
 	digitalWrite(en, HIGH);
