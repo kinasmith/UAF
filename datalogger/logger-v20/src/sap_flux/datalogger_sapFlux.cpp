@@ -1,23 +1,20 @@
+#include <Arduino.h>
 #include <RFM69_ATC.h>//get it here: https://www.github.com/lowpowerlab/rfm69
 #include <SPI.h>
 #include "DS3231.h"
 #include "SdFat.h"
 
 #define NODEID 0
-#define FANID 55
 #define FREQUENCY RF69_433MHZ
 #define ATC_RSSI -70
 #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
-#define ACK_RETRIES     10 // # of attempts before giving up
-#define SERIAL_BAUD    9600
+#define ACK_RETRIES 10 // # of attempts before giving up
+#define SERIAL_BAUD 9600
 #define LED 9
 #define SD_CS_PIN 4
 #define CARD_DETECT 5
-#define FAN_ON_TEMP 18 //Temp when fan turns on in Celcius
-#define FAN_OFF_TEMP 15 //Temp when fan turns on in Celcius
 
 #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
-
 #ifdef SERIAL_EN
 #define DEBUG(input)   {Serial.print(input); delay(1);}
 #define DEBUGln(input) {Serial.println(input); delay(1);}
@@ -36,6 +33,7 @@ void checkSdCard();
 /*==============|| RFM69 ||==============*/
 RFM69_ATC radio; //Initialize Radio
 uint8_t NETWORKID = 100; //base network address
+byte lastRequesterNodeID = NODEID;
 
 /*==============|| DS3231_RTC ||==============*/
 DateTime now;
@@ -45,22 +43,19 @@ DS3231 rtc; //Initialize the Real Time Clock
 SdFat SD; //This is the sd Card
 uint8_t CARD_PRESENT; //var for Card Detect sensor reading
 
-byte lastRequesterNodeID = NODEID;
-// uint16_t downstairs_temp, upstairs_temp;
-bool fan = true;
-bool last_fan = false;
-
-typedef struct TimeStamp {
+struct TimeStamp {
 	uint32_t timestamp;
 };
 TimeStamp theTimeStamp;
 
-typedef struct Payload {
-	uint16_t count;
+struct Payload {
 	uint32_t timestamp;
-	int16_t temp;
-	int16_t humidity;
-	int16_t voltage;
+	uint16_t count;
+	int16_t tc1;
+	int16_t tc2;
+	int16_t tc3;
+	int16_t brd_tmp;
+	int16_t bat_v;
 };
 Payload thePayload;
 
@@ -70,7 +65,7 @@ void setup() {
 	pinMode(CARD_DETECT, INPUT_PULLUP);
 	NETWORKID += setAddress();
 	rtc.begin();
-	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
+	rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
 	Serial.begin(SERIAL_BAUD);
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower(); //only for RFM69HW!
@@ -89,7 +84,7 @@ void setup() {
 			if(f.open("start.txt", FILE_WRITE)) {
 				DEBUG("File Open OK at ");
 				DEBUGln(now.unixtime());
-				f.print("program started at ");
+				f.print("program started at: ");
 				f.print(now.unixtime());
 				f.println();
 				f.close();
@@ -123,26 +118,19 @@ void loop() {
 		if (radio.DATALEN == sizeof(thePayload)) {
 			thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
 			writeData = true;
-			DEBUG("rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] "); DEBUG(thePayload.timestamp);
-			DEBUG(" t:"); DEBUG(thePayload.temp/100.0); DEBUG(" h: "); DEBUG(thePayload.humidity/100.0);
-			DEBUG(" v: "); DEBUG(thePayload.voltage/100.0); DEBUG(" c: "); DEBUG(thePayload.count); DEBUGln();
-			if(radio.SENDERID == 9) {//downstairs temperature
-				if(thePayload.temp/100.0 > FAN_ON_TEMP) { //divide by 100 to get back to actual temperature in C
-					fan = true;
-				}
-				if(thePayload.temp/100.0 < FAN_OFF_TEMP) {
-					fan = false;
-				}
-			}
-			// downstairs_temp = thePayload.temp;
-			// if(radio.SENDERID == 1)
-			//     upstairs_temp = thePayload.temp;
-			// fan = fanOn(downstairs_temp, upstairs_temp);
+			DEBUG("rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
+			DEBUG(thePayload.timestamp);
+			DEBUG(" c: "); DEBUG(thePayload.count);
+			DEBUG(" t1:"); DEBUG(thePayload.tc1/100.0);
+			DEBUG(" t2: "); DEBUG(thePayload.tc2/100.0);
+			DEBUG(" t3: "); DEBUG(thePayload.tc3/100.0);
+			DEBUG(" tbrd: "); DEBUG(thePayload.brd_tmp/100.0);
+			DEBUG(" v: "); DEBUG(thePayload.bat_v/100.0);
+			DEBUGln();
 		}
 		if (radio.ACKRequested()) radio.sendACK();
 		Blink(LED,5);
 	}
-
 	if(reportTime) {
 		DEBUG("snd - "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
@@ -151,19 +139,7 @@ void loop() {
 			DEBUGln("Failed . . . no ack");
 		}
 	}
-
-	if(last_fan != fan) {
-		DEBUG("snd - FAN: ");
-		if(radio.sendWithRetry(FANID, &fan, sizeof(fan), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln(fan);
-		}else {
-			//if it dies, just leave it. Try again next time it's suppose to switch
-			//create some sort of escape here. If there is no ACK the whole system dies because the logic never resolves.`
-			DEBUGln(" Failed . . . no ack");
-		}
-		last_fan = fan;
-	}
-
+	
 	if(writeData) {
 		File f;
 		String address = String(String(NETWORKID) + "_" + String(lastRequesterNodeID));
@@ -176,21 +152,16 @@ void loop() {
 		f.print(NETWORKID); f.print(".");
 		f.print(radio.SENDERID); f.print(",");
 		f.print(thePayload.timestamp); f.print(",");
-		f.print(thePayload.temp/100.0); f.print(",");
-		f.print(thePayload.humidity/100.0); f.print(",");
-		f.print(thePayload.voltage/100.0); f.print(",");
+		f.print(thePayload.tc1/100.0); f.print(",");
+		f.print(thePayload.tc2/100.0); f.print(",");
+		f.print(thePayload.tc3/100.0); f.print(",");
+		f.print(thePayload.brd_tmp/100.0); f.print(",");
+		f.print(thePayload.bat_v/100.0); f.print(",");
 		f.print(thePayload.count); f.println();
 		f.close();
 	}
 	checkSdCard(); //Checks for card insertion
 }
-
-// bool fanOn(uint16_t d, uint16_t u) {
-//     if(u > d)
-//         return 0;
-//     if(d > u)
-//         return 1;
-// }
 
 void checkSdCard() {
 	CARD_PRESENT = !digitalRead(CARD_DETECT); //invert for logic's sake
