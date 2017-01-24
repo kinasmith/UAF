@@ -103,6 +103,24 @@ struct Payload {
 };
 Payload thePayload;
 
+struct Measurement {
+	uint32_t time;
+	int16_t tc1;
+	int16_t tc2;
+	int16_t tc3;
+};
+
+uint32_t current_time;
+uint32_t stop_saved_time = 0;
+uint32_t log_saved_time = 0;
+uint32_t h_saved_time = 0;
+uint16_t h_interval = 0;
+uint16_t log_interval = 1000;
+uint16_t h_pulse_on = 6000;
+uint32_t h_pulse_off = 30 * 60000L;
+uint16_t stop_time = 30000;
+uint8_t h_status = 0;
+
 void setup()
 {
 	#ifdef SERIAL_EN
@@ -148,201 +166,52 @@ void loop()
 		count++;
 		for(int i = 0; i < REC_MIN; i++)
 			Sleepy::loseSomeTime(REC_MS);
-		//===========|| MCU WAKES UP HERE ||===========
+		//===========|| MCU WAKES UP HERE
+		//===========|| RESET TIMER VALUES
+		sentMeasurement = 0;
+		current_time = millis();
+		stop_saved_time = current_time;
+		h_saved_time = current_time;
+		log_saved_time = current_time;
+		h_interval = 0;
 	} else {
-		
-	// 	takeMeasurements();
-	// 	if(!getTime()) { //Ping Datalogger,
-	// 		DEBUGln("=== Storing in Flash ===");
-	// 		// if there is no response. Take readings, save readings to EEPROM.
-	// 		DEBUG("data - local time is: ");DEBUGln(theTimeStamp.timestamp); //update current time to payload
-	// 		writeToFlash(); //save that data to EEPROM
-	// 		Blink(50);
-	// 		Blink(50);
-	// 		DEBUGln();
-	// 	} else {
-	// 		//Check to see if there is data waiting to be sent
-	// 		DEBUG("flash - byte 0 == "); DEBUGln(flash.readByte(0));
-	// 		if(flash.readByte(0) < 255) {
-	// 			DEBUGln("=== Sending from Flash ===");
-	// 			sendFromFlash();
-	// 		}
-	// 		if(!(flash.readByte(0) < 255)) { //Check again if there is no data, then take some readings and send them
-	// 			DEBUGln("=== Sending New Measurement ===");
-	// 			thePayload.timestamp = theTimeStamp.timestamp; //this timestamp is updated whenever calling getTime().
-	// 			//Note the ACK retry and wait times. Very important, and much slower for 433mhz radios that are doing stuff too
-	// 			LED_STATE = true;
-	// 			digitalWrite(LED, LED_STATE);
-	// 			if (radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
-	// 				DEBUG("data - snd - "); DEBUG('['); DEBUG(GATEWAYID); DEBUG("] ");
-	// 				DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
-	// 				LED_STATE = false;
-	// 				digitalWrite(LED, LED_STATE);
-	// 			} else {
-	// 				DEBUGln("data - snd - Failed . . . no ack");
-	// 				writeToFlash(); //if data fails to transfer, Save that data to eeprom to be sent later
-	// 				Blink(50);
-	// 				Blink(50);
-	// 			}
-	// 		}
-	// 		DEBUGln();
-	// 	}
-	// }
-}
-
-void takeMeasurements() {
-	thePayload.count = count;
-	thePayload.tc1 = int(tc1.readThermocoupleTemperature()*100);
-	thePayload.tc2 = int(tc2.readThermocoupleTemperature()*100);
-	thePayload.tc3 = int(tc3.readThermocoupleTemperature()*100);
-	thePayload.brd_tmp = int(tc1.readCJTemperature()*100);
-	thePayload.bat_v = getBatteryVoltage(BAT_V, BAT_EN);
-	DEBUG("data - ");
-	DEBUG(thePayload.count); DEBUG(",");
-	DEBUG(thePayload.tc1); DEBUG(",");
-	DEBUG(thePayload.tc2); DEBUG(",");
-	DEBUG(thePayload.tc3); DEBUG(",");
-	DEBUG(thePayload.brd_tmp); DEBUG(",");
-	DEBUG(thePayload.bat_v); DEBUGln();
-}
-
-bool saveEEPROMTime(uint32_t t)
-{
-	if(EEPROM.put(EEPROM_ADDR, t)){
-		// DEBUG("time - saved to EEPROM: "); DEBUGln(t);
-		return 1;
-	} else {
-		// DEBUG("time - saved to EEPROM: "); DEBUGln("Failed!");
-		return 0;
-	}
-
-}
-
-uint32_t getEEPROMTime()
-{
-	TimeStamp storedTime;
-	storedTime = EEPROM.get(EEPROM_ADDR, storedTime);
-	// DEBUG("time - read from EEPROM: "); DEBUGln(storedTime.timestamp);
-	return storedTime.timestamp;
-}
-
-void writeToFlash() {
-	Data theData; //Data struct to store data to be written to EEPROM
-	//pull data from Payload to save there. Is there Data in Payload?
-	theData.count = thePayload.count;
-	theData.tc1 = thePayload.tc1;
-	theData.tc2 = thePayload.tc2;
-	theData.tc3 = thePayload.tc3;
-	theData.bat_v = thePayload.bat_v;
-	theData.brd_tmp = thePayload.brd_tmp;
-
-	//compare to current time. If the time stamp is the same, no connection has been made with
-	//the datalogger yet.
-	if(theTimeStamp.timestamp != getEEPROMTime()) {
-		DEBUG("time - updating time to: "); DEBUGln(theTimeStamp.timestamp);
-		saveEEPROMTime(theTimeStamp.timestamp);
-	} else {
-		DEBUGln("time - no new time");
-	}
-	//Make sure there is space to write the next recording
-	if(FLASH_ADDR < FLASH_CAPACITY - sizeof(theData)) {
-		// Write data to flash
-		if(flash.writeAnything(FLASH_ADDR, theData)) {
-			DEBUG("flash - saving "); DEBUG(sizeof(theData));
-			DEBUG(" bytes to address "); DEBUGln(FLASH_ADDR);
-			DEBUG("flash - ")
-			DEBUG(theData.count); DEBUG(",");
-			DEBUG(theData.tc1); DEBUG(",");
-			DEBUG(theData.tc2); DEBUG(",");
-			DEBUG(theData.tc3); DEBUG(",");
-			DEBUG(theData.brd_tmp); DEBUG(",");
-			DEBUG(theData.bat_v); DEBUGln();
-			FLASH_ADDR += sizeof(theData); //increment address to next place
-			DEBUG("flash - new address is "); DEBUGln(FLASH_ADDR);
-		}
-	} else {
-		DEBUGln("flash - FULL!!!! Sleepying Forever");
-		radio.sleep();
-		Sleepy::powerDown();
-	}
-}
-
-void sendFromFlash() {
-	DEBUGln("flash - Checking for Stored Data ");
-	Data storedData; //struct to save data in
-	uint8_t storeIndex = 1;
-	/*
-   The stored time is one record interval behind the actual time that the data was stored
-   because time stamps are saved with successful transmissions and EEPROM data is stored when
-   those transmissions are not successful
-	 */
-	FLASH_ADDR = 0; //Go to address of first chunk of data.
-	// Check if there is Data
-	// //As long as data has NOT been erased, the first byte of the data chunk should be less than 255
-	while(flash.readByte(FLASH_ADDR) < 255) { // -->!!!!!!!<-- NOT SURE IF THIS WORKS !!!!!!!
-		Payload savedPayload;
-		DEBUG("flash - Value of First Byte: "); DEBUGln(flash.readByte(FLASH_ADDR));
-		/*
-      It could be any of the values in the struct
-      because they are stored as int's, not floats.
-      But the battery voltage will never be below 0.01
-		 */
-		DEBUG("flash - store time: "); DEBUGln(getEEPROMTime());
-		uint32_t rec_time = getEEPROMTime() + (REC_INTERVAL * storeIndex); //Calculate the actual recorded time
-		DEBUG("flash - rec time: "); DEBUGln(rec_time);
-		//Read in saved data to the Data struct
-		if(flash.readAnything(FLASH_ADDR, storedData)) {
-			DEBUG("flash - data at addr "); DEBUGln(FLASH_ADDR);
-			DEBUG(" ");
-			DEBUG(storedData.count); DEBUG(","); DEBUG(storedData.tc1); DEBUG(",");
-			DEBUG(storedData.tc2); DEBUG(","); DEBUG(storedData.tc3); DEBUG(",");
-			DEBUG(storedData.brd_tmp); DEBUG(","); DEBUG(storedData.bat_v); DEBUGln();
-			//Save data into the Payload struct
-			savedPayload.timestamp = rec_time;
-			savedPayload.count = storedData.count;
-			savedPayload.tc1 = storedData.tc1;
-			savedPayload.tc2 = storedData.tc2;
-			savedPayload.tc3 = storedData.tc3;
-			savedPayload.bat_v = storedData.bat_v;
-			savedPayload.brd_tmp = storedData.brd_tmp;
-		}
-		//Send data to datalogger
-		digitalWrite(LED, HIGH);
-		if (radio.sendWithRetry(GATEWAYID, (const void*)(&savedPayload), sizeof(savedPayload)), 20, 500) {
-			DEBUG("snd - "); DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
-			//if successfully sent, Go to next chunk of data
-			FLASH_ADDR += sizeof(storedData); //increment to next chunk of data
-			storeIndex += 1; //and increment the count of saved values
-			digitalWrite(LED, LOW);
-		} else {
-			attempt_cnt++;
-			DEBUG(" failed . . . no ack");
-			DEBUG(attempt_cnt);
-			Blink(50);
-			Blink(50);
-			if(attempt_cnt > 20) {
-				DEBUGln("radio - Attempt Count Exceeded!")
-				/*
-	       to avoid infinite loops if the datalogger dies permanently while attempting to transmit saved data
-	       it will try 20 times before giving up on that specific sample
-				 */
-				FLASH_ADDR += sizeof(storedData);
-				storeIndex += 1;
-				uint16_t waitTime = random(1000);
-				for(int i = 0; i < 5; i++)
-					Blink(100);
-				DEBUG(" waiting for "); DEBUG(waitTime); DEBUGln("ms");
-				radio.sleep();
-				Sleepy::loseSomeTime(waitTime);
+		current_time = millis();
+		if(stop_saved_time + stop_time > current_time) {
+			if (h_saved_time + h_interval < current_time){
+				if(h_status == 0) { //if it is off, turn it on
+					// digitalWrite(HEATER_EN, HIGH);
+					h_interval = h_pulse_on; //wait for ON time
+					h_status = 1;
+					DEBUG("Heater - On for "); DEBUG(h_interval/1000); DEBUGln("s");
+				} else if(h_status == 1) {//if heat is on....turn it off
+						// digitalWrite(HEATER_EN, LOW);
+						h_interval = h_pulse_off; //wait for OFF time
+						h_status = 0;
+					DEBUG("Heater - Off for "); DEBUG(h_interval/1000); DEBUGln("s");
+				}
+				h_saved_time = current_time;
 			}
+			if(log_saved_time + log_interval < current_time) {
+				Measurement thisMeasurement;
+				thisMeasurement.time = 2500;
+				thisMeasurement.tc1 = 15;
+				thisMeasurement.tc2 = 72;
+				thisMeasurement.tc3 = 345;
+				delay(500);
+				if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
+					DEBUGln("--> Data Written");
+				}
+				FLASH_ADDR += sizeof(thisMeasurement);
+				DEBUGln(FLASH_ADDR);
+				log_saved_time = current_time;
+			}
+		} else {
+			DEBUGln("SEND MEASUREMENTS");
+			sentMeasurement = 1;
 		}
 	}
-	DEBUGln("flash - Setting address back to 0");
-	FLASH_ADDR = 0; //Set Index to beginning of DATA for Writing Events (or...other location for load balancing?)
-	EEPROM_ADDR = random(0, 1023);
-	DEBUGln("flash - Erasing Sector 0");
-	flash.eraseSector(0);
 }
+
 /**
  * [getTime description]
  * @return [description]
@@ -414,24 +283,4 @@ uint8_t setAddress() {
 	digitalWrite(N_SEL_4, HIGH);
 	uint8_t addr = addr01 | addr02 | addr03;
 	return addr;
-}
-/**
- * [getBatteryVoltage description]
- * @param  pin [description]
- * @param  en  [description]
- * @return     [description]
- */
-float getBatteryVoltage(uint8_t pin, uint8_t en) {
-  uint16_t R23 = 32650.0;
-  uint32_t R22 = 55300.0;
-	float readings = 0.0;
-  pinMode(en, OUTPUT);
-	digitalWrite(en, HIGH);
-	delay(10);
-	for (byte i=0; i<3; i++)
-		readings += analogRead(pin);
-  digitalWrite(en, LOW);
-  readings /= 3.3;
-	float v = (3.3 * (readings/1023.0)) * (R23/R22); //Calculate battery voltage
-  return v;
 }
