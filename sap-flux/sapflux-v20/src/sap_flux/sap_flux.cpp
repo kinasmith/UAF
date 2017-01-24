@@ -60,7 +60,7 @@ uint8_t attempt_cnt = 0;
 bool HANDSHAKE_SENT;
 /*==============|| MEMORY ||==============*/
 SPIFlash_Marzogh flash(8);
-uint32_t FLASH_ADDR = 0;
+uint32_t FLASH_ADDR = 100;
 uint16_t EEPROM_ADDR = 0;
 /*==============|| THERMOCOUPLE ||==============*/
 Adafruit_MAX31856 tc1 = Adafruit_MAX31856(TC1_CS);
@@ -72,8 +72,8 @@ uint16_t count = 0;
 uint8_t sentMeasurement = 0;
 /*==============|| INTERVAL ||==============*/
 const uint8_t REC_MIN = 1; //record interval in minutes
-const uint16_t REC_MS = 60000;
-const uint16_t REC_INTERVAL = (60000*REC_MIN)/1000; //record interval in seconds
+const uint16_t REC_MS = 30000;
+const uint16_t REC_INTERVAL = (30000*REC_MIN)/1000; //record interval in seconds
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
 struct TimeStamp {
@@ -149,7 +149,10 @@ void setup()
 	uint32_t capacity = flash.getCapacity();
 	DEBUG("W25X"); DEBUG(_name); DEBUG("**  ");
 	DEBUG("capacity: "); DEBUG(capacity); DEBUGln(" bytes");
-	DEBUGln("Erasing Chip!"); flash.eraseChip();
+	DEBUGln("Erasing Chip!");
+	while(!flash.eraseChip()) {
+		DEBUGln("Erasing Chip!");
+	}
   tc1.begin(); tc2.begin(); tc3.begin();
   tc1.setThermocoupleType(MAX31856_TCTYPE_E);
   tc2.setThermocoupleType(MAX31856_TCTYPE_E);
@@ -179,12 +182,12 @@ void loop()
 		if(stop_saved_time + stop_time > current_time) {
 			if (h_saved_time + h_interval < current_time){
 				if(h_status == 0) { //if it is off, turn it on
-					// digitalWrite(HEATER_EN, HIGH);
+					digitalWrite(HEATER_EN, HIGH);
 					h_interval = h_pulse_on; //wait for ON time
 					h_status = 1;
 					DEBUG("Heater - On for "); DEBUG(h_interval/1000); DEBUGln("s");
 				} else if(h_status == 1) {//if heat is on....turn it off
-						// digitalWrite(HEATER_EN, LOW);
+						digitalWrite(HEATER_EN, LOW);
 						h_interval = h_pulse_off; //wait for OFF time
 						h_status = 0;
 					DEBUG("Heater - Off for "); DEBUG(h_interval/1000); DEBUGln("s");
@@ -192,16 +195,16 @@ void loop()
 				h_saved_time = current_time;
 			}
 			if(log_saved_time + log_interval < current_time) {
-				Measurement thisMeasurement;
-				thisMeasurement.time = 2500;
-				thisMeasurement.tc1 = 15;
-				thisMeasurement.tc2 = 72;
-				thisMeasurement.tc3 = 345;
+				// Measurement thisMeasurement;
+				// thisMeasurement.time = 2500;
+				// thisMeasurement.tc1 = 15;
+				// thisMeasurement.tc2 = 72;
+				// thisMeasurement.tc3 = 345;
 				delay(500);
-				if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
+				if(flash.writeAnything(FLASH_ADDR, FLASH_ADDR)) {
 					DEBUGln("--> Data Written");
 				}
-				FLASH_ADDR += sizeof(thisMeasurement);
+				FLASH_ADDR += sizeof(FLASH_ADDR);
 				DEBUGln(FLASH_ADDR);
 				log_saved_time = current_time;
 			}
