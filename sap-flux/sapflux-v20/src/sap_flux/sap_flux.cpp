@@ -69,6 +69,7 @@ Adafruit_MAX31856 tc3 = Adafruit_MAX31856(TC3_CS);
 /*==============|| UTIL ||==============*/
 bool LED_STATE;
 uint16_t count = 0;
+uint8_t sentMeasurement = 0;
 /*==============|| INTERVAL ||==============*/
 const uint8_t REC_MIN = 1; //record interval in minutes
 const uint16_t REC_MS = 60000;
@@ -140,49 +141,53 @@ void setup()
 
 void loop()
 {
-	DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
-	DEBUGFlush();
-	radio.sleep();
-	count++;
-	for(int i = 0; i < REC_MIN; i++)
-		Sleepy::loseSomeTime(REC_MS);
-	//===========|| MCU WAKES UP HERE ||===========
-	takeMeasurements();
-	if(!getTime()) { //Ping Datalogger,
-		DEBUGln("=== Storing in Flash ===");
-		// if there is no response. Take readings, save readings to EEPROM.
-		DEBUG("data - local time is: ");DEBUGln(theTimeStamp.timestamp); //update current time to payload
-		writeToFlash(); //save that data to EEPROM
-		Blink(50);
-		Blink(50);
-		DEBUGln();
+	if(sentMeasurement) {
+		DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
+		DEBUGFlush();
+		radio.sleep();
+		count++;
+		for(int i = 0; i < REC_MIN; i++)
+			Sleepy::loseSomeTime(REC_MS);
+		//===========|| MCU WAKES UP HERE ||===========
 	} else {
-		//Check to see if there is data waiting to be sent
-		DEBUG("flash - byte 0 == "); DEBUGln(flash.readByte(0));
-		if(flash.readByte(0) < 255) {
-			DEBUGln("=== Sending from Flash ===");
-			sendFromFlash();
-		}
-		if(!(flash.readByte(0) < 255)) { //Check again if there is no data, then take some readings and send them
-			DEBUGln("=== Sending New Measurement ===");
-			thePayload.timestamp = theTimeStamp.timestamp; //this timestamp is updated whenever calling getTime().
-			//Note the ACK retry and wait times. Very important, and much slower for 433mhz radios that are doing stuff too
-			LED_STATE = true;
-			digitalWrite(LED, LED_STATE);
-			if (radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
-				DEBUG("data - snd - "); DEBUG('['); DEBUG(GATEWAYID); DEBUG("] ");
-				DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
-				LED_STATE = false;
-				digitalWrite(LED, LED_STATE);
-			} else {
-				DEBUGln("data - snd - Failed . . . no ack");
-				writeToFlash(); //if data fails to transfer, Save that data to eeprom to be sent later
-				Blink(50);
-				Blink(50);
-			}
-		}
-		DEBUGln();
-	}
+		
+	// 	takeMeasurements();
+	// 	if(!getTime()) { //Ping Datalogger,
+	// 		DEBUGln("=== Storing in Flash ===");
+	// 		// if there is no response. Take readings, save readings to EEPROM.
+	// 		DEBUG("data - local time is: ");DEBUGln(theTimeStamp.timestamp); //update current time to payload
+	// 		writeToFlash(); //save that data to EEPROM
+	// 		Blink(50);
+	// 		Blink(50);
+	// 		DEBUGln();
+	// 	} else {
+	// 		//Check to see if there is data waiting to be sent
+	// 		DEBUG("flash - byte 0 == "); DEBUGln(flash.readByte(0));
+	// 		if(flash.readByte(0) < 255) {
+	// 			DEBUGln("=== Sending from Flash ===");
+	// 			sendFromFlash();
+	// 		}
+	// 		if(!(flash.readByte(0) < 255)) { //Check again if there is no data, then take some readings and send them
+	// 			DEBUGln("=== Sending New Measurement ===");
+	// 			thePayload.timestamp = theTimeStamp.timestamp; //this timestamp is updated whenever calling getTime().
+	// 			//Note the ACK retry and wait times. Very important, and much slower for 433mhz radios that are doing stuff too
+	// 			LED_STATE = true;
+	// 			digitalWrite(LED, LED_STATE);
+	// 			if (radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
+	// 				DEBUG("data - snd - "); DEBUG('['); DEBUG(GATEWAYID); DEBUG("] ");
+	// 				DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
+	// 				LED_STATE = false;
+	// 				digitalWrite(LED, LED_STATE);
+	// 			} else {
+	// 				DEBUGln("data - snd - Failed . . . no ack");
+	// 				writeToFlash(); //if data fails to transfer, Save that data to eeprom to be sent later
+	// 				Blink(50);
+	// 				Blink(50);
+	// 			}
+	// 		}
+	// 		DEBUGln();
+	// 	}
+	// }
 }
 
 void takeMeasurements() {
