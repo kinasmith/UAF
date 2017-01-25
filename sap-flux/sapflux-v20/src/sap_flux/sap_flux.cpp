@@ -7,7 +7,7 @@
 #include <EEPROM.h>
 #include "Nanoshield_Termopar.h"
 
-#define NODEID 11
+#define NODEID 66
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -72,9 +72,10 @@ bool LED_STATE;
 uint16_t count = 0;
 uint8_t sentMeasurement = 0;
 /*==============|| INTERVAL ||==============*/
-const uint8_t REC_MIN = 1; //record interval in minutes
-const uint16_t REC_MS = 30000;
-const uint16_t REC_INTERVAL = (30000*REC_MIN)/1000; //record interval in seconds
+const uint8_t REC_MIN = 15; //record interval in minutes
+const uint16_t REC_MS = 60000;
+const uint32_t REC_INTERVAL = REC_MIN * (REC_MS/1000); //record interval in seconds
+// const uint32_t REC_INTERVAL = (REC_MS*REC_MIN)/1000UL; //record interval in seconds
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
 struct TimeStamp {
@@ -141,12 +142,13 @@ void setup()
 	DEBUGln("Erasing Chip!");
 	while(!flash.eraseChip()) {
 	}
+	DEBUG("Cooling Time is "); DEBUG(REC_INTERVAL); DEBUGln("s");
 }
 
 void loop()
 {
-	// if(measurementCount < 240) { //240 seconds in 4 minutes
-	if(measurementCount < 15) { //240 seconds in 4 minutes
+	if(measurementCount < 240) { //240 seconds in 4 minutes
+	// if(measurementCount < 15) { //240 seconds in 4 minutes
 		Measurement thisMeasurement;
 		tc1.read(); tc2.read(); tc3.read();
 		thisMeasurement.tc1 = tc1.getExternal();
@@ -155,10 +157,10 @@ void loop()
 		thisMeasurement.internal = tc1.getInternal();
 		if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
 			DEBUG("data - ");
-			DEBUG(thisMeasurement.tc1); DEBUG(",");
-			DEBUG(thisMeasurement.tc2); DEBUG(",");
-			DEBUG(thisMeasurement.tc3); DEBUG(",");
-			DEBUG(thisMeasurement.internal); DEBUG(",");
+			DEBUG(thisMeasurement.tc1); DEBUG(", ");
+			DEBUG(thisMeasurement.tc2); DEBUG(", ");
+			DEBUG(thisMeasurement.tc3); DEBUG(", ");
+			DEBUG(thisMeasurement.internal); DEBUG(", ");
 			DEBUG("at Address "); DEBUGln(FLASH_ADDR);
 			FLASH_ADDR += sizeof(thisMeasurement);
 		}
