@@ -104,6 +104,12 @@ struct Payload {
 };
 Payload thePayload;
 
+struct Measurement {
+	uint16_t tc1;
+	uint16_t tc2;
+	uint16_t tc3;
+};
+
 uint32_t current_time;
 uint32_t stop_saved_time = 0;
 uint32_t log_saved_time = 0;
@@ -173,6 +179,7 @@ void loop()
 		h_saved_time = current_time;
 		log_saved_time = current_time;
 		h_interval = 0;
+		getTime();
 	} else {
 		current_time = millis();
 		if(stop_saved_time + stop_time > current_time) {
@@ -192,16 +199,17 @@ void loop()
 			}
 			if(log_saved_time + log_interval < current_time) {
 				Measurement thisMeasurement;
-				thisMeasurement.time = 2500;
-				thisMeasurement.tc1 = 15;
-				thisMeasurement.tc2 = 72;
-				thisMeasurement.tc3 = 345;
-				delay(500);
-				if(flash.writeAnything(FLASH_ADDR, FLASH_ADDR)) {
-					DEBUGln("--> Data Written");
+				thisMeasurement.tc1 = int(tc1.readThermocoupleTemperature()*100);
+				thisMeasurement.tc2 = int(tc2.readThermocoupleTemperature()*100);
+				thisMeasurement.tc3 = int(tc3.readThermocoupleTemperature()*100);
+				if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
+					DEBUG("data - ");
+					DEBUG(thisMeasurement.tc1); DEBUG(",");
+					DEBUG(thisMeasurement.tc2); DEBUG(",");
+					DEBUG(thisMeasurement.tc3); DEBUG(",");
+					DEBUG("at Address "); DEBUGln(FLASH_ADDR);
 				}
-				FLASH_ADDR += sizeof(FLASH_ADDR);
-				DEBUGln(FLASH_ADDR);
+				FLASH_ADDR += sizeof(thisMeasurement);
 				log_saved_time = current_time;
 			}
 		} else {
