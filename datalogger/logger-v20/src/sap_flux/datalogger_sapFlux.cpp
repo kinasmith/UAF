@@ -121,11 +121,11 @@ void loop() {
 			DEBUG("rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
 			DEBUG(thePayload.timestamp);
 			DEBUG(" c: "); DEBUG(thePayload.count);
-			DEBUG(" t1:"); DEBUG(thePayload.tc1/100.0);
-			DEBUG(" t2: "); DEBUG(thePayload.tc2/100.0);
-			DEBUG(" t3: "); DEBUG(thePayload.tc3/100.0);
-			DEBUG(" tbrd: "); DEBUG(thePayload.brd_tmp/100.0);
-			DEBUG(" v: "); DEBUG(thePayload.bat_v/100.0);
+			DEBUG(" t1:"); DEBUG(thePayload.tc1);
+			DEBUG(" t2: "); DEBUG(thePayload.tc2);
+			DEBUG(" t3: "); DEBUG(thePayload.tc3);
+			DEBUG(" tbrd: "); DEBUG(thePayload.brd_tmp);
+			DEBUG(" v: "); DEBUG(thePayload.bat_v);
 			DEBUGln();
 		}
 		if (radio.ACKRequested()) radio.sendACK();
