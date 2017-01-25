@@ -51,11 +51,11 @@ TimeStamp theTimeStamp;
 struct Payload {
 	uint32_t timestamp;
 	uint16_t count;
-	int16_t tc1;
-	int16_t tc2;
-	int16_t tc3;
-	int16_t brd_tmp;
-	int16_t bat_v;
+	double tc1;
+	double tc2;
+	double tc3;
+	double brd_tmp;
+	double bat_v;
 };
 Payload thePayload;
 
@@ -65,7 +65,7 @@ void setup() {
 	pinMode(CARD_DETECT, INPUT_PULLUP);
 	NETWORKID += setAddress();
 	rtc.begin();
-	rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
+	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
 	Serial.begin(SERIAL_BAUD);
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower(); //only for RFM69HW!
@@ -139,7 +139,7 @@ void loop() {
 			DEBUGln("Failed . . . no ack");
 		}
 	}
-	
+
 	if(writeData) {
 		File f;
 		String address = String(String(NETWORKID) + "_" + String(lastRequesterNodeID));
