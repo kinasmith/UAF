@@ -32,7 +32,7 @@ UsedLibrary="/Users/kina/Documents/eagle/lbr/My/_My_Parts.lbr"
 
 [Win_1]
 Type="Schematic Editor"
-Loc="0 -22 1199 577"
+Loc="0 23 1199 622"
 State=0
 Number=2
 File="sap_flux-v10.sch"
@@ -75,11 +75,12 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
+Views=" 1: -5.6388 -4.23926 254.559 189.786"
 Sheet="1"
 
 [Win_2]
 Type="Board Editor"
-Loc="0 0 1279 799"
+Loc="0 23 1275 777"
 State=2
 Number=1
 File="sap_flux-v10.brd"

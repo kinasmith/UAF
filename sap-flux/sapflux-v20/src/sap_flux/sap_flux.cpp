@@ -5,7 +5,6 @@
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
 #include <EEPROM.h>
-// #include "Adafruit_MAX31856.h"
 #include "Nanoshield_Termopar.h"
 
 #define NODEID 11
@@ -14,8 +13,9 @@
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
 #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES 10 // # of attempts before giving up
-#define SERIAL_BAUD 9600 // Serial comms rate
+#define SERIAL_BAUD 115200 // Serial comms rate
 #define FLASH_CAPACITY 524288
+#define HEATER_ON_TIME 6 //in seconds
 
 #define LED 9
 #define LED2 A0
@@ -48,17 +48,16 @@ ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 /*==============|| FUNCTIONS ||==============*/
 bool getTime();
 void Blink(uint8_t);
-void sendFromFlash();
-void writeToFlash();
 uint8_t setAddress();
 float getBatteryVoltage(uint8_t pin, uint8_t en);
-bool saveEEPROMTime();
+bool saveEEPROMTime(uint32_t t);
 uint32_t getEEPROMTime();
-void takeMeasurements();
+void sendMeasurement();
+bool transmitDataPackage();
 /*==============|| RFM69 ||==============*/
 RFM69_ATC radio; //init radio
-uint8_t NETWORKID = 100; //base network address
 uint8_t attempt_cnt = 0;
+uint8_t NETWORKID;
 bool HANDSHAKE_SENT;
 /*==============|| MEMORY ||==============*/
 SPIFlash_Marzogh flash(8);
@@ -83,48 +82,26 @@ struct TimeStamp {
 };
 TimeStamp theTimeStamp; //creates global instantiation of this
 
-//Data structure for storing data locally (12 bytes)
-struct Data {
-	uint16_t count;
-	int16_t tc1;
-	int16_t tc2;
-	int16_t tc3;
-	int16_t brd_tmp;
-	int16_t bat_v;
-};
-
 //Data Structure for transmitting data packets to datalogger (16 bytes)
 struct Payload {
 	uint32_t timestamp;
 	uint16_t count;
-	int16_t tc1;
-	int16_t tc2;
-	int16_t tc3;
-	int16_t brd_tmp;
-	int16_t bat_v;
+	double tc1;
+	double tc2;
+	double tc3;
+	double internal;
+	double bat_v;
 };
 Payload thePayload;
 
 struct Measurement {
-	double tc1 = 22;
-	double tc2 = 23;
-	double tc3 = 24;
+	double tc1;
+	double tc2;
+	double tc3;
+	double internal;
 };
-Measurement thisMeasurement;
 
-uint32_t current_time;
-uint32_t stop_saved_time = 0;
-uint32_t log_saved_time = 0;
-uint32_t h_saved_time = 0;
-uint16_t h_interval = 0;
-uint16_t log_interval = 1000;
-uint16_t h_pulse_on = 6000;
-uint32_t h_pulse_off = 30 * 60000L;
-uint16_t stop_time = 30000;
-uint8_t h_status = 0;
-uint32_t saved_time = 0;
-uint16_t interval = 1000;
-
+uint8_t measurementCount = 0;
 
 void setup()
 {
@@ -132,12 +109,13 @@ void setup()
 		Serial.begin(SERIAL_BAUD);
 	#endif
 	randomSeed(analogRead(A4)); //set random seed
-	NETWORKID += setAddress();
+	NETWORKID = setAddress();
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower();
 	radio.encrypt(null);
 	radio.enableAutoPower(ATC_RSSI); //Test to see if this is actually working at some point
 	DEBUG("--Transmitting on Network: "); DEBUG(NETWORKID); DEBUG(", as Node: "); DEBUGln(NODEID);
+	pinMode(HEATER_EN, OUTPUT);
 	pinMode(LED, OUTPUT);
 	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
@@ -160,13 +138,36 @@ void setup()
 	uint32_t capacity = flash.getCapacity();
 	DEBUG("W25X"); DEBUG(_name); DEBUG("**  ");
 	DEBUG("capacity: "); DEBUG(capacity); DEBUGln(" bytes");
-	DEBUGln("Erasing Chip!"); flash.eraseChip();
-	// flash.powerDown();
+	DEBUGln("Erasing Chip!");
+	while(!flash.eraseChip()) {
+	}
 }
 
 void loop()
 {
-	if(sentMeasurement) {
+	// if(measurementCount < 240) { //240 seconds in 4 minutes
+	if(measurementCount < 15) { //240 seconds in 4 minutes
+		Measurement thisMeasurement;
+		tc1.read(); tc2.read(); tc3.read();
+		thisMeasurement.tc1 = tc1.getExternal();
+		thisMeasurement.tc2 = tc2.getExternal();
+		thisMeasurement.tc3 = tc3.getExternal();
+		thisMeasurement.internal = tc1.getInternal();
+		if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
+			DEBUG("data - ");
+			DEBUG(thisMeasurement.tc1); DEBUG(",");
+			DEBUG(thisMeasurement.tc2); DEBUG(",");
+			DEBUG(thisMeasurement.tc3); DEBUG(",");
+			DEBUG(thisMeasurement.internal); DEBUG(",");
+			DEBUG("at Address "); DEBUGln(FLASH_ADDR);
+			FLASH_ADDR += sizeof(thisMeasurement);
+		}
+		if(measurementCount <= HEATER_ON_TIME) digitalWrite(HEATER_EN, HIGH); //On cycle start, turn on heater
+		else digitalWrite(HEATER_EN, LOW); //turn off after 6 seconds
+		DEBUGFlush();
+		Sleepy::loseSomeTime(1000); // wait one seconds
+		measurementCount++; //increment counter
+	} else {
 		DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
 		DEBUGFlush();
 		radio.sleep();
@@ -174,57 +175,96 @@ void loop()
 		for(int i = 0; i < REC_MIN; i++)
 			Sleepy::loseSomeTime(REC_MS);
 		//===========|| MCU WAKES UP HERE
-		//===========|| RESET TIMER VALUES
-		sentMeasurement = 0;
-		current_time = millis();
-		stop_saved_time = current_time;
-		h_saved_time = current_time;
-		log_saved_time = current_time;
-		h_interval = 0;
-		getTime();
-	} else {
-		current_time = millis();
-		if(stop_saved_time + stop_time > current_time) {
-			if (h_saved_time + h_interval < current_time){
-				if(h_status == 0) { //if it is off, turn it on
-					digitalWrite(HEATER_EN, HIGH);
-					h_interval = h_pulse_on; //wait for ON time
-					h_status = 1;
-					DEBUG("Heater - On for "); DEBUG(h_interval/1000); DEBUGln("s");
-				} else if(h_status == 1) {//if heat is on....turn it off
-						digitalWrite(HEATER_EN, LOW);
-						h_interval = h_pulse_off; //wait for OFF time
-						h_status = 0;
-					DEBUG("Heater - Off for "); DEBUG(h_interval/1000); DEBUGln("s");
-				}
-				h_saved_time = current_time;
-			}
-			if(log_saved_time + log_interval < current_time) {
-				tc1.read(); tc2.read(); tc3.read();
-				// DEBUG(tc1.getExternal()); DEBUG(",");
-				// DEBUG(tc2.getExternal()); DEBUG(",");
-				// DEBUG(tc3.getExternal());
-				// DEBUGln();
-				// SPI.endTransaction();
-				// flash.begin();
-				// thisMeasurement.tc1 = tc1.getExternal();
-				// thisMeasurement.tc2 = tc2.getExternal();
-				// thisMeasurement.tc3 = tc3.getExternal();
-				if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
-					DEBUGln(".");
-					// DEBUG(thisMeasurement.tc1); DEBUG(",");
-					// DEBUG(thisMeasurement.tc2); DEBUG(",");
-					// DEBUG(thisMeasurement.tc3); DEBUG(",");
-					// DEBUG("at Address "); DEBUGln(FLASH_ADDR);
-				}
-				FLASH_ADDR += sizeof(thisMeasurement);
-				log_saved_time = current_time;
+		measurementCount = 0; //reset measurement counter
+		thePayload.count += 1;
+		thePayload.bat_v = random(50, 1000);
+		//get current Time, check Datalogger Status
+		if(getTime()) {
+			DEBUG("time - Is: "); DEBUGln(theTimeStamp.timestamp);
+			EEPROM.put(EEPROM_ADDR, theTimeStamp);
+			// DEBUG("flash - byte 0 == "); DEBUGln(flash.readByte(0));
+			if(flash.readByte(0) < 255) {
+				DEBUGln("=== Sending from Flash ===");
+				sendMeasurement();
 			}
 		} else {
-			DEBUGln("SEND MEASUREMENTS");
-			sentMeasurement = 1;
+			DEBUG("time - No Time, incrementing saved time from ");
+			DEBUG(getEEPROMTime()); DEBUG(" to ");
+			uint32_t new_time = getEEPROMTime() + REC_INTERVAL;
+			saveEEPROMTime(new_time);
+			DEBUGln(getEEPROMTime());
 		}
 	}
+}
+
+/**
+ * [sendMeasurement description]
+ */
+void sendMeasurement()
+{
+	// DEBUGln("flash - Checking for Stored Data ");
+	Measurement storedMeasurement;
+	FLASH_ADDR = 0; //Go to address of first chunk of data.
+	// Check if there is Data
+	while(flash.readByte(FLASH_ADDR) < 255) {
+		// DEBUG("flash - Value of First Byte: "); DEBUGln(flash.readByte(FLASH_ADDR));
+		// DEBUG("flash - store time: "); DEBUGln(getEEPROMTime());
+		//Read in saved data to the Data struct
+		if(flash.readAnything(FLASH_ADDR, storedMeasurement)) {
+			// DEBUG("flash - data at addr "); DEBUGln(FLASH_ADDR); DEBUG(" ");
+			// DEBUG(storedMeasurement.tc1); DEBUG(","); DEBUG(storedMeasurement.tc2); DEBUG(","); DEBUG(storedMeasurement.tc3); DEBUGln();
+			//Save data into the Payload struct
+			thePayload.tc1 = storedMeasurement.tc1;
+			thePayload.tc2 = storedMeasurement.tc2;
+			thePayload.tc3 = storedMeasurement.tc3;
+			thePayload.internal = storedMeasurement.internal;
+		}
+		thePayload.timestamp = theTimeStamp.timestamp += 1000;
+
+		if(transmitDataPackage()) {
+			DEBUG("send - ");
+			DEBUG(thePayload.timestamp); DEBUG(",");
+			DEBUG(thePayload.count); DEBUG(",");
+			DEBUG(thePayload.tc1); DEBUG(",");
+			DEBUG(thePayload.tc2); DEBUG(",");
+			DEBUG(thePayload.tc3); DEBUG(",");
+			DEBUG(thePayload.internal); DEBUG(",");
+			DEBUG(thePayload.bat_v); DEBUG(",");
+			DEBUG(" at Address "); DEBUGln(FLASH_ADDR);
+			FLASH_ADDR += sizeof(storedMeasurement); //increment to next chunk of data
+		} else {
+			// FLASH_ADDR += sizeof(storedMeasurement); //WTF is this?...still ignoring
+		}
+	}
+	DEBUGln("flash - Setting address back to 0");
+	FLASH_ADDR = 0; //Set Index to beginning of DATA for Writing Events (or...other location for load balancing?)
+	// EEPROM_ADDR = random(0, 1023);
+	DEBUGln("flash - Erasing Sector 0");
+	flash.eraseSector(0);
+}
+
+/**
+ * [transmitDataPackage description]
+ * @return [description]
+ */
+bool transmitDataPackage()
+{
+	digitalWrite(LED, HIGH);
+	uint8_t success = 0;
+	while(!success) {
+		if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
+			// DEBUG("snd - "); DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
+			digitalWrite(LED, LOW);
+			success = 1;
+		} else {
+			DEBUG(" failed . . . no ack ");
+			DEBUG(attempt_cnt);
+			Blink(50);
+			Blink(50);
+		}
+	}
+	if(success) return true;
+	else return false;
 }
 
 /**
@@ -267,24 +307,13 @@ bool getTime()
 	return true;
 }
 
+
 /**
- * [Blink description]
- * @param t [description]
+ * Sets Network ID of Board Depending on Closed Solder Jumpers
+ * @return The Address
  */
-void Blink(uint8_t t) {
-	LED_STATE = !LED_STATE;
-	digitalWrite(LED, LED_STATE);
-	delay(t);
-	LED_STATE = !LED_STATE;
-	digitalWrite(LED, LED_STATE);
-	delay(t);
-}
-/**
- * [setAddress description]
- * @return [description]
- */
-uint8_t setAddress() {
-	//sets network address based on which solder jumpers are closed
+uint8_t setAddress()
+{
 	uint8_t addr01, addr02, addr03;
 	pinMode(N_SEL_1, INPUT_PULLUP);
 	pinMode(N_SEL_2, INPUT_PULLUP);
@@ -299,5 +328,30 @@ uint8_t setAddress() {
 	digitalWrite(N_SEL_2, HIGH);
 	digitalWrite(N_SEL_4, HIGH);
 	uint8_t addr = addr01 | addr02 | addr03;
-	return addr;
+	return addr += 100;
+}
+
+bool saveEEPROMTime(uint32_t t) {
+	if(EEPROM.put(EEPROM_ADDR, t)) return 1;
+	else return 0;
+}
+
+uint32_t getEEPROMTime(){
+	TimeStamp storedTime;
+	storedTime = EEPROM.get(EEPROM_ADDR, storedTime);
+	return storedTime.timestamp;
+}
+
+/**
+ * [Blink description]
+ * @param t [description]
+ */
+void Blink(uint8_t t)
+{
+	LED_STATE = !LED_STATE;
+	digitalWrite(LED, LED_STATE);
+	delay(t);
+	LED_STATE = !LED_STATE;
+	digitalWrite(LED, LED_STATE);
+	delay(t);
 }
