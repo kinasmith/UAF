@@ -148,11 +148,11 @@ void setup()
 	pinMode(LED, OUTPUT);
 	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
-	// while(!getTime()) { //this saves time to the struct which holds the time globally
-	// 	radio.sleep();
-	// 	DEBUGFlush();
-	// 	delay(10000);
-	// }
+	while(!getTime()) { //this saves time to the struct which holds the time globally
+		radio.sleep();
+		DEBUGFlush();
+		delay(10000);
+	}
 	digitalWrite(LED, LOW); //write low to signal success
 	DEBUG("--Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 
@@ -161,7 +161,7 @@ void setup()
   tc2.setThermocoupleType(MAX31856_TCTYPE_E);
   tc3.setThermocoupleType(MAX31856_TCTYPE_E);
 	DEBUGln("--Thermocouples are engaged");
-	
+
 	DEBUG("--Flash Mem: ");
 	flash.begin();
 	uint16_t _name = flash.getChipName();
@@ -194,6 +194,47 @@ void loop()
 		saved_time = current_time;
 	}
 }
+
+/**
+ * [getTime description]
+ * @return [description]
+ */
+bool getTime()
+{
+	LED_STATE = true;
+	digitalWrite(LED, LED_STATE);
+	//Get the current timestamp from the datalogger
+	bool TIME_RECIEVED = false;
+	if(!HANDSHAKE_SENT) { //Send request for time to the Datalogger
+		DEBUG("time - ");
+		if (radio.sendWithRetry(GATEWAYID, "t", 1)) {
+			DEBUG("snd . . ");
+			HANDSHAKE_SENT = true;
+		}
+		else {
+			DEBUGln("failed . . . no ack");
+			return false; //if there is no response, returns false and exits function
+		}
+	}
+	while(!TIME_RECIEVED && HANDSHAKE_SENT) { //Wait for the time to be returned
+		if (radio.receiveDone()) {
+			if (radio.DATALEN == sizeof(theTimeStamp)) { //check to make sure it's the right size
+				theTimeStamp = *(TimeStamp*)radio.DATA; //save data
+				DEBUG(" rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
+				DEBUG(theTimeStamp.timestamp);
+				DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]");
+				DEBUGln();
+				TIME_RECIEVED = true;
+				LED_STATE = false;
+				digitalWrite(LED, LED_STATE);
+			}
+			if (radio.ACKRequested()) radio.sendACK();
+		}
+	}
+	HANDSHAKE_SENT = false;
+	return true;
+}
+
 /**
  * [Blink description]
  * @param t [description]
