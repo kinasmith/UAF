@@ -104,13 +104,6 @@ struct Payload {
 };
 Payload thePayload;
 
-struct Measurement {
-	uint32_t time;
-	int16_t tc1;
-	int16_t tc2;
-	int16_t tc3;
-};
-
 uint32_t current_time;
 uint32_t stop_saved_time = 0;
 uint32_t log_saved_time = 0;
@@ -124,14 +117,6 @@ uint8_t h_status = 0;
 uint32_t saved_time = 0;
 uint16_t interval = 1000;
 
-struct Mem {
-	long one;
-	long two;
-	long three;
-	long four;
-	long five;
-};
-Mem thisMem;
 
 void setup()
 {
@@ -173,26 +158,7 @@ void setup()
 
 void loop()
 {
-	current_time = millis();
-	if(saved_time + interval < current_time) {
-		thisMem.one = random(0, 1000);
-		thisMem.two = random(0, 1000);
-		thisMem.three = random(0, 1000);
-		thisMem.four = random(0, 1000);
-		thisMem.five = random(0, 1000);
-		flash.writeAnything(FLASH_ADDR, thisMem);
-		Mem newMem;
-		if(flash.readAnything(FLASH_ADDR, newMem)) {
-			DEBUGln(newMem.one);
-			DEBUGln(newMem.two);
-			DEBUGln(newMem.three);
-			DEBUGln(newMem.four);
-			DEBUGln(newMem.five);
-			DEBUGln();
-			FLASH_ADDR += sizeof(thisMem);
-		}
-		saved_time = current_time;
-	}
+
 }
 
 /**
