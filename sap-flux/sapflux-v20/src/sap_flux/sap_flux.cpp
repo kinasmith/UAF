@@ -65,9 +65,9 @@ SPIFlash_Marzogh flash(8);
 uint32_t FLASH_ADDR = 0;
 uint16_t EEPROM_ADDR = 0;
 /*==============|| THERMOCOUPLE ||==============*/
-Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T);
-Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T);
-Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T);
+Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
+Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
+Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
 /*==============|| UTIL ||==============*/
 bool LED_STATE;
 uint16_t count = 0;
@@ -106,9 +106,9 @@ struct Payload {
 Payload thePayload;
 
 struct Measurement {
-	uint16_t tc1 = 22;
-	uint16_t tc2 = 23;
-	uint16_t tc3 = 24;
+	double tc1 = 22;
+	double tc2 = 23;
+	double tc3 = 24;
 };
 Measurement thisMeasurement;
 
@@ -201,15 +201,21 @@ void loop()
 			}
 			if(log_saved_time + log_interval < current_time) {
 				tc1.read(); tc2.read(); tc3.read();
-				DEBUGln(tc1.getExternal());
-				DEBUGln(tc2.getExternal());
-				DEBUGln(tc3.getExternal());
+				// DEBUG(tc1.getExternal()); DEBUG(",");
+				// DEBUG(tc2.getExternal()); DEBUG(",");
+				// DEBUG(tc3.getExternal());
+				// DEBUGln();
+				// SPI.endTransaction();
+				// flash.begin();
+				// thisMeasurement.tc1 = tc1.getExternal();
+				// thisMeasurement.tc2 = tc2.getExternal();
+				// thisMeasurement.tc3 = tc3.getExternal();
 				if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
-					DEBUG("data - ");
-					DEBUG(thisMeasurement.tc1); DEBUG(",");
-					DEBUG(thisMeasurement.tc2); DEBUG(",");
-					DEBUG(thisMeasurement.tc3); DEBUG(",");
-					DEBUG("at Address "); DEBUGln(FLASH_ADDR);
+					DEBUGln(".");
+					// DEBUG(thisMeasurement.tc1); DEBUG(",");
+					// DEBUG(thisMeasurement.tc2); DEBUG(",");
+					// DEBUG(thisMeasurement.tc3); DEBUG(",");
+					// DEBUG("at Address "); DEBUGln(FLASH_ADDR);
 				}
 				FLASH_ADDR += sizeof(thisMeasurement);
 				log_saved_time = current_time;
