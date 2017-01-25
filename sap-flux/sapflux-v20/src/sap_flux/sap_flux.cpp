@@ -158,7 +158,57 @@ void setup()
 
 void loop()
 {
-
+	if(sentMeasurement) {
+		DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
+		DEBUGFlush();
+		radio.sleep();
+		count++;
+		for(int i = 0; i < REC_MIN; i++)
+			Sleepy::loseSomeTime(REC_MS);
+		//===========|| MCU WAKES UP HERE
+		//===========|| RESET TIMER VALUES
+		sentMeasurement = 0;
+		current_time = millis();
+		stop_saved_time = current_time;
+		h_saved_time = current_time;
+		log_saved_time = current_time;
+		h_interval = 0;
+	} else {
+		current_time = millis();
+		if(stop_saved_time + stop_time > current_time) {
+			if (h_saved_time + h_interval < current_time){
+				if(h_status == 0) { //if it is off, turn it on
+					digitalWrite(HEATER_EN, HIGH);
+					h_interval = h_pulse_on; //wait for ON time
+					h_status = 1;
+					DEBUG("Heater - On for "); DEBUG(h_interval/1000); DEBUGln("s");
+				} else if(h_status == 1) {//if heat is on....turn it off
+						digitalWrite(HEATER_EN, LOW);
+						h_interval = h_pulse_off; //wait for OFF time
+						h_status = 0;
+					DEBUG("Heater - Off for "); DEBUG(h_interval/1000); DEBUGln("s");
+				}
+				h_saved_time = current_time;
+			}
+			if(log_saved_time + log_interval < current_time) {
+				// Measurement thisMeasurement;
+				// thisMeasurement.time = 2500;
+				// thisMeasurement.tc1 = 15;
+				// thisMeasurement.tc2 = 72;
+				// thisMeasurement.tc3 = 345;
+				delay(500);
+				if(flash.writeAnything(FLASH_ADDR, FLASH_ADDR)) {
+					DEBUGln("--> Data Written");
+				}
+				FLASH_ADDR += sizeof(FLASH_ADDR);
+				DEBUGln(FLASH_ADDR);
+				log_saved_time = current_time;
+			}
+		} else {
+			DEBUGln("SEND MEASUREMENTS");
+			sentMeasurement = 1;
+		}
+	}
 }
 
 /**
