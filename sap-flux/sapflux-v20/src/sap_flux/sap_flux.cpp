@@ -191,11 +191,11 @@ void loop()
 				h_saved_time = current_time;
 			}
 			if(log_saved_time + log_interval < current_time) {
-				// Measurement thisMeasurement;
-				// thisMeasurement.time = 2500;
-				// thisMeasurement.tc1 = 15;
-				// thisMeasurement.tc2 = 72;
-				// thisMeasurement.tc3 = 345;
+				Measurement thisMeasurement;
+				thisMeasurement.time = 2500;
+				thisMeasurement.tc1 = 15;
+				thisMeasurement.tc2 = 72;
+				thisMeasurement.tc3 = 345;
 				delay(500);
 				if(flash.writeAnything(FLASH_ADDR, FLASH_ADDR)) {
 					DEBUGln("--> Data Written");
