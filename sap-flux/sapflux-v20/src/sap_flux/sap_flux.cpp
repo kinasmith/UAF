@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
-#include "Sleepy.h" //https://github.com/kinasmith/Sleepy
+#include "Sleepy.h"
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
 #include <EEPROM.h>
@@ -43,6 +43,7 @@
 #endif
 
 ISR(WDT_vect) { Sleepy::watchdogEvent(); }
+
 /*==============|| FUNCTIONS ||==============*/
 bool getTime();
 void Blink(uint8_t);
@@ -120,6 +121,17 @@ uint16_t h_pulse_on = 6000;
 uint32_t h_pulse_off = 30 * 60000L;
 uint16_t stop_time = 30000;
 uint8_t h_status = 0;
+uint32_t saved_time = 0;
+uint16_t interval = 1000;
+
+struct Mem {
+	long one;
+	long two;
+	long three;
+	long four;
+	long five;
+};
+Mem thisMem;
 
 void setup()
 {
@@ -134,124 +146,53 @@ void setup()
 	radio.enableAutoPower(ATC_RSSI); //Test to see if this is actually working at some point
 	DEBUG("--Transmitting on Network: "); DEBUG(NETWORKID); DEBUG(", as Node: "); DEBUGln(NODEID);
 	pinMode(LED, OUTPUT);
-	//Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
+	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
-	while(!getTime()) { //this saves time to the struct which holds the time globally
-		radio.sleep();
-		DEBUGFlush();
-		delay(10000);
-	}
+	// while(!getTime()) { //this saves time to the struct which holds the time globally
+	// 	radio.sleep();
+	// 	DEBUGFlush();
+	// 	delay(10000);
+	// }
 	digitalWrite(LED, LOW); //write low to signal success
 	DEBUG("--Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
+
+  tc1.begin(); tc2.begin(); tc3.begin();
+  tc1.setThermocoupleType(MAX31856_TCTYPE_E);
+  tc2.setThermocoupleType(MAX31856_TCTYPE_E);
+  tc3.setThermocoupleType(MAX31856_TCTYPE_E);
+	DEBUGln("--Thermocouples are engaged");
+	
 	DEBUG("--Flash Mem: ");
 	flash.begin();
 	uint16_t _name = flash.getChipName();
 	uint32_t capacity = flash.getCapacity();
 	DEBUG("W25X"); DEBUG(_name); DEBUG("**  ");
 	DEBUG("capacity: "); DEBUG(capacity); DEBUGln(" bytes");
-	DEBUGln("Erasing Chip!");
-	while(!flash.eraseChip()) {
-		DEBUGln("Erasing Chip!");
-	}
-  tc1.begin(); tc2.begin(); tc3.begin();
-  tc1.setThermocoupleType(MAX31856_TCTYPE_E);
-  tc2.setThermocoupleType(MAX31856_TCTYPE_E);
-  tc3.setThermocoupleType(MAX31856_TCTYPE_E);
-	DEBUGln("--Thermocouples are engaged");
+	DEBUGln("Erasing Chip!"); flash.eraseChip();
 }
 
 void loop()
 {
-	if(sentMeasurement) {
-		DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
-		DEBUGFlush();
-		radio.sleep();
-		count++;
-		for(int i = 0; i < REC_MIN; i++)
-			Sleepy::loseSomeTime(REC_MS);
-		//===========|| MCU WAKES UP HERE
-		//===========|| RESET TIMER VALUES
-		sentMeasurement = 0;
-		current_time = millis();
-		stop_saved_time = current_time;
-		h_saved_time = current_time;
-		log_saved_time = current_time;
-		h_interval = 0;
-	} else {
-		current_time = millis();
-		if(stop_saved_time + stop_time > current_time) {
-			if (h_saved_time + h_interval < current_time){
-				if(h_status == 0) { //if it is off, turn it on
-					digitalWrite(HEATER_EN, HIGH);
-					h_interval = h_pulse_on; //wait for ON time
-					h_status = 1;
-					DEBUG("Heater - On for "); DEBUG(h_interval/1000); DEBUGln("s");
-				} else if(h_status == 1) {//if heat is on....turn it off
-						digitalWrite(HEATER_EN, LOW);
-						h_interval = h_pulse_off; //wait for OFF time
-						h_status = 0;
-					DEBUG("Heater - Off for "); DEBUG(h_interval/1000); DEBUGln("s");
-				}
-				h_saved_time = current_time;
-			}
-			if(log_saved_time + log_interval < current_time) {
-				// Measurement thisMeasurement;
-				// thisMeasurement.time = 2500;
-				// thisMeasurement.tc1 = 15;
-				// thisMeasurement.tc2 = 72;
-				// thisMeasurement.tc3 = 345;
-				delay(500);
-				if(flash.writeAnything(FLASH_ADDR, FLASH_ADDR)) {
-					DEBUGln("--> Data Written");
-				}
-				FLASH_ADDR += sizeof(FLASH_ADDR);
-				DEBUGln(FLASH_ADDR);
-				log_saved_time = current_time;
-			}
-		} else {
-			DEBUGln("SEND MEASUREMENTS");
-			sentMeasurement = 1;
+	current_time = millis();
+	if(saved_time + interval < current_time) {
+		thisMem.one = random(0, 1000);
+		thisMem.two = random(0, 1000);
+		thisMem.three = random(0, 1000);
+		thisMem.four = random(0, 1000);
+		thisMem.five = random(0, 1000);
+		flash.writeAnything(FLASH_ADDR, thisMem);
+		Mem newMem;
+		if(flash.readAnything(FLASH_ADDR, newMem)) {
+			DEBUGln(newMem.one);
+			DEBUGln(newMem.two);
+			DEBUGln(newMem.three);
+			DEBUGln(newMem.four);
+			DEBUGln(newMem.five);
+			DEBUGln();
+			FLASH_ADDR += sizeof(thisMem);
 		}
+		saved_time = current_time;
 	}
-}
-
-/**
- * [getTime description]
- * @return [description]
- */
-bool getTime() {
-	LED_STATE = true;
-	digitalWrite(LED, LED_STATE);
-	//Get the current timestamp from the datalogger
-	bool TIME_RECIEVED = false;
-	if(!HANDSHAKE_SENT) { //Send request for time to the Datalogger
-		DEBUG("time - ");
-		if (radio.sendWithRetry(GATEWAYID, "t", 1)) {
-			DEBUG("snd . . ");
-			HANDSHAKE_SENT = true;
-		}
-		else {
-			DEBUGln("failed . . . no ack");
-			return false; //if there is no response, returns false and exits function
-		}
-	}
-	while(!TIME_RECIEVED && HANDSHAKE_SENT) { //Wait for the time to be returned
-		if (radio.receiveDone()) {
-			if (radio.DATALEN == sizeof(theTimeStamp)) { //check to make sure it's the right size
-				theTimeStamp = *(TimeStamp*)radio.DATA; //save data
-				DEBUG(" rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
-				DEBUG(theTimeStamp.timestamp);
-				DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]");
-				DEBUGln();
-				TIME_RECIEVED = true;
-				LED_STATE = false;
-				digitalWrite(LED, LED_STATE);
-			}
-			if (radio.ACKRequested()) radio.sendACK();
-		}
-	}
-	HANDSHAKE_SENT = false;
-	return true;
 }
 /**
  * [Blink description]
