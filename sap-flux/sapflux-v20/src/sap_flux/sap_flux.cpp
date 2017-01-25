@@ -5,7 +5,8 @@
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
 #include <EEPROM.h>
-#include "Adafruit_MAX31856.h"
+// #include "Adafruit_MAX31856.h"
+#include "Nanoshield_Termopar.h"
 
 #define NODEID 11
 #define GATEWAYID 0
@@ -61,12 +62,12 @@ uint8_t attempt_cnt = 0;
 bool HANDSHAKE_SENT;
 /*==============|| MEMORY ||==============*/
 SPIFlash_Marzogh flash(8);
-uint32_t FLASH_ADDR = 100;
+uint32_t FLASH_ADDR = 0;
 uint16_t EEPROM_ADDR = 0;
 /*==============|| THERMOCOUPLE ||==============*/
-Adafruit_MAX31856 tc1 = Adafruit_MAX31856(TC1_CS);
-Adafruit_MAX31856 tc2 = Adafruit_MAX31856(TC2_CS);
-Adafruit_MAX31856 tc3 = Adafruit_MAX31856(TC3_CS);
+Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T);
+Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T);
+Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T);
 /*==============|| UTIL ||==============*/
 bool LED_STATE;
 uint16_t count = 0;
@@ -105,10 +106,11 @@ struct Payload {
 Payload thePayload;
 
 struct Measurement {
-	uint16_t tc1;
-	uint16_t tc2;
-	uint16_t tc3;
+	uint16_t tc1 = 22;
+	uint16_t tc2 = 23;
+	uint16_t tc3 = 24;
 };
+Measurement thisMeasurement;
 
 uint32_t current_time;
 uint32_t stop_saved_time = 0;
@@ -147,10 +149,9 @@ void setup()
 	digitalWrite(LED, LOW); //write low to signal success
 	DEBUG("--Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 
-  tc1.begin(); tc2.begin(); tc3.begin();
-  tc1.setThermocoupleType(MAX31856_TCTYPE_E);
-  tc2.setThermocoupleType(MAX31856_TCTYPE_E);
-  tc3.setThermocoupleType(MAX31856_TCTYPE_E);
+  tc1.begin();
+	tc2.begin();
+	tc3.begin();
 	DEBUGln("--Thermocouples are engaged");
 
 	DEBUG("--Flash Mem: ");
@@ -160,6 +161,7 @@ void setup()
 	DEBUG("W25X"); DEBUG(_name); DEBUG("**  ");
 	DEBUG("capacity: "); DEBUG(capacity); DEBUGln(" bytes");
 	DEBUGln("Erasing Chip!"); flash.eraseChip();
+	// flash.powerDown();
 }
 
 void loop()
@@ -198,10 +200,10 @@ void loop()
 				h_saved_time = current_time;
 			}
 			if(log_saved_time + log_interval < current_time) {
-				Measurement thisMeasurement;
-				thisMeasurement.tc1 = int(tc1.readThermocoupleTemperature()*100);
-				thisMeasurement.tc2 = int(tc2.readThermocoupleTemperature()*100);
-				thisMeasurement.tc3 = int(tc3.readThermocoupleTemperature()*100);
+				tc1.read(); tc2.read(); tc3.read();
+				DEBUGln(tc1.getExternal());
+				DEBUGln(tc2.getExternal());
+				DEBUGln(tc3.getExternal());
 				if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
 					DEBUG("data - ");
 					DEBUG(thisMeasurement.tc1); DEBUG(",");
