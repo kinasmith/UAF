@@ -7,7 +7,7 @@
 #include <EEPROM.h>
 #include "Nanoshield_Termopar.h"
 
-#define NODEID 66
+#define NODEID 21
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -58,7 +58,6 @@ bool transmitDataPackage();
 RFM69_ATC radio; //init radio
 uint8_t attempt_cnt = 0;
 uint8_t NETWORKID;
-bool HANDSHAKE_SENT;
 /*==============|| MEMORY ||==============*/
 SPIFlash_Marzogh flash(8);
 uint32_t FLASH_ADDR = 0;
@@ -72,7 +71,7 @@ bool LED_STATE;
 uint16_t count = 0;
 uint8_t sentMeasurement = 0;
 /*==============|| INTERVAL ||==============*/
-const uint8_t REC_MIN = 15; //record interval in minutes
+const uint8_t REC_MIN = 30; //record interval in minutes
 const uint16_t REC_MS = 60000;
 const uint32_t REC_INTERVAL = REC_MIN * (REC_MS/1000); //record interval in seconds
 // const uint32_t REC_INTERVAL = (REC_MS*REC_MIN)/1000UL; //record interval in seconds
@@ -115,7 +114,7 @@ void setup()
 	radio.setHighPower();
 	radio.encrypt(null);
 	radio.enableAutoPower(ATC_RSSI); //Test to see if this is actually working at some point
-	DEBUG("--Transmitting on Network: "); DEBUG(NETWORKID); DEBUG(", as Node: "); DEBUGln(NODEID);
+	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	pinMode(HEATER_EN, OUTPUT);
 	pinMode(LED, OUTPUT);
 	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
@@ -125,15 +124,21 @@ void setup()
 		DEBUGFlush();
 		delay(10000);
 	}
+	if (radio.sendWithRetry(GATEWAYID, "r", 1)) {
+		DEBUG("snd >");
+	}
+	else DEBUGln("failed . . . no ack");
+
 	digitalWrite(LED, LOW); //write low to signal success
-	DEBUG("--Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
+	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
+	saveEEPROMTime(theTimeStamp.timestamp);
 
   tc1.begin();
 	tc2.begin();
 	tc3.begin();
-	DEBUGln("--Thermocouples are engaged");
+	DEBUGln("-- Thermocouples are engaged");
 
-	DEBUG("--Flash Mem: ");
+	DEBUG("-- Flash Mem: ");
 	flash.begin();
 	uint16_t _name = flash.getChipName();
 	uint32_t capacity = flash.getCapacity();
@@ -143,6 +148,7 @@ void setup()
 	while(!flash.eraseChip()) {
 	}
 	DEBUG("Cooling Time is "); DEBUG(REC_INTERVAL); DEBUGln("s");
+	DEBUGln("==========================");
 }
 
 void loop()
@@ -156,7 +162,7 @@ void loop()
 		thisMeasurement.tc3 = tc3.getExternal();
 		thisMeasurement.internal = tc1.getInternal();
 		if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
-			DEBUG("data - ");
+			DEBUG("flash - ");
 			DEBUG(thisMeasurement.tc1); DEBUG(", ");
 			DEBUG(thisMeasurement.tc2); DEBUG(", ");
 			DEBUG(thisMeasurement.tc3); DEBUG(", ");
@@ -179,15 +185,15 @@ void loop()
 		//===========|| MCU WAKES UP HERE
 		measurementCount = 0; //reset measurement counter
 		thePayload.count += 1;
-		thePayload.bat_v = random(50, 1000);
+		thePayload.bat_v = 0;
 		//get current Time, check Datalogger Status
 		if(getTime()) {
-			DEBUG("time - Is: "); DEBUGln(theTimeStamp.timestamp);
-			EEPROM.put(EEPROM_ADDR, theTimeStamp);
-			// DEBUG("flash - byte 0 == "); DEBUGln(flash.readByte(0));
 			if(flash.readByte(0) < 255) {
 				DEBUGln("=== Sending from Flash ===");
 				sendMeasurement();
+			}
+			if (radio.sendWithRetry(GATEWAYID, "r", 1)) {
+				DEBUGln("resume normal listening");
 			}
 		} else {
 			DEBUG("time - No Time, incrementing saved time from ");
@@ -195,6 +201,12 @@ void loop()
 			uint32_t new_time = getEEPROMTime() + REC_INTERVAL;
 			saveEEPROMTime(new_time);
 			DEBUGln(getEEPROMTime());
+		}
+		if(getTime()) {
+			DEBUG("time - is: "); DEBUGln(theTimeStamp.timestamp);
+			saveEEPROMTime(theTimeStamp.timestamp);
+			if (radio.sendWithRetry(GATEWAYID, "r", 1))
+				DEBUGln(" unlatch ");
 		}
 	}
 }
@@ -260,9 +272,9 @@ bool transmitDataPackage()
 			success = 1;
 		} else {
 			DEBUG(" failed . . . no ack ");
-			DEBUG(attempt_cnt);
 			Blink(50);
 			Blink(50);
+			Sleepy::loseSomeTime(30000);//sleep for 30sec and try again
 		}
 	}
 	if(success) return true;
@@ -275,10 +287,11 @@ bool transmitDataPackage()
  */
 bool getTime()
 {
-	LED_STATE = true;
-	digitalWrite(LED, LED_STATE);
-	//Get the current timestamp from the datalogger
+	bool HANDSHAKE_SENT = false;
 	bool TIME_RECIEVED = false;
+	digitalWrite(LED, HIGH);
+	//Get the current timestamp from the datalogger
+
 	if(!HANDSHAKE_SENT) { //Send request for time to the Datalogger
 		DEBUG("time - ");
 		if (radio.sendWithRetry(GATEWAYID, "t", 1)) {
@@ -295,17 +308,13 @@ bool getTime()
 			if (radio.DATALEN == sizeof(theTimeStamp)) { //check to make sure it's the right size
 				theTimeStamp = *(TimeStamp*)radio.DATA; //save data
 				DEBUG(" rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
-				DEBUG(theTimeStamp.timestamp);
-				DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]");
-				DEBUGln();
+				DEBUG(theTimeStamp.timestamp); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
 				TIME_RECIEVED = true;
-				LED_STATE = false;
-				digitalWrite(LED, LED_STATE);
+				digitalWrite(LED, LOW);
 			}
 			if (radio.ACKRequested()) radio.sendACK();
 		}
 	}
-	HANDSHAKE_SENT = false;
 	return true;
 }
 
