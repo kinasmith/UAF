@@ -9,7 +9,7 @@
 #define ATC_RSSI -70
 #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES 10 // # of attempts before giving up
-#define SERIAL_BAUD 9600
+#define SERIAL_BAUD 115200
 #define LED 9
 #define SD_CS_PIN 4
 #define CARD_DETECT 5
@@ -32,8 +32,9 @@ void checkSdCard();
 
 /*==============|| RFM69 ||==============*/
 RFM69_ATC radio; //Initialize Radio
-uint8_t NETWORKID = 100; //base network address
+uint8_t NETWORKID; //base network address
 byte lastRequesterNodeID = NODEID;
+int8_t NodeID_latch;
 
 /*==============|| DS3231_RTC ||==============*/
 DateTime now;
@@ -63,7 +64,7 @@ void setup() {
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);
-	NETWORKID += setAddress();
+	NETWORKID = setAddress();
 	rtc.begin();
 	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
 	Serial.begin(SERIAL_BAUD);
@@ -71,18 +72,17 @@ void setup() {
 	radio.setHighPower(); //only for RFM69HW!
 	radio.enableAutoPower(ATC_RSSI);
 	radio.encrypt(null);
-	DEBUG("Listening at 433mhz, "); DEBUG("Network Address: ");
-	DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
+	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	digitalWrite(LED, HIGH);
 	CARD_PRESENT = !digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
 	if(CARD_PRESENT) {
-		DEBUGln("Card Present OK");
+		DEBUG("SD Present, ");
 		if (SD.begin(SD_CS_PIN)) {
-			DEBUGln("Sd.begin OK");
+			DEBUG("initialized, ");
 			File f;
 			now = rtc.now();
 			if(f.open("start.txt", FILE_WRITE)) {
-				DEBUG("File Open OK at ");
+				DEBUG("file check good at ");
 				DEBUGln(now.unixtime());
 				f.print("program started at: ");
 				f.print(now.unixtime());
@@ -99,7 +99,6 @@ void setup() {
 		}
 	}
 	digitalWrite(LED, LOW);
-	DEBUGln("sd card initialized"); ///Victory
 	DEBUGln("==========================");
 }
 
@@ -108,31 +107,40 @@ void loop() {
 	bool reportTime = false;
 
 	if (radio.receiveDone()) {
+		DEBUG("rcv <");DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
 		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUG("rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] "); DEBUG("t  ->  ");
+			DEBUG("t,"); DEBUG("latch to ") DEBUGln(radio.SENDERID);
+			NodeID_latch = radio.SENDERID;
 			reportTime = true;
 		}
-		if (radio.DATALEN == sizeof(thePayload)) {
-			thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
-			writeData = true;
-			DEBUG("rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
-			DEBUG(thePayload.timestamp);
-			DEBUG(" c: "); DEBUG(thePayload.count);
-			DEBUG(" t1:"); DEBUG(thePayload.tc1);
-			DEBUG(" t2: "); DEBUG(thePayload.tc2);
-			DEBUG(" t3: "); DEBUG(thePayload.tc3);
-			DEBUG(" tbrd: "); DEBUG(thePayload.brd_tmp);
-			DEBUG(" v: "); DEBUG(thePayload.bat_v);
-			DEBUGln();
+		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
+			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
+				DEBUG("r,"); DEBUG("unlatch from "); DEBUGln(radio.SENDERID);
+				NodeID_latch = -1;
+			}
+		}
+		if(NodeID_latch > 0) {
+			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
+				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
+				writeData = true;
+				DEBUG(thePayload.timestamp);
+				DEBUG(" cnt:"); DEBUG(thePayload.count);
+				DEBUG(" t1:"); DEBUG(thePayload.tc1);
+				DEBUG(" t2:"); DEBUG(thePayload.tc2);
+				DEBUG(" t3:"); DEBUG(thePayload.tc3);
+				DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
+				DEBUG(" v:"); DEBUG(thePayload.bat_v);
+				DEBUGln();
+			}
 		}
 		if (radio.ACKRequested()) radio.sendACK();
 		Blink(LED,5);
 	}
 	if(reportTime) {
-		DEBUG("snd - "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
+		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
 			DEBUGln(theTimeStamp.timestamp);
 		} else {
@@ -148,15 +156,15 @@ void loop() {
 		fileName.toCharArray(_fileName, sizeof(_fileName));
 		if (!f.open(_fileName, FILE_WRITE)) { DEBUG("sd - error opening "); DEBUG(_fileName); DEBUGln(); }
 		// if the file opened okay, write to it:
-		DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
+		// DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
 		f.print(NETWORKID); f.print(".");
 		f.print(radio.SENDERID); f.print(",");
 		f.print(thePayload.timestamp); f.print(",");
-		f.print(thePayload.tc1/100.0); f.print(",");
-		f.print(thePayload.tc2/100.0); f.print(",");
-		f.print(thePayload.tc3/100.0); f.print(",");
-		f.print(thePayload.brd_tmp/100.0); f.print(",");
-		f.print(thePayload.bat_v/100.0); f.print(",");
+		f.print(thePayload.tc1); f.print(",");
+		f.print(thePayload.tc2); f.print(",");
+		f.print(thePayload.tc3); f.print(",");
+		f.print(thePayload.brd_tmp); f.print(",");
+		f.print(thePayload.bat_v); f.print(",");
 		f.print(thePayload.count); f.println();
 		f.close();
 	}
@@ -197,7 +205,7 @@ uint8_t setAddress() {
 	digitalWrite(7, LOW);
 	digitalWrite(8, LOW);
 	uint8_t addr = addr01 | addr02 | addr03;
-	return addr;
+	return addr += 100;
 }
 
 // writeLocalTemp(now.unixtime());
