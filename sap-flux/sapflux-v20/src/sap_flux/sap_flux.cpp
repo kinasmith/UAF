@@ -5,8 +5,7 @@
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
 #include <EEPROM.h>
-// #include "Nanoshield_Termopar.h"
-#include "MAX31856.h"
+// #include "MAX31856.h"
 
 #define NODEID 21
 #define GATEWAYID 0
@@ -64,13 +63,9 @@ SPIFlash_Marzogh flash(8);
 uint32_t FLASH_ADDR = 0;
 uint16_t EEPROM_ADDR = 0;
 /*==============|| THERMOCOUPLE ||==============*/
-MAX31856 tc1(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
-MAX31856 tc2(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
-MAX31856 tc3(TC3_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
-
-// Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
-// Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
-// Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
+// MAX31856 tc1(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
+// MAX31856 tc2(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
+// MAX31856 tc3(TC3_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
 /*==============|| UTIL ||==============*/
 bool LED_STATE;
 uint16_t count = 0;
@@ -122,6 +117,18 @@ void setup()
 	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	pinMode(HEATER_EN, OUTPUT);
 	pinMode(LED, OUTPUT);
+
+
+	DEBUG("-- Flash Mem: ");
+	flash.begin();
+	uint16_t _name = flash.getChipName();
+	uint32_t capacity = flash.getCapacity();
+	DEBUG("W25X"); DEBUG(_name); DEBUG("**  ");
+	DEBUG("capacity: "); DEBUG(capacity); DEBUGln(" bytes");
+	DEBUGln("Erasing Chip!");
+	while(!flash.eraseChip()) {
+	}
+
 	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
 	while(!getTime()) { //this saves time to the struct which holds the time globally
@@ -138,20 +145,6 @@ void setup()
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 	saveEEPROMTime(theTimeStamp.timestamp);
 
-  // tc1.begin();
-	// tc2.begin();
-	// tc3.begin();
-	// DEBUGln("-- Thermocouples are engaged");
-
-	DEBUG("-- Flash Mem: ");
-	flash.begin();
-	uint16_t _name = flash.getChipName();
-	uint32_t capacity = flash.getCapacity();
-	DEBUG("W25X"); DEBUG(_name); DEBUG("**  ");
-	DEBUG("capacity: "); DEBUG(capacity); DEBUGln(" bytes");
-	DEBUGln("Erasing Chip!");
-	while(!flash.eraseChip()) {
-	}
 	DEBUG("Cooling Time is "); DEBUG(REC_INTERVAL); DEBUGln("s");
 	DEBUGln("==========================");
 }
@@ -161,12 +154,12 @@ void loop()
 	if(measurementCount < 240) { //240 seconds in 4 minutes
 	// if(measurementCount < 15) { //240 seconds in 4 minutes
 		Measurement thisMeasurement;
-		tc1.prime(); tc2.prime(); tc3.prime(); //start reading
-		tc1.read(); tc2.read(); tc3.read(); //read values
-		thisMeasurement.tc1 = tc1.getExternal();
-		thisMeasurement.tc2 = tc2.getExternal();
-		thisMeasurement.tc3 = tc3.getExternal();
-		thisMeasurement.internal = tc1.getInternal();
+		// tc1.prime(); tc2.prime(); tc3.prime(); //start reading
+		// tc1.read(); tc2.read(); tc3.read(); //read values
+		// thisMeasurement.tc1 = tc1.getExternal();
+		// thisMeasurement.tc2 = tc2.getExternal();
+		// thisMeasurement.tc3 = tc3.getExternal();
+		// thisMeasurement.internal = tc1.getInternal();
 		if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
 			DEBUG("flash - ");
 			DEBUG(thisMeasurement.tc1); DEBUG(", ");
