@@ -5,7 +5,8 @@
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
 #include <EEPROM.h>
-#include "Nanoshield_Termopar.h"
+// #include "Nanoshield_Termopar.h"
+#include "MAX31856.h"
 
 #define NODEID 21
 #define GATEWAYID 0
@@ -63,9 +64,13 @@ SPIFlash_Marzogh flash(8);
 uint32_t FLASH_ADDR = 0;
 uint16_t EEPROM_ADDR = 0;
 /*==============|| THERMOCOUPLE ||==============*/
-Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
-Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
-Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
+MAX31856 tc1(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
+MAX31856 tc2(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
+MAX31856 tc3(TC3_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
+
+// Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
+// Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
+// Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
 /*==============|| UTIL ||==============*/
 bool LED_STATE;
 uint16_t count = 0;
@@ -133,10 +138,10 @@ void setup()
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 	saveEEPROMTime(theTimeStamp.timestamp);
 
-  tc1.begin();
-	tc2.begin();
-	tc3.begin();
-	DEBUGln("-- Thermocouples are engaged");
+  // tc1.begin();
+	// tc2.begin();
+	// tc3.begin();
+	// DEBUGln("-- Thermocouples are engaged");
 
 	DEBUG("-- Flash Mem: ");
 	flash.begin();
@@ -156,7 +161,8 @@ void loop()
 	if(measurementCount < 240) { //240 seconds in 4 minutes
 	// if(measurementCount < 15) { //240 seconds in 4 minutes
 		Measurement thisMeasurement;
-		tc1.read(); tc2.read(); tc3.read();
+		tc1.prime(); tc2.prime(); tc3.prime(); //start reading
+		tc1.read(); tc2.read(); tc3.read(); //read values
 		thisMeasurement.tc1 = tc1.getExternal();
 		thisMeasurement.tc2 = tc2.getExternal();
 		thisMeasurement.tc3 = tc3.getExternal();
@@ -173,16 +179,21 @@ void loop()
 		if(measurementCount <= HEATER_ON_TIME) digitalWrite(HEATER_EN, HIGH); //On cycle start, turn on heater
 		else digitalWrite(HEATER_EN, LOW); //turn off after 6 seconds
 		DEBUGFlush();
+		flash.powerDown(); //turn flash chip off
 		Sleepy::loseSomeTime(1000); // wait one seconds
+		//===========|| MCU WAKES UP HERE
 		measurementCount++; //increment counter
+		flash.powerUp(); //turn flash chip on
 	} else {
 		DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
 		DEBUGFlush();
 		radio.sleep();
+		flash.powerDown(); //turn flash chip off
 		count++;
 		for(int i = 0; i < REC_MIN; i++)
 			Sleepy::loseSomeTime(REC_MS);
 		//===========|| MCU WAKES UP HERE
+		flash.powerUp(); //turn flash chip on
 		measurementCount = 0; //reset measurement counter
 		thePayload.count += 1;
 		thePayload.bat_v = 0;
