@@ -7,7 +7,7 @@
 #include <EEPROM.h>
 #include "MAX31856.h"
 
-#define NODEID 58
+#define NODEID 63
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -66,18 +66,23 @@ uint16_t EEPROM_ADDR = 0;
 MAX31856 tc1(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
 MAX31856 tc2(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
 MAX31856 tc3(TC3_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
-// Nanoshield_Termopar tc1(TC1_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
-// Nanoshield_Termopar tc2(TC2_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
-// Nanoshield_Termopar tc3(TC3_CS, TC_TYPE_T, TC_AVG_4_SAMPLES);
 /*==============|| UTIL ||==============*/
 bool LED_STATE;
 uint16_t count = 0;
 uint8_t sentMeasurement = 0;
-/*==============|| INTERVAL ||==============*/
-const uint8_t REC_MIN = 30; //record interval in minutes
-const uint16_t REC_MS = 60000;
-const uint32_t REC_INTERVAL = REC_MIN * (REC_MS/1000); //record interval in seconds
-// const uint32_t REC_INTERVAL = (REC_MS*REC_MIN)/1000UL; //record interval in seconds
+/*==============|| TIMING ||==============*/
+// const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
+// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
+// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
+// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
+// const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
+
+const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
+const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
+const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
+const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
+const uint16_t REC_DURATION = 25; //how long the measurement is in seconds
+
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
 struct TimeStamp {
@@ -98,13 +103,14 @@ struct Payload {
 Payload thePayload;
 
 struct Measurement {
+	uint16_t count;
 	double tc1;
 	double tc2;
 	double tc3;
 	double internal;
 };
 
-uint8_t measurementCount = 0;
+uint8_t measurementNum = 0;
 
 void setup()
 {
@@ -134,7 +140,7 @@ void setup()
 
 	digitalWrite(LED, LOW); //write low to signal success
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
-	saveEEPROMTime(theTimeStamp.timestamp);
+	saveEEPROMTime(theTimeStamp.timestamp); //Save that time to EEPROM
 
   tc1.begin();
 	tc2.begin();
@@ -143,10 +149,10 @@ void setup()
 
 	DEBUG("-- Flash Mem: ");
 
-	DEBUG("flash - powering up");
-	if(flash.powerUp()) {
-		DEBUGln(". . . OK!");
-	} else DEBUGln(". . . FAILED!");
+	// DEBUG("flash - powering up");
+	// if(flash.powerUp()) {
+	// 	DEBUGln(". . . OK!");
+	// } else DEBUGln(". . . FAILED!");
 
 	flash.begin();
 	uint16_t _name = flash.getChipName();
@@ -156,13 +162,14 @@ void setup()
 	DEBUGln("Erasing Chip!");
 	while(!flash.eraseChip()) {
 	}
-	DEBUG("Cooling Time is "); DEBUG(REC_INTERVAL); DEBUGln("s");
+	DEBUG("Cooling Time is "); DEBUG(float(SLEEP_SECONDS/60.0)); DEBUGln("m");
 	DEBUGln("==========================");
 }
 
 void loop()
 {
-	if(measurementCount < 240) { //240 seconds in 4 minutes
+	//Do this for the measurement duration time
+	if(measurementNum < REC_DURATION) {
 		Measurement thisMeasurement;
 		tc1.prime(); tc2.prime(); tc3.prime();
 		tc1.read(); tc2.read(); tc3.read();
@@ -170,64 +177,64 @@ void loop()
 		thisMeasurement.tc2 = tc2.getExternal();
 		thisMeasurement.tc3 = tc3.getExternal();
 		thisMeasurement.internal = tc1.getInternal();
+		thisMeasurement.count = count;
 		if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
 			DEBUG("flash - ");
 			DEBUG(thisMeasurement.tc1); DEBUG(", ");
 			DEBUG(thisMeasurement.tc2); DEBUG(", ");
 			DEBUG(thisMeasurement.tc3); DEBUG(", ");
 			DEBUG(thisMeasurement.internal); DEBUG(", ");
+			DEBUG(thisMeasurement.count); DEBUG(", ");
 			DEBUG("at Address "); DEBUGln(FLASH_ADDR);
 			FLASH_ADDR += sizeof(thisMeasurement);
 		}
-		if(measurementCount <= HEATER_ON_TIME) {
+		if(measurementNum <= HEATER_ON_TIME) {
 			digitalWrite(HEATER_EN, HIGH); //On cycle start, turn on heater
 		} else {
 			digitalWrite(HEATER_EN, LOW); //turn off after 6 seconds
 		}
 
-		DEBUG("flash - powering down");
-		if(flash.powerDown()) {
-			DEBUGln(". . . OK!");
-		} else DEBUGln(". . . FAILED!");
+		// DEBUG("flash - powering down");
+		// if(flash.powerDown()) {
+		// 	DEBUGln(". . . OK!");
+		// } else DEBUGln(". . . FAILED!");
 
 		DEBUGFlush();
-		Sleepy::loseSomeTime(1000); // wait one seconds
+		Sleepy::loseSomeTime(REC_INTERVAL); // wait one seconds
 		//===========|| MCU WAKES UP HERE
+		measurementNum++; //increment counter
 
-		measurementCount++; //increment counter
-
-		DEBUG("flash - powering up");
-		if(flash.powerUp()) {
-			DEBUGln(". . . OK!");
-		} else DEBUGln(". . . FAILED!");
-
+		// DEBUG("flash - powering up");
+		// if(flash.powerUp()) {
+		// 	DEBUGln(". . . OK!");
+		// } else DEBUGln(". . . FAILED!");
+	//When that time is up, go to sleep for a while.
 	} else {
 
-		DEBUG("flash - powering down");
-		if(flash.powerDown()) {
-			DEBUGln(". . . OK!");
-		} else DEBUGln(". . . FAILED!");
+		// DEBUG("flash - powering down");
+		// if(flash.powerDown()) {
+		// 	DEBUGln(". . . OK!");
+		// } else DEBUGln(". . . FAILED!");
 
-		DEBUG("sleep - sleeping for "); DEBUG(REC_INTERVAL); DEBUG(" seconds"); DEBUGln();
+		DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
 		DEBUGFlush();
 		radio.sleep();
-		count++;
-		for(int i = 0; i < REC_MIN; i++)
-			Sleepy::loseSomeTime(REC_MS);
+		for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
+			Sleepy::loseSomeTime(SLEEP_MS);
 		//===========|| MCU WAKES UP HERE
 
-		DEBUG("flash - powering up");
-		if(flash.powerUp()) {
-			DEBUGln(". . . OK!");
-		} else DEBUGln(". . . FAILED!");
-
-		measurementCount = 0; //reset measurement counter
-		thePayload.count += 1;
+		// DEBUG("flash - powering up");
+		// if(flash.powerUp()) {
+		// 	DEBUGln(". . . OK!");
+		// } else DEBUGln(". . . FAILED!");
+		count++;
+		measurementNum = 0; //reset measurement counter
+		//NOTE: Circuit isn't working. Need to write fuction to do this.
 		thePayload.bat_v = 0;
 
-		//get current Time, check Datalogger Status
+		//get current Time & check Datalogger Status
 		if(getTime()) {
-			if(flash.readByte(0) < 255) {
+			if(flash.readByte(0) < 255) { //Make sure there is data @ bit 0
 				DEBUGln("=== Sending from Flash ===");
 				sendMeasurement();
 			}
@@ -235,11 +242,12 @@ void loop()
 				DEBUGln("resume normal listening");
 			}
 		} else {
-			DEBUG("time - No Time, incrementing saved time from ");
-			DEBUG(getEEPROMTime()); DEBUG(" to ");
-			uint32_t new_time = getEEPROMTime() + REC_INTERVAL;
-			saveEEPROMTime(new_time);
-			DEBUGln(getEEPROMTime());
+			DEBUG("time - No Time,");
+			// incrementing saved time from ");
+			// DEBUG(getEEPROMTime()); DEBUG(" to ");
+			// uint32_t new_time = getEEPROMTime() + SLEEP_SECONDS;
+			// saveEEPROMTime(new_time);
+			// DEBUGln(getEEPROMTime());
 		}
 		if(getTime()) {
 			DEBUG("time - is: "); DEBUGln(theTimeStamp.timestamp);
@@ -255,8 +263,18 @@ void loop()
  */
 void sendMeasurement()
 {
-	// DEBUGln("flash - Checking for Stored Data ");
 	Measurement storedMeasurement;
+	Measurement firstMeasurement;
+	uint8_t first_count;
+	if(flash.readAnything(0, firstMeasurement)){
+		first_count = firstMeasurement.count;
+	}
+	uint8_t num_of_stored_measurements = count - first_count;
+	uint8_t local_m_temp = 0;
+	DEBUG("store - Number of Stored Measurements:") DEBUGln(num_of_stored_measurements);
+
+	thePayload.timestamp = getEEPROMTime(); //retreive saved time
+	DEBUG("time -saved time is: "); DEBUGln(thePayload.timestamp);
 	FLASH_ADDR = 0; //Go to address of first chunk of data.
 	// Check if there is Data
 	while(flash.readByte(FLASH_ADDR) < 255) {
@@ -271,8 +289,15 @@ void sendMeasurement()
 			thePayload.tc2 = storedMeasurement.tc2;
 			thePayload.tc3 = storedMeasurement.tc3;
 			thePayload.internal = storedMeasurement.internal;
+			thePayload.count = storedMeasurement.count;
 		}
-		thePayload.timestamp = theTimeStamp.timestamp += 1000;
+
+		uint8_t local_measurement_num = num_of_stored_measurements - (count - storedMeasurement.count);
+		if(local_measurement_num != local_m_temp && local_measurement_num != 0) {
+			thePayload.timestamp += SLEEP_SECONDS;
+			local_m_temp = local_measurement_num;
+			DEBUGln();
+		} else thePayload.timestamp += REC_INTERVAL/1000;
 
 		if(transmitDataPackage()) {
 			DEBUG("send - ");
@@ -291,7 +316,6 @@ void sendMeasurement()
 	}
 	DEBUGln("flash - Setting address back to 0");
 	FLASH_ADDR = 0; //Set Index to beginning of DATA for Writing Events (or...other location for load balancing?)
-	// EEPROM_ADDR = random(0, 1023);
 	DEBUGln("flash - Erasing Sector 0");
 	flash.eraseSector(0);
 }
