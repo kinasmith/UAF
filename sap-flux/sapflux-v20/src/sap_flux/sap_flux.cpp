@@ -5,10 +5,9 @@
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
 #include <EEPROM.h>
-// #include "Nanoshield_Termopar.h"
 #include "MAX31856.h"
 
-#define NODEID 21
+#define NODEID 58
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -164,7 +163,6 @@ void setup()
 void loop()
 {
 	if(measurementCount < 240) { //240 seconds in 4 minutes
-	// if(measurementCount < 15) { //240 seconds in 4 minutes
 		Measurement thisMeasurement;
 		tc1.prime(); tc2.prime(); tc3.prime();
 		tc1.read(); tc2.read(); tc3.read();
@@ -183,7 +181,6 @@ void loop()
 		}
 		if(measurementCount <= HEATER_ON_TIME) {
 			digitalWrite(HEATER_EN, HIGH); //On cycle start, turn on heater
-			// DEBUGln("--HEATER ON"); //On cycle start, turn on heater
 		} else {
 			digitalWrite(HEATER_EN, LOW); //turn off after 6 seconds
 		}
