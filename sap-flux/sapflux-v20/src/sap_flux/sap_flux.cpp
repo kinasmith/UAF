@@ -71,17 +71,17 @@ bool LED_STATE;
 uint16_t count = 0;
 uint8_t sentMeasurement = 0;
 /*==============|| TIMING ||==============*/
-// const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
-// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
-// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
-// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-// const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
-
-const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
+const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
 const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-const uint16_t REC_DURATION = 25; //how long the measurement is in seconds
+const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
+
+// const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
+// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
+// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
+// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
+// const uint16_t REC_DURATION = 25; //how long the measurement is in seconds
 
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
@@ -126,6 +126,7 @@ void setup()
 	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	pinMode(HEATER_EN, OUTPUT);
 	pinMode(LED, OUTPUT);
+	pinMode(LED2, OUTPUT);
 	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
 	while(!getTime()) { //this saves time to the struct which holds the time globally
@@ -149,11 +150,11 @@ void setup()
 
 	DEBUG("-- Flash Mem: ");
 
-	// DEBUG("flash - powering up");
-	// if(flash.powerUp()) {
-	// 	DEBUGln(". . . OK!");
-	// } else DEBUGln(". . . FAILED!");
-
+	DEBUG("flash - powering up");
+	if(flash.powerUp()) {
+		DEBUGln(". . . OK!");
+	} else DEBUGln(". . . FAILED!");
+	digitalWrite(LED2, HIGH); //turn on LED for Flash init
 	flash.begin();
 	uint16_t _name = flash.getChipName();
 	uint32_t capacity = flash.getCapacity();
@@ -162,6 +163,7 @@ void setup()
 	DEBUGln("Erasing Chip!");
 	while(!flash.eraseChip()) {
 	}
+	digitalWrite(LED2, LOW); //set it low for success
 	DEBUG("Cooling Time is "); DEBUG(float(SLEEP_SECONDS/60.0)); DEBUGln("m");
 	DEBUGln("==========================");
 }
@@ -178,6 +180,8 @@ void loop()
 		thisMeasurement.tc3 = tc3.getExternal();
 		thisMeasurement.internal = tc1.getInternal();
 		thisMeasurement.count = count;
+		digitalWrite(LED2, HIGH); //signal start of Flash WRite
+		delay(50);
 		if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) {
 			DEBUG("flash - ");
 			DEBUG(thisMeasurement.tc1); DEBUG(", ");
@@ -187,6 +191,7 @@ void loop()
 			DEBUG(thisMeasurement.count); DEBUG(", ");
 			DEBUG("at Address "); DEBUGln(FLASH_ADDR);
 			FLASH_ADDR += sizeof(thisMeasurement);
+			digitalWrite(LED2, LOW); //turn off LED on successful Write
 		}
 		if(measurementNum <= HEATER_ON_TIME) {
 			digitalWrite(HEATER_EN, HIGH); //On cycle start, turn on heater
@@ -194,27 +199,27 @@ void loop()
 			digitalWrite(HEATER_EN, LOW); //turn off after 6 seconds
 		}
 
-		// DEBUG("flash - powering down");
-		// if(flash.powerDown()) {
-		// 	DEBUGln(". . . OK!");
-		// } else DEBUGln(". . . FAILED!");
+		DEBUG("flash - powering down");
+		if(flash.powerDown()) {
+			DEBUGln(". . . OK!");
+		} else DEBUGln(". . . FAILED!");
 
 		DEBUGFlush();
 		Sleepy::loseSomeTime(REC_INTERVAL); // wait one seconds
 		//===========|| MCU WAKES UP HERE
 		measurementNum++; //increment counter
 
-		// DEBUG("flash - powering up");
-		// if(flash.powerUp()) {
-		// 	DEBUGln(". . . OK!");
-		// } else DEBUGln(". . . FAILED!");
+		DEBUG("flash - powering up");
+		if(flash.powerUp()) {
+			DEBUGln(". . . OK!");
+		} else DEBUGln(". . . FAILED!");
 	//When that time is up, go to sleep for a while.
 	} else {
 
-		// DEBUG("flash - powering down");
-		// if(flash.powerDown()) {
-		// 	DEBUGln(". . . OK!");
-		// } else DEBUGln(". . . FAILED!");
+		DEBUG("flash - powering down");
+		if(flash.powerDown()) {
+			DEBUGln(". . . OK!");
+		} else DEBUGln(". . . FAILED!");
 
 		DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
 		DEBUGFlush();
@@ -223,10 +228,10 @@ void loop()
 			Sleepy::loseSomeTime(SLEEP_MS);
 		//===========|| MCU WAKES UP HERE
 
-		// DEBUG("flash - powering up");
-		// if(flash.powerUp()) {
-		// 	DEBUGln(". . . OK!");
-		// } else DEBUGln(". . . FAILED!");
+		DEBUG("flash - powering up");
+		if(flash.powerUp()) {
+			DEBUGln(". . . OK!");
+		} else DEBUGln(". . . FAILED!");
 		count++;
 		measurementNum = 0; //reset measurement counter
 		//NOTE: Circuit isn't working. Need to write fuction to do this.
@@ -243,11 +248,6 @@ void loop()
 			}
 		} else {
 			DEBUG("time - No Time,");
-			// incrementing saved time from ");
-			// DEBUG(getEEPROMTime()); DEBUG(" to ");
-			// uint32_t new_time = getEEPROMTime() + SLEEP_SECONDS;
-			// saveEEPROMTime(new_time);
-			// DEBUGln(getEEPROMTime());
 		}
 		if(getTime()) {
 			DEBUG("time - is: "); DEBUGln(theTimeStamp.timestamp);
