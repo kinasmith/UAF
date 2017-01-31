@@ -66,7 +66,9 @@ void setup() {
 	pinMode(CARD_DETECT, INPUT_PULLUP);
 	NETWORKID = setAddress();
 	rtc.begin();
+	//*****
 	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
+	//*****
 	Serial.begin(SERIAL_BAUD);
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower(); //only for RFM69HW!
