@@ -7,7 +7,7 @@
 #include <EEPROM.h>
 #include "MAX31856.h"
 
-#define NODEID 63
+#define NODEID 27
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -49,7 +49,7 @@ ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 bool getTime();
 void Blink(uint8_t);
 uint8_t setAddress();
-float getBatteryVoltage(uint8_t pin, uint8_t en);
+float getBatteryVoltage();
 bool saveEEPROMTime(uint32_t t);
 uint32_t getEEPROMTime();
 void sendMeasurement();
@@ -78,10 +78,10 @@ const uint16_t REC_INTERVAL = 1000; //record interval during measurement event i
 const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
 
 // const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
-// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
+// const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
 // const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 // const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-// const uint16_t REC_DURATION = 25; //how long the measurement is in seconds
+// const uint16_t REC_DURATION = 5; //how long the measurement is in seconds
 
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
@@ -235,7 +235,7 @@ void loop()
 		count++;
 		measurementNum = 0; //reset measurement counter
 		//NOTE: Circuit isn't working. Need to write fuction to do this.
-		thePayload.bat_v = 0;
+		thePayload.bat_v = getBatteryVoltage();
 
 		//get current Time & check Datalogger Status
 		if(getTime()) {
@@ -428,4 +428,19 @@ void Blink(uint8_t t)
 	LED_STATE = !LED_STATE;
 	digitalWrite(LED, LED_STATE);
 	delay(t);
+}
+
+float getBatteryVoltage() {
+	/*
+	         Gets battery voltage from sensor. Does 3x average on the analog reading
+	 */
+	uint16_t readings = 0;
+	digitalWrite(BAT_EN, HIGH);
+	delay(10);
+	for (byte i=0; i<3; i++)
+		readings += analogRead(BAT_V);
+	readings /= 3;
+	float v = 3.3 * (readings/1023.0) * (4300.0/2700.0); //Calculate battery voltage
+	digitalWrite(BAT_EN, LOW);
+	return v;
 }

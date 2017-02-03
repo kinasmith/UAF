@@ -1416,7 +1416,7 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="PARTNO" value="RC0603FR-07100KL" x="45.72" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
 <attribute name="NAME" x="44.820921875" y="41.36709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
 </element>
-<element name="R6" library="My_Passives" package="R0603-N" value="10k --CHECK THIS" x="48.26" y="41.91" smashed="yes" rot="R90">
+<element name="R6" library="My_Passives" package="R0603-N" value="I = 1000/R" x="48.26" y="41.91" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-0710KL" x="48.26" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
 <attribute name="NAME" x="47.360921875" y="41.36709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
 </element>

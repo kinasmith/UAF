@@ -8565,7 +8565,7 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <part name="R7" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="100k">
 <attribute name="PARTNO" value="RC0603FR-07100KL"/>
 </part>
-<part name="R6" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="10k --CHECK THIS">
+<part name="R6" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="I = 1000/R">
 <attribute name="PARTNO" value="RC0603FR-0710KL"/>
 </part>
 <part name="R8" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="10k --CHECK THIS">
@@ -8716,7 +8716,10 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <instance part="C11" gate="G$1" x="195.58" y="53.34"/>
 <instance part="C12" gate="G$1" x="205.74" y="50.8"/>
 <instance part="U2" gate="G$1" x="68.58" y="43.18"/>
-<instance part="R7" gate="G$1" x="45.72" y="20.32" rot="R90"/>
+<instance part="R7" gate="G$1" x="45.72" y="20.32" smashed="yes" rot="R90">
+<attribute name="NAME" x="48.895" y="13.97" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="49.53" y="19.05" size="1.778" layer="95" rot="R90"/>
+</instance>
 <instance part="R6" gate="G$1" x="40.64" y="20.32" rot="R90"/>
 <instance part="R8" gate="G$1" x="93.98" y="25.4" rot="R90"/>
 <instance part="R5" gate="G$1" x="40.64" y="68.58" rot="R90"/>
