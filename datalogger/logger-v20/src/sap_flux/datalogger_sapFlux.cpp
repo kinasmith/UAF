@@ -61,6 +61,11 @@ struct Payload {
 Payload thePayload;
 
 void setup() {
+	#ifdef SERIAL_EN
+		Serial.begin(SERIAL_BAUD);
+	#endif
+	DEBUGln("-- Datalogger for Sap FLux System --")
+
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);
@@ -69,7 +74,6 @@ void setup() {
 	//*****
 	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
 	//*****
-	Serial.begin(SERIAL_BAUD);
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower(); //only for RFM69HW!
 	radio.enableAutoPower(ATC_RSSI);
@@ -78,13 +82,14 @@ void setup() {
 	digitalWrite(LED, HIGH);
 	CARD_PRESENT = !digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
 	if(CARD_PRESENT) {
-		DEBUG("SD Present, ");
+		DEBUG("-- SD Present, ");
 		if (SD.begin(SD_CS_PIN)) {
 			DEBUG("initialized, ");
 			File f;
 			now = rtc.now();
 			if(f.open("start.txt", FILE_WRITE)) {
-				DEBUG("file check good at ");
+				DEBUGln("file write, OK!");
+				DEBUG("-- Time is ");
 				DEBUGln(now.unixtime());
 				f.print("program started at: ");
 				f.print(now.unixtime());
