@@ -8565,10 +8565,10 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <part name="R7" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="100k">
 <attribute name="PARTNO" value="RC0603FR-07100KL"/>
 </part>
-<part name="R6" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="I = 1000/R">
-<attribute name="PARTNO" value="RC0603FR-0710KL"/>
+<part name="R6" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="2k">
+<attribute name="PARTNO" value="RC0603FR-072KL"/>
 </part>
-<part name="R8" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="10k --CHECK THIS">
+<part name="R8" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="10k">
 <attribute name="PARTNO" value="RC0603FR-0710KL"/>
 </part>
 <part name="R5" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="100k">
@@ -8683,16 +8683,36 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <part name="R24" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="10k">
 <attribute name="PARTNO" value="RC0603FR-0710KL"/>
 </part>
-<part name="Q2" library="My_Descrete_Semiconductors" deviceset="MOSFET-NCHANNEL" device="SOT23-3" value="nfet"/>
-<part name="Q3" library="My_Descrete_Semiconductors" deviceset="MOSFET-PCHANNEL" device="SOT23-3" value="pfet"/>
-<part name="R22" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="100k"/>
-<part name="R23" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="2.2k"/>
-<part name="R25" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="4.7k"/>
-<part name="C32" library="My_Passives" deviceset="CAPACITOR_NP" device="0603-N"/>
-<part name="SJ1" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC"/>
-<part name="SJ2" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC"/>
-<part name="SJ3" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC"/>
-<part name="SJ4" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC"/>
+<part name="Q2" library="My_Descrete_Semiconductors" deviceset="MOSFET-NCHANNEL" device="SOT23-3" value="nfet">
+<attribute name="PARTNO" value="BSS138"/>
+</part>
+<part name="Q3" library="My_Descrete_Semiconductors" deviceset="MOSFET-PCHANNEL" device="SOT23-3" value="pfet">
+<attribute name="PARTNO" value="IRLML2244TRPBF"/>
+</part>
+<part name="R22" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="100k">
+<attribute name="PARTNO" value="RC0603FR-07100KL"/>
+</part>
+<part name="R23" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="2.2k">
+<attribute name="PARTNO" value="RC0603FR-072K2L"/>
+</part>
+<part name="R25" library="My_Passives" deviceset="RESISTOR" device="0603-N" value="4.7k">
+<attribute name="PARTNO" value="RC0603FR-074K7L"/>
+</part>
+<part name="C32" library="My_Passives" deviceset="CAPACITOR_NP" device="0603-N" value="0.1uF">
+<attribute name="PARTNO" value="CC0603KRX7R7BB104"/>
+</part>
+<part name="SJ1" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC">
+<attribute name="PARTNO" value="NA"/>
+</part>
+<part name="SJ2" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC">
+<attribute name="PARTNO" value="NA"/>
+</part>
+<part name="SJ3" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC">
+<attribute name="PARTNO" value="NA"/>
+</part>
+<part name="SJ4" library="My_Connectors" deviceset="SOLDERJUMPER" device="NC">
+<attribute name="PARTNO" value="NA"/>
+</part>
 </parts>
 <sheets>
 <sheet>
@@ -10171,16 +10191,6 @@ double check Rx/Tx</text>
 <wire x1="124.46" y1="116.84" x2="127" y2="116.84" width="0.1524" layer="91"/>
 </segment>
 </net>
-</nets>
-</sheet>
-<sheet>
-<plain>
-</plain>
-<instances>
-</instances>
-<busses>
-</busses>
-<nets>
 </nets>
 </sheet>
 </sheets>

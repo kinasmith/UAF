@@ -168,31 +168,14 @@
 <text x="68.961" y="54.102" size="1.016" layer="16" font="vector" ratio="15" rot="SMR180">v11</text>
 <text x="1.27" y="17.78" size="0.762" layer="25" font="vector" ratio="18" rot="R270">sap flux v10
 2016.12</text>
-<text x="3.048" y="31.242" size="1.016" layer="16" font="vector" ratio="15" rot="SMR270">1</text>
-<text x="5.588" y="31.242" size="1.016" layer="16" font="vector" ratio="15" rot="SMR270">2</text>
-<text x="8.128" y="31.242" size="1.016" layer="16" font="vector" ratio="15" rot="SMR270">4</text>
-<text x="19.812" y="30.353" size="1.27" layer="16" ratio="15" rot="SMR270">Tx</text>
-<text x="70.231" y="5.715" size="1.27" layer="16" ratio="15" rot="MR270">GND</text>
-<text x="74.803" y="5.207" size="3.81" layer="16" font="vector" ratio="15" rot="MR0">+</text>
+<text x="2.54" y="31.242" size="1.524" layer="16" font="vector" ratio="15" rot="SMR270" align="center">1</text>
+<text x="5.08" y="31.242" size="1.524" layer="16" font="vector" ratio="15" rot="SMR270" align="center">2</text>
+<text x="7.62" y="31.369" size="1.524" layer="16" font="vector" ratio="15" rot="SMR270" align="center">4</text>
+<text x="20.066" y="30.226" size="1.27" layer="16" ratio="15" rot="SMR270">Tx</text>
+<text x="67.818" y="0.635" size="1.27" layer="16" ratio="15" rot="MR0">GND</text>
+<text x="63.373" y="6.731" size="3.81" layer="16" font="vector" ratio="15" rot="MR0">+</text>
 <text x="51.816" y="40.64" size="6.35" layer="16" font="vector" ratio="15" rot="MR0" align="center">+</text>
-<wire x1="63.704809375" y1="28.1432" x2="63.704809375" y2="31.9532" width="0.4064" layer="46"/>
-<wire x1="63.704809375" y1="31.9532" x2="61.164809375" y2="31.9532" width="0.4064" layer="46"/>
-<wire x1="63.704809375" y1="31.9532" x2="64.974809375" y2="31.9532" width="0.4064" layer="46"/>
-<wire x1="64.974809375" y1="31.9532" x2="67.006809375" y2="31.9532" width="0.4064" layer="46"/>
-<wire x1="67.006809375" y1="31.9532" x2="67.006809375" y2="30.4292" width="0.4064" layer="46"/>
-<wire x1="67.006809375" y1="30.4292" x2="66.244809375" y2="30.4292" width="0.4064" layer="46"/>
-<wire x1="66.244809375" y1="30.4292" x2="66.244809375" y2="28.1432" width="0.4064" layer="46"/>
-<wire x1="64.974809375" y1="31.9532" x2="64.974809375" y2="33.7312" width="0.4064" layer="46"/>
-<wire x1="64.974809375" y1="33.7312" x2="64.974809375" y2="35.3822" width="0.4064" layer="46"/>
-<wire x1="64.974809375" y1="35.3822" x2="63.323809375" y2="35.3822" width="0.4064" layer="46"/>
-<wire x1="63.323809375" y1="35.3822" x2="63.323809375" y2="34.4932" width="0.4064" layer="46"/>
-<wire x1="63.323809375" y1="34.4932" x2="61.164809375" y2="34.4932" width="0.4064" layer="46"/>
-<wire x1="63.704809375" y1="38.3032" x2="63.704809375" y2="36.1442" width="0.4064" layer="46"/>
-<wire x1="63.704809375" y1="36.1442" x2="66.498809375" y2="36.1442" width="0.4064" layer="46"/>
-<wire x1="66.498809375" y1="36.1442" x2="66.498809375" y2="34.4932" width="0.4064" layer="46"/>
-<wire x1="66.498809375" y1="34.4932" x2="66.498809375" y2="33.7312" width="0.4064" layer="46"/>
-<wire x1="66.498809375" y1="33.7312" x2="64.974809375" y2="33.7312" width="0.4064" layer="46"/>
-<wire x1="66.498809375" y1="34.4932" x2="68.784809375" y2="34.4932" width="0.4064" layer="46"/>
+<text x="11.938" y="34.163" size="1.27" layer="16" ratio="15" rot="SMR270">Mem</text>
 </plain>
 <libraries>
 <library name="My_Aesthetics">
@@ -1416,11 +1399,11 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="PARTNO" value="RC0603FR-07100KL" x="45.72" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
 <attribute name="NAME" x="44.820921875" y="41.36709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
 </element>
-<element name="R6" library="My_Passives" package="R0603-N" value="I = 1000/R" x="48.26" y="41.91" smashed="yes" rot="R90">
-<attribute name="PARTNO" value="RC0603FR-0710KL" x="48.26" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
+<element name="R6" library="My_Passives" package="R0603-N" value="2k" x="48.26" y="41.91" smashed="yes" rot="R90">
+<attribute name="PARTNO" value="RC0603FR-072KL" x="48.26" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
 <attribute name="NAME" x="47.360921875" y="41.36709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
 </element>
-<element name="R8" library="My_Passives" package="R0603-N" value="10k --CHECK THIS" x="44.45" y="52.07" smashed="yes">
+<element name="R8" library="My_Passives" package="R0603-N" value="10k" x="44.45" y="52.07" smashed="yes">
 <attribute name="PARTNO" value="RC0603FR-0710KL" x="44.45" y="52.07" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
 <attribute name="NAME" x="42.788921875" y="51.40009375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
 </element>
@@ -1653,41 +1636,41 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="NAME" x="51.699078125" y="38.89690625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
 </element>
 <element name="Q2" library="My_Descrete_Semiconductors" package="SOT23-3" value="nfet" x="64.339809375" y="31.9532" smashed="yes">
-<attribute name="PARTNO" value="" x="64.339809375" y="31.9532" size="1.778" layer="27" display="off"/>
+<attribute name="PARTNO" value="BSS138" x="64.339809375" y="31.9532" size="1.778" layer="27" display="off"/>
 <attribute name="NAME" x="64.847809375" y="32.9692" size="0.6096" layer="25"/>
 <attribute name="VALUE" x="62.434809375" y="29.4132" size="0.6096" layer="27"/>
 </element>
 <element name="Q3" library="My_Descrete_Semiconductors" package="SOT23-3" value="pfet" x="64.974809375" y="35.7632" smashed="yes">
-<attribute name="PARTNO" value="" x="64.974809375" y="35.7632" size="1.778" layer="27" display="off"/>
+<attribute name="PARTNO" value="IRLML2244TRPBF" x="64.974809375" y="35.7632" size="1.778" layer="27" display="off"/>
 <attribute name="NAME" x="65.609809375" y="36.7792" size="0.6096" layer="25"/>
 <attribute name="VALUE" x="63.069809375" y="33.2232" size="0.6096" layer="27"/>
 </element>
 <element name="R22" library="My_Passives" package="R0603-N" value="100k" x="62.434809375" y="34.4932" smashed="yes" rot="R90">
-<attribute name="PARTNO" value="" x="62.434809375" y="34.4932" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="PARTNO" value="RC0603FR-07100KL" x="62.434809375" y="34.4932" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="62.04373125" y="31.53729375" size="0.8128" layer="25" font="vector" ratio="13" rot="R90"/>
 </element>
 <element name="R23" library="My_Passives" package="R0603-N" value="2.2k" x="67.514809375" y="35.1282" smashed="yes" rot="R90">
-<attribute name="PARTNO" value="" x="67.514809375" y="35.1282" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="PARTNO" value="RC0603FR-072K2L" x="67.514809375" y="35.1282" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="68.311715625" y="37.658121875" size="0.8128" layer="25" font="vector" ratio="13" rot="R180"/>
 </element>
 <element name="R25" library="My_Passives" package="R0603-N" value="4.7k" x="66.879809375" y="30.6832" smashed="yes" rot="R90">
-<attribute name="PARTNO" value="" x="66.879809375" y="30.6832" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="PARTNO" value="RC0603FR-074K7L" x="66.879809375" y="30.6832" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="67.7788875" y="31.35310625" size="0.8128" layer="25" font="vector" ratio="13" rot="R270"/>
 </element>
-<element name="C32" library="My_Passives" package="C0603-N" value="" x="68.784809375" y="30.6832" rot="R270">
-<attribute name="PARTNO" value="" x="68.784809375" y="30.6832" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
+<element name="C32" library="My_Passives" package="C0603-N" value="0.1uF" x="68.784809375" y="30.6832" rot="R270">
+<attribute name="PARTNO" value="CC0603KRX7R7BB104" x="68.784809375" y="30.6832" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
 </element>
 <element name="SJ1" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="46.736" y="11.176" rot="MR0">
-<attribute name="PARTNO" value="" x="46.736" y="11.176" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
+<attribute name="PARTNO" value="NA" x="46.736" y="11.176" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 </element>
 <element name="SJ2" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="46.736" y="13.208" rot="MR0">
-<attribute name="PARTNO" value="" x="46.736" y="13.208" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
+<attribute name="PARTNO" value="NA" x="46.736" y="13.208" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 </element>
 <element name="SJ3" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="52.451" y="14.478" rot="R180">
-<attribute name="PARTNO" value="" x="52.451" y="14.478" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
+<attribute name="PARTNO" value="NA" x="52.451" y="14.478" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
 </element>
 <element name="SJ4" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="52.451" y="16.002" rot="R180">
-<attribute name="PARTNO" value="" x="52.451" y="16.002" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
+<attribute name="PARTNO" value="NA" x="52.451" y="16.002" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
 </element>
 </elements>
 <signals>
@@ -3258,8 +3241,8 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <approved hash="4,16,02f75b706e61e2e5"/>
 <approved hash="4,16,f808d40ed51f791a"/>
 <approved hash="19,16,fc664891c05f8fa3"/>
-<approved hash="4,16,bf1d89423b6230d9"/>
 <approved hash="4,16,09513ee48af7bc97"/>
+<approved hash="4,16,bf1d89423b6230d9"/>
 </errors>
 </board>
 </drawing>
