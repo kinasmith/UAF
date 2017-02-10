@@ -8,7 +8,7 @@
 </settings>
 <grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.005" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
 <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
 <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
@@ -18,12 +18,12 @@
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="16" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="16" fill="1" visible="no" active="yes"/>
 <layer number="22" name="bPlace" color="5" fill="1" visible="yes" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
@@ -46,9 +46,9 @@
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
-<layer number="51" name="tDocu" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="51" name="tDocu" color="6" fill="1" visible="no" active="yes"/>
 <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
@@ -165,9 +165,9 @@
 <hole x="5.08" y="24.13" drill="3.81"/>
 <hole x="3.81" y="50.8" drill="3.81"/>
 <hole x="72.39" y="3.81" drill="3.81"/>
-<text x="68.961" y="54.102" size="1.016" layer="16" font="vector" ratio="15" rot="SMR180">v11</text>
-<text x="1.27" y="17.78" size="0.762" layer="25" font="vector" ratio="18" rot="R270">sap flux v10
-2016.12</text>
+<text x="68.961" y="54.102" size="1.016" layer="16" font="vector" ratio="15" rot="SMR180">v20</text>
+<text x="1.27" y="17.78" size="1.016" layer="25" font="vector" ratio="12" rot="R270">sap flux v20
+2017.2</text>
 <text x="2.54" y="31.242" size="1.524" layer="16" font="vector" ratio="15" rot="SMR270" align="center">1</text>
 <text x="5.08" y="31.242" size="1.524" layer="16" font="vector" ratio="15" rot="SMR270" align="center">2</text>
 <text x="7.62" y="31.369" size="1.524" layer="16" font="vector" ratio="15" rot="SMR270" align="center">4</text>
@@ -1280,148 +1280,148 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 </element>
 <element name="C16" library="My_Passives" package="C0603-N" value="0.1uF" x="57.15" y="29.21" smashed="yes">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="57.15" y="29.21" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="59.044921875" y="30.06409375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="58.790921875" y="30.06409375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C17" library="My_Passives" package="C0603-N" value="0.01uF" x="53.34" y="29.21" smashed="yes">
 <attribute name="PARTNO" value="GRM188R71C103KA01D" x="53.34" y="29.21" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="52.440921875" y="30.06409375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="52.440921875" y="30.06409375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C15" library="My_Passives" package="C0603-N" value="0.01uF" x="60.452" y="29.21" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="GRM188R71C103KA01D" x="60.452" y="29.21" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="61.732078125" y="30.64190625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="61.351078125" y="30.38790625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C21" library="My_Passives" package="C0603-N" value="0.1uF" x="53.34" y="22.86" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="53.34" y="22.86" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="52.842078125" y="21.24390625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="52.842078125" y="21.24390625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C23" library="My_Passives" package="C0603-N" value="0.1uF" x="53.34" y="26.67" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="53.34" y="26.67" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="51.699078125" y="27.72090625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="51.699078125" y="27.72090625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R13" library="My_Passives" package="R0603-N" value="100" x="57.15" y="34.29" smashed="yes">
 <attribute name="PARTNO" value="RC0603FR-07100RL" x="57.15" y="34.29" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="57.647921875" y="35.27109375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="59.679921875" y="33.11209375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R14" library="My_Passives" package="R0603-N" value="100" x="55.88" y="31.75" smashed="yes">
 <attribute name="PARTNO" value="RC0603FR-07100RL" x="55.88" y="31.75" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="54.218921875" y="30.95309375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="54.218921875" y="30.69909375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="U4" library="My_IC_Digital" package="TSSOP14" value="MAX31856MUD+" x="57.15" y="24.13" smashed="yes" rot="R180">
-<attribute name="NAME" x="58.3946" y="24.0538" size="0.762" layer="25" ratio="18" rot="R270"/>
-<attribute name="VALUE" x="53.2638" y="26.2128" size="0.762" layer="27" ratio="18" rot="R270"/>
+<attribute name="NAME" x="58.3946" y="24.0538" size="0.889" layer="25" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="53.2638" y="26.2128" size="0.889" layer="27" ratio="12" rot="R270"/>
 <attribute name="PARTNO" value="MAX31856MUD+" x="57.15" y="24.13" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="C26" library="My_Passives" package="C0603-N" value="0.1uF" x="36.83" y="27.94" smashed="yes">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="27.94" y="27.94" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="39.486921875" y="26.76209375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="39.486921875" y="26.38109375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C27" library="My_Passives" package="C0603-N" value="0.01uF" x="33.02" y="27.94" smashed="yes">
 <attribute name="PARTNO" value="GRM188R71C103KA01D" x="20.32" y="24.13" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="31.231921875" y="27.14309375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="31.231921875" y="27.14309375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C25" library="My_Passives" package="C0603-N" value="0.01uF" x="41.91" y="30.48" smashed="yes">
 <attribute name="PARTNO" value="GRM188R71C103KA01D" x="25.4" y="22.86" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="41.899921875" y="31.46109375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="41.518921875" y="27.27009375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C28" library="My_Passives" package="C0603-N" value="0.1uF" x="33.02" y="25.4" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="29.21" y="25.4" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="31.993921875" y="24.34909375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="31.993921875" y="24.34909375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C29" library="My_Passives" package="C0603-N" value="0.1uF" x="32.258" y="21.59" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="32.258" y="25.4" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="30.363078125" y="23.02190625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="30.363078125" y="23.02190625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R17" library="My_Passives" package="R0603-N" value="100" x="38.1" y="30.48" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-07100RL" x="34.29" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="38.999078125" y="31.65790625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="38.999078125" y="33.43590625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R18" library="My_Passives" package="R0603-N" value="100" x="35.56" y="30.48" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-07100RL" x="27.94" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="33.792078125" y="31.65790625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="33.792078125" y="31.65790625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="U6" library="My_IC_Digital" package="TSSOP14" value="MAX31856MUD+" x="36.83" y="22.86" smashed="yes" rot="R180">
-<attribute name="NAME" x="38.0746" y="22.7838" size="0.762" layer="25" ratio="18" rot="R270"/>
-<attribute name="VALUE" x="32.9438" y="24.9428" size="0.762" layer="27" ratio="18" rot="R270"/>
+<attribute name="NAME" x="38.0746" y="22.7838" size="0.889" layer="25" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="32.9438" y="24.9428" size="0.889" layer="27" ratio="12" rot="R270"/>
 <attribute name="PARTNO" value="MAX31856MUD+" x="36.83" y="22.86" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="C19" library="My_Passives" package="C0603-N" value="0.1uF" x="46.99" y="22.86" smashed="yes">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="38.1" y="22.86" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="45.963921875" y="23.84109375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="45.963921875" y="23.84109375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C20" library="My_Passives" package="C0603-N" value="0.01uF" x="43.18" y="22.86" smashed="yes">
 <attribute name="PARTNO" value="GRM188R71C103KA01D" x="30.48" y="19.05" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="42.153921875" y="23.71409375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="41.518921875" y="22.44409375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C18" library="My_Passives" package="C0603-N" value="0.01uF" x="50.165" y="22.86" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="GRM188R71C103KA01D" x="42.545" y="39.37" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="51.064078125" y="24.16490625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="51.064078125" y="24.16490625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C22" library="My_Passives" package="C0603-N" value="0.1uF" x="43.18" y="20.32" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="39.37" y="20.32" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="42.153921875" y="19.39609375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="42.153921875" y="19.39609375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C24" library="My_Passives" package="C0603-N" value="0.1uF" x="41.91" y="17.78" smashed="yes">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="38.1" y="17.78" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="42.280921875" y="14.82409375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="42.280921875" y="14.69709375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R15" library="My_Passives" package="R0603-N" value="100" x="49.53" y="25.4" smashed="yes">
 <attribute name="PARTNO" value="RC0603FR-07100RL" x="41.91" y="21.59" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="49.646921875" y="26.25409375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="49.646921875" y="26.25409375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R16" library="My_Passives" package="R0603-N" value="100" x="46.99" y="25.4" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-07100RL" x="39.37" y="36.83" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="47.360921875" y="27.14309375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="47.360921875" y="27.14309375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="U5" library="My_IC_Digital" package="TSSOP14" value="MAX31856MUD+" x="46.99" y="17.78" smashed="yes" rot="R180">
-<attribute name="NAME" x="44.9326" y="19.4818" size="0.762" layer="25" ratio="18" rot="R270"/>
-<attribute name="VALUE" x="43.1038" y="19.8628" size="0.762" layer="27" ratio="18" rot="R270"/>
+<attribute name="NAME" x="45.5676" y="19.4818" size="0.889" layer="25" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="43.1038" y="19.8628" size="0.889" layer="27" ratio="12" rot="R270"/>
 <attribute name="PARTNO" value="MAX31856MUD+" x="46.99" y="17.78" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="D4" library="My_Descrete_Semiconductors" package="SOD-123FL" value="DIODE-SCHOTTKY-SOD123FL" x="54.61" y="46.99" smashed="yes">
 <attribute name="PARTNO" value="MBR120VLSFT1G" x="54.61" y="46.99" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="54.991" y="44.704" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
-<attribute name="VALUE" x="52.705" y="44.704" size="0.762" layer="27" font="vector" ratio="18"/>
+<attribute name="NAME" x="54.991" y="44.704" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="52.705" y="44.704" size="0.889" layer="27" font="vector" ratio="12"/>
 </element>
 <element name="C11" library="My_Passives" package="CP_TH_5MM" value="4700uF" x="67.31" y="24.892" smashed="yes" rot="MR90">
-<attribute name="NAME" x="63.5" y="22.352" size="0.762" layer="26" ratio="18" rot="MR90"/>
+<attribute name="NAME" x="64.643" y="26.162" size="0.889" layer="26" ratio="12" rot="MR270"/>
 <attribute name="PARTNO" value="ECA-1AM472" x="67.31" y="24.892" size="1.778" layer="28" rot="MR90" display="off"/>
 </element>
 <element name="C12" library="My_Passives" package="C0805-N" value="10uF" x="55.88" y="50.8" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="55.88" y="50.8" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="58.083125" y="49.45928125" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="58.083125" y="49.45928125" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="U2" library="My_IC_Power" package="QFN20" value="" x="46.99" y="46.99" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="MCP73871-2AAI/ML-ND" x="46.99" y="46.99" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="44.668" y="50.733" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="44.668" y="50.733" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 <attribute name="VALUE" x="44.408" y="44.871" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
 </element>
 <element name="R7" library="My_Passives" package="R0603-N" value="100k" x="45.72" y="41.91" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-07100KL" x="45.72" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="44.820921875" y="41.36709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="44.820921875" y="41.36709375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R6" library="My_Passives" package="R0603-N" value="2k" x="48.26" y="41.91" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-072KL" x="48.26" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="47.360921875" y="41.36709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="47.360921875" y="41.36709375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R8" library="My_Passives" package="R0603-N" value="10k" x="44.45" y="52.07" smashed="yes">
 <attribute name="PARTNO" value="RC0603FR-0710KL" x="44.45" y="52.07" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="42.788921875" y="51.40009375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="42.788921875" y="51.40009375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R5" library="My_Passives" package="R0603-N" value="100k" x="52.07" y="52.07" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="RC0603FR-07100KL" x="52.07" y="52.07" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="54.472921875" y="51.52709375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="54.472921875" y="51.52709375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R4" library="My_Passives" package="R0603-N" value="270k" x="48.26" y="52.07" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="RC0603FR-07270KL" x="48.26" y="52.07" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="46.746078125" y="51.34290625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="46.746078125" y="51.34290625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C4" library="My_Passives" package="C0805-N" value="10uF" x="52.07" y="50.038" smashed="yes">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="52.07" y="50.038" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="50.082125" y="49.20528125" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="50.082125" y="49.20528125" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C5" library="My_Passives" package="C0805-N" value="10uF" x="50.8" y="41.91" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="50.8" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="52.025875" y="42.48871875" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="52.025875" y="42.48871875" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="BATT1" library="My_Connectors" package="BAT_18650_CLIP" value="BATTERY_HOLDER-18650_CLIP" x="11.43" y="41.91" smashed="yes" rot="MR180">
 <attribute name="PARTNO" value="54" x="11.43" y="41.91" size="1.778" layer="28" font="vector" ratio="15" rot="MR180" display="off"/>
@@ -1429,88 +1429,88 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 </element>
 <element name="U1" library="My_IC_Power" package="DFN300X300X80-11N" value="ADP2503" x="67.31" y="49.53" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="ADP2503ACPZ-3.3-R7" x="67.31" y="49.53" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="67.691" y="51.2826" size="0.762" layer="25" font="vector" ratio="18" rot="SR90"/>
-<attribute name="VALUE" x="68.4784" y="51.689" size="0.762" layer="27" font="vector" ratio="18" rot="SR180"/>
+<attribute name="NAME" x="67.691" y="51.2826" size="0.889" layer="25" font="vector" ratio="12" rot="SR90"/>
+<attribute name="VALUE" x="68.4784" y="51.689" size="0.889" layer="27" font="vector" ratio="12" rot="SR180"/>
 </element>
 <element name="L1" library="My_Passives" package="L3030" value="1.5uH" x="71.12" y="49.53" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="NR3015T1R5N" x="71.12" y="49.53" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="73.057" y="50.251" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="73.057" y="50.251" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C1" library="My_Passives" package="C0805-N" value="10uF" x="63.5" y="44.45" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="63.5" y="44.45" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="62.147125" y="43.36328125" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="62.147125" y="43.36328125" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C2" library="My_Passives" package="C0805-N" value="10uF" x="71.12" y="45.72" smashed="yes">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="71.12" y="45.72" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="71.418125" y="43.23628125" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="71.418125" y="43.23628125" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C3" library="My_Passives" package="C0805-N" value="10uF" x="67.31" y="45.72" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="67.31" y="45.72" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="67.011875" y="44.64771875" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="67.011875" y="44.64771875" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="U3" library="My_IC_Power" package="DFN300X300X80-11N" value="ADP1614" x="26.67" y="40.64" smashed="yes" rot="R90">
-<attribute name="NAME" x="27.051" y="37.1856" size="0.762" layer="25" font="vector" ratio="18" rot="SR90"/>
-<attribute name="VALUE" x="28.829" y="39.4716" size="0.762" layer="27" font="vector" ratio="18" rot="SR90"/>
+<attribute name="NAME" x="27.051" y="36.9316" size="0.889" layer="25" font="vector" ratio="12" rot="SR90"/>
+<attribute name="VALUE" x="28.829" y="39.4716" size="0.889" layer="27" font="vector" ratio="12" rot="SR90"/>
 <attribute name="PARTNO" value="ADP1614ACPZ-650-R7" x="26.67" y="40.64" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
 <element name="L2" library="My_Passives" package="L8080" value="4.7uH 4.3A" x="25.4" y="48.26" smashed="yes">
 <attribute name="PARTNO" value="NRS8040T100MJGJ" x="25.4" y="48.26" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="25.654" y="49.784" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
-<attribute name="VALUE" x="24.4" y="46.26" size="0.762" layer="27" font="vector" ratio="18"/>
+<attribute name="NAME" x="25.654" y="49.784" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="24.4" y="46.26" size="0.889" layer="27" font="vector" ratio="12"/>
 </element>
 <element name="D5" library="My_Descrete_Semiconductors" package="SOD128" value="DIODE-SCHOTTKY-SOD128" x="31.75" y="48.26" smashed="yes" rot="R270">
-<attribute name="NAME" x="33.782" y="49.149" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
-<attribute name="VALUE" x="29.464" y="50.165" size="0.762" layer="27" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="33.782" y="49.149" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="29.464" y="50.165" size="0.889" layer="27" font="vector" ratio="12" rot="R270"/>
 <attribute name="PARTNO" value="CMS05(TE12L,Q,M)" x="31.75" y="48.26" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="C9" library="My_Passives" package="C0603-N" value="2200pF" x="21.59" y="38.1" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="GRM188R71C222KA01D" x="21.59" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="21.833921875" y="35.14409375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="21.833921875" y="35.14409375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C10" library="My_Passives" package="C0603-N" value="3300pF" x="19.05" y="38.1" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="C0603C332K4RACTU" x="19.05" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="19.420921875" y="34.38209375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="19.420921875" y="34.38209375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C8" library="My_Passives" package="C0603-N" value="4700pF" x="24.13" y="41.91" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="GRM188R71C472KA01D" x="24.13" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="25.029078125" y="43.84990625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="25.029078125" y="43.84990625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R9" library="My_Passives" package="R0603-N" value="66.5k" x="21.59" y="41.91" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-0766K5L" x="21.59" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="22.489078125" y="42.57990625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="22.489078125" y="42.57990625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R10" library="My_Passives" package="R0603-N" value="2k" x="24.13" y="38.1" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-072KL" x="24.13" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="23.632078125" y="36.48390625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="23.632078125" y="36.48390625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R12" library="My_Passives" package="R0603-N" value="10k" x="29.21" y="38.1" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-0710KL" x="29.21" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="29.580921875" y="34.25509375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="29.580921875" y="34.25509375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R11" library="My_Passives" package="R0603-N" value="42.2k" x="31.75" y="38.1" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-0742K2L" x="31.75" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="31.993921875" y="34.38209375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="31.993921875" y="34.38209375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C7" library="My_Passives" package="C0805-N" value="10uF" x="16.51" y="41.91" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="16.51" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="16.084875" y="45.28271875" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="16.084875" y="45.28271875" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C6" library="My_Passives" package="C0805-N" value="10uF" x="19.05" y="41.91" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="19.05" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="18.624875" y="45.28271875" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="18.624875" y="45.28271875" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="C13" library="My_Passives" package="C0805-N" value="10uF" x="29.21" y="41.91" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="29.21" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="30.524125" y="43.87128125" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="30.524125" y="43.87128125" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="C14" library="My_Passives" package="C0805-N" value="10uF" x="31.75" y="41.91" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="GRM21BR61C106KE15K" x="31.75" y="41.91" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="33.699125" y="40.95028125" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="33.699125" y="40.95028125" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="Q1" library="My_Descrete_Semiconductors" package="SOT23-3" value="Nfet" x="46.99" y="38.1" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="DMN2075U-7" x="46.99" y="38.1" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="45.339" y="37.719" size="0.762" layer="25" ratio="18" rot="R270"/>
-<attribute name="VALUE" x="49.53" y="36.195" size="0.762" layer="27" ratio="18" rot="R90"/>
+<attribute name="NAME" x="45.339" y="37.719" size="0.889" layer="25" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="49.53" y="36.195" size="0.889" layer="27" ratio="12" rot="R90"/>
 </element>
 <element name="FRAME3" library="My_Aesthetics" package="DUMMY" value="FRAME-LETTERNO_PACKAGE" x="35.56" y="0" smashed="yes" rot="R90">
 <attribute name="DESIGNER" value="Nobody" x="35.56" y="0" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
@@ -1519,36 +1519,36 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 </element>
 <element name="U9" library="My_IC_Digital" package="SOIC8" value="WINBOND_FLASH_4MBIT-SOIC" x="57.15" y="13.97" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="W25X40CLSNIG" x="57.15" y="13.97" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="58.166" y="14.478" size="0.762" layer="25" ratio="18" rot="R90"/>
-<attribute name="VALUE" x="61.214" y="11.43" size="0.762" layer="27" ratio="18" rot="R90"/>
+<attribute name="NAME" x="58.166" y="16.764" size="0.889" layer="25" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="61.214" y="11.43" size="0.889" layer="27" ratio="12" rot="R90"/>
 <attribute name="NOTES" value="CHECK THIS PACKAGE" x="57.15" y="13.97" size="1" layer="27" font="vector" ratio="11" rot="R90" display="off"/>
 </element>
 <element name="U7" library="My_IC_Digital" package="MLF32_RECTPADS" value="ATMEGA328P_32PIN-MU" x="35.56" y="12.7" smashed="yes" rot="R90">
-<attribute name="NAME" x="39.751" y="12.446" size="0.762" layer="25" ratio="18" rot="R90"/>
-<attribute name="VALUE" x="40.005" y="10.16" size="0.762" layer="27" ratio="18" rot="R90"/>
+<attribute name="NAME" x="39.751" y="12.446" size="0.889" layer="25" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="40.005" y="10.16" size="0.889" layer="27" ratio="12" rot="R90"/>
 <attribute name="PARTNO" value="ATMEGA328P-MU" x="35.56" y="12.7" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
 <element name="U8" library="My_RF" package="RFM69HCW-XXXS2" value="RFM69HCW-433MHZ" x="36.83" y="10.16" smashed="yes" rot="MR0">
 <attribute name="PROD_ID" value="IC-11997, IC-12053" x="36.83" y="10.16" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="PARTNO" value="COM-13910" x="36.83" y="10.16" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
-<attribute name="NAME" x="45.83" y="19.16" size="0.762" layer="26" font="vector" ratio="18" rot="MR0"/>
-<attribute name="VALUE" x="27.83" y="19.16" size="0.762" layer="28" font="vector" ratio="18" rot="MR0" align="bottom-right"/>
+<attribute name="NAME" x="45.83" y="19.16" size="0.889" layer="26" font="vector" ratio="12" rot="MR0"/>
+<attribute name="VALUE" x="27.83" y="19.16" size="0.889" layer="28" font="vector" ratio="12" rot="MR0" align="bottom-right"/>
 </element>
 <element name="ANT1" library="My_RF" package="ANT_433_CHIP" value="ANTENNA-433_CHIP" x="27.305" y="3.302" smashed="yes" rot="MR270">
-<attribute name="NAME" x="-0.695" y="5.302" size="0.762" layer="26" ratio="18" rot="MR270"/>
+<attribute name="NAME" x="-0.695" y="5.302" size="0.889" layer="26" ratio="12" rot="MR270"/>
 <attribute name="PARTNO" value="0433AT62A0020E" x="27.305" y="3.302" size="1.778" layer="28" rot="MR270" display="off"/>
 </element>
 <element name="C30" library="My_Passives" package="C0603-N" value="0.1uF" x="36.83" y="17.78" smashed="yes">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="36.83" y="17.78" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="NAME" x="35.168921875" y="16.85609375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="35.168921875" y="16.85609375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R19" library="My_Passives" package="R0603-N" value="10k" x="30.48" y="10.16" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-0710KL" x="30.48" y="10.16" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="29.453921875" y="9.49009375" size="0.762" layer="25" font="vector" ratio="18" rot="R90"/>
+<attribute name="NAME" x="29.453921875" y="9.49009375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R20" library="My_Passives" package="R0603-N" value="1k" x="11.43" y="30.48" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="RC0603FR-071KL" x="11.43" y="30.48" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="13.091078125" y="31.65790625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="13.091078125" y="31.65790625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="D6" library="My_LEDs" package="LED0603" value="green" x="11.43" y="29.21" smashed="yes" rot="MR0">
 <attribute name="HOUSEPART" value="NO" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
@@ -1556,11 +1556,11 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="MPN" value="" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="POPULATE" value="1" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="PARTNO" value="LTST-C191KGKT" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
-<attribute name="NAME" x="13.13" y="30.31" size="0.762" layer="26" font="vector" ratio="18" rot="MR0"/>
+<attribute name="NAME" x="13.003" y="30.183" size="0.889" layer="26" font="vector" ratio="12" rot="MR0"/>
 </element>
 <element name="R21" library="My_Passives" package="R0603-N" value="1k" x="16.51" y="31.75" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="RC0603FR-071KL" x="16.51" y="31.75" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="18.171078125" y="32.92790625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="18.171078125" y="32.92790625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="D7" library="My_LEDs" package="LED0603" value="red" x="16.51" y="29.21" smashed="yes" rot="MR0">
 <attribute name="HOUSEPART" value="NO" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
@@ -1568,51 +1568,51 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="MPN" value="" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="POPULATE" value="1" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="PARTNO" value="LTST-C191KRKT" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
-<attribute name="NAME" x="18.21" y="30.31" size="0.762" layer="26" font="vector" ratio="18" rot="MR0"/>
+<attribute name="NAME" x="18.083" y="30.183" size="0.889" layer="26" font="vector" ratio="12" rot="MR0"/>
 </element>
 <element name="Y1" library="My_xTal" package="RESONATOR-SMD" value="8MHZ" x="39.37" y="8.255" smashed="yes" rot="R90">
 <attribute name="PROD_ID" value="XTAL-08895" x="39.37" y="8.255" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
 <attribute name="PARTNO" value="CSTCE8M00G55-R0" x="39.37" y="8.255" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
-<attribute name="NAME" x="41.402" y="7.747" size="0.762" layer="25" ratio="18" rot="R90"/>
-<attribute name="VALUE" x="40.9575" y="7.3025" size="0.762" layer="27" ratio="18" rot="R90"/>
+<attribute name="NAME" x="41.402" y="7.747" size="0.889" layer="25" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="40.9575" y="7.3025" size="0.889" layer="27" ratio="12" rot="R90"/>
 </element>
 <element name="JP1" library="My_Passives" package="PAD-JUMPER-2-NO_YES_SILK" value="1" x="7.62" y="29.21" smashed="yes" rot="MR270">
 <attribute name="PARTNO" value="NA" x="7.62" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR270" display="off"/>
-<attribute name="NAME" x="6.35" y="30.118" size="0.762" layer="26" ratio="18" rot="MR270"/>
-<attribute name="VALUE" x="9.271" y="30.118" size="0.762" layer="28" ratio="18" rot="MR270"/>
+<attribute name="NAME" x="6.331" y="28.067" size="0.889" layer="26" ratio="12" rot="MR180"/>
+<attribute name="VALUE" x="9.271" y="30.118" size="0.889" layer="28" ratio="12" rot="MR270"/>
 </element>
 <element name="JP2" library="My_Passives" package="PAD-JUMPER-2-NO_YES_SILK" value="2" x="5.08" y="29.21" smashed="yes" rot="MR270">
 <attribute name="PARTNO" value="NA" x="5.08" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR270" display="off"/>
-<attribute name="NAME" x="3.81" y="30.118" size="0.762" layer="26" ratio="18" rot="MR270"/>
-<attribute name="VALUE" x="6.731" y="30.118" size="0.762" layer="28" ratio="18" rot="MR270"/>
+<attribute name="NAME" x="3.791" y="28.067" size="0.889" layer="26" ratio="12" rot="MR180"/>
+<attribute name="VALUE" x="6.731" y="30.118" size="0.889" layer="28" ratio="12" rot="MR270"/>
 </element>
 <element name="JP3" library="My_Passives" package="PAD-JUMPER-2-NO_YES_SILK" value="4" x="2.54" y="29.21" smashed="yes" rot="MR270">
 <attribute name="PARTNO" value="NA" x="2.54" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR270" display="off"/>
-<attribute name="NAME" x="1.27" y="30.118" size="0.762" layer="26" ratio="18" rot="MR270"/>
-<attribute name="VALUE" x="4.191" y="30.118" size="0.762" layer="28" ratio="18" rot="MR270"/>
+<attribute name="NAME" x="1.251" y="28.067" size="0.889" layer="26" ratio="12" rot="MR180"/>
+<attribute name="VALUE" x="4.191" y="30.118" size="0.889" layer="28" ratio="12" rot="MR270"/>
 </element>
 <element name="J6" library="My_Connectors" package="1X06" value="" x="54.61" y="3.81" smashed="yes" rot="MR180">
-<attribute name="NAME" x="53.2638" y="1.9812" size="0.762" layer="26" ratio="18" rot="MR180"/>
+<attribute name="NAME" x="52.3748" y="1.9558" size="0.889" layer="26" ratio="12" rot="MR90"/>
 <attribute name="VALUE" x="53.34" y="6.985" size="1.27" layer="28" rot="MR180"/>
 <attribute name="PARTNO" value="68001-106HLF" x="54.61" y="3.81" size="1.778" layer="28" rot="MR180" display="off"/>
 </element>
 <element name="C31" library="My_Passives" package="C0603-N" value="0.1uF" x="50.8" y="5.08" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="50.8" y="5.08" size="1.778" layer="27" ratio="15" rot="R180" display="off"/>
-<attribute name="NAME" x="48.270078125" y="6.38490625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="48.270078125" y="6.38490625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="TC1" library="My_Connectors" package="TC2030-IDC-NL" value="TC2030-IDC-NL" x="55.118" y="8.255" smashed="yes" rot="MR180">
-<attribute name="LABEL02" value="VCC" x="53.848" y="4.445" size="0.762" layer="22" font="vector" ratio="18" rot="MR270" align="center-left"/>
-<attribute name="LABEL03" value="SCK" x="55.118" y="12.065" size="0.762" layer="22" font="vector" ratio="18" rot="MR90" align="center-left"/>
-<attribute name="LABEL04" value="MOSI" x="55.118" y="4.445" size="0.762" layer="22" font="vector" ratio="18" rot="MR270" align="center-left"/>
-<attribute name="LABEL05" value="RST" x="56.388" y="12.065" size="0.762" layer="22" font="vector" ratio="18" rot="MR90" align="center-left"/>
-<attribute name="LABEL06" value="GND" x="56.388" y="4.445" size="0.762" layer="22" font="vector" ratio="18" rot="MR270" align="center-left"/>
+<attribute name="LABEL02" value="VCC" x="54.229" y="3.683" size="0.889" layer="22" font="vector" ratio="12" rot="MR180" align="center-left"/>
+<attribute name="LABEL03" value="SCK" x="58.039" y="3.683" size="0.889" layer="22" font="vector" ratio="12" rot="MR0" align="center-left"/>
+<attribute name="LABEL04" value="MOSI" x="54.864" y="3.81" size="0.889" layer="22" font="vector" ratio="12" rot="MR180" align="center-left"/>
+<attribute name="LABEL05" value="RST" x="57.15" y="3.683" size="0.889" layer="22" font="vector" ratio="12" rot="MR0" align="center-left"/>
+<attribute name="LABEL06" value="GND" x="60.452" y="3.937" size="0.889" layer="22" font="vector" ratio="12" rot="MR0" align="center-left"/>
 <attribute name="POPULATE" value="0" x="55.118" y="8.255" size="1.778" layer="28" ratio="15" rot="MR180" display="off"/>
 <attribute name="PARTNO" value="NA" x="55.118" y="8.255" size="1.778" layer="28" ratio="15" rot="MR180" display="off"/>
 <attribute name="HOUSEPART" value="NO" x="55.118" y="8.255" size="1.778" layer="28" ratio="15" rot="MR180" display="off"/>
 <attribute name="URL" value="http://www.tag-connect.com/AVRISP" x="55.118" y="8.255" size="1.778" layer="28" ratio="15" rot="MR180" display="off"/>
 <attribute name="MPN" value="TC2030-IDC-NL" x="55.118" y="8.255" size="1.778" layer="28" ratio="15" rot="MR180" display="off"/>
-<attribute name="LABEL01" value="MISO" x="53.848" y="12.065" size="0.762" layer="22" font="vector" ratio="18" rot="MR90" align="center-left"/>
-<attribute name="NAME" x="49.403" y="8.255" size="0.762" layer="26" font="vector" ratio="18" rot="MR270" align="center"/>
+<attribute name="LABEL01" value="MISO" x="57.531" y="3.556" size="0.889" layer="22" font="vector" ratio="12" rot="MR0" align="center-left"/>
+<attribute name="NAME" x="52.578" y="10.287" size="0.889" layer="26" font="vector" ratio="12" rot="MR180" align="center"/>
 </element>
 <element name="J3" library="My_Connectors" package="1X02_TINY" value="CON_01X02TINY" x="53.34" y="33.02" smashed="yes" rot="R270">
 <attribute name="NOTE" value="neg_pin1" x="53.34" y="33.02" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
@@ -1628,49 +1628,58 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 </element>
 <element name="J1" library="My_Connectors" package="1X02_SCREWTERM_0.2IN" value="CON_01X02-0.2&quot;_POL" x="68.58" y="12.7" smashed="yes" rot="MR270">
 <attribute name="PARTNO" value="0398890042" x="68.58" y="12.7" size="1.778" layer="28" ratio="15" rot="MR270" display="off"/>
-<attribute name="NAME" x="71.12" y="19.05" size="0.762" layer="22" ratio="18" rot="MR0"/>
+<attribute name="NAME" x="66.802" y="13.589" size="0.889" layer="22" ratio="12" rot="MR270"/>
 </element>
 <element name="LOGO1" library="My_Aesthetics" package="OSHW-LOGO-S_COPPER" value="OSHW-LOGOS-COPPER" x="73.66" y="52.07" smashed="yes" rot="MR45"/>
 <element name="R24" library="My_Passives" package="R0603-N" value="10k" x="50.8" y="38.1" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="RC0603FR-0710KL" x="50.8" y="38.1" size="1.27" layer="27" ratio="15" rot="R270" display="off"/>
-<attribute name="NAME" x="51.699078125" y="38.89690625" size="0.762" layer="25" font="vector" ratio="18" rot="R270"/>
+<attribute name="NAME" x="51.699078125" y="38.89690625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="Q2" library="My_Descrete_Semiconductors" package="SOT23-3" value="nfet" x="64.339809375" y="31.9532" smashed="yes">
 <attribute name="PARTNO" value="BSS138" x="64.339809375" y="31.9532" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="64.847809375" y="32.9692" size="0.6096" layer="25"/>
-<attribute name="VALUE" x="62.434809375" y="29.4132" size="0.6096" layer="27"/>
+<attribute name="NAME" x="64.8208" y="28.525809375" size="0.889" layer="25" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="62.434809375" y="29.4132" size="0.889" layer="27" ratio="12"/>
 </element>
 <element name="Q3" library="My_Descrete_Semiconductors" package="SOT23-3" value="pfet" x="64.974809375" y="35.7632" smashed="yes">
 <attribute name="PARTNO" value="IRLML2244TRPBF" x="64.974809375" y="35.7632" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="65.609809375" y="36.7792" size="0.6096" layer="25"/>
-<attribute name="VALUE" x="63.069809375" y="33.2232" size="0.6096" layer="27"/>
+<attribute name="NAME" x="66.4718" y="36.653809375" size="0.889" layer="25" ratio="12" rot="R90"/>
+<attribute name="VALUE" x="63.069809375" y="33.2232" size="0.889" layer="27" ratio="12"/>
 </element>
 <element name="R22" library="My_Passives" package="R0603-N" value="100k" x="62.434809375" y="34.4932" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-07100KL" x="62.434809375" y="34.4932" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="62.04373125" y="31.53729375" size="0.8128" layer="25" font="vector" ratio="13" rot="R90"/>
+<attribute name="NAME" x="62.80573125" y="36.23629375" size="0.889" layer="25" font="vector" ratio="12" rot="R90"/>
 </element>
 <element name="R23" library="My_Passives" package="R0603-N" value="2.2k" x="67.514809375" y="35.1282" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-072K2L" x="67.514809375" y="35.1282" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="68.311715625" y="37.658121875" size="0.8128" layer="25" font="vector" ratio="13" rot="R180"/>
+<attribute name="NAME" x="68.513878125" y="36.434715625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
 <element name="R25" library="My_Passives" package="R0603-N" value="4.7k" x="66.879809375" y="30.6832" smashed="yes" rot="R90">
 <attribute name="PARTNO" value="RC0603FR-074K7L" x="66.879809375" y="30.6832" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="67.7788875" y="31.35310625" size="0.8128" layer="25" font="vector" ratio="13" rot="R270"/>
+<attribute name="NAME" x="66.5088875" y="29.19410625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
-<element name="C32" library="My_Passives" package="C0603-N" value="0.1uF" x="68.784809375" y="30.6832" rot="R270">
+<element name="C32" library="My_Passives" package="C0603-N" value="0.1uF" x="68.784809375" y="30.6832" smashed="yes" rot="R270">
 <attribute name="PARTNO" value="CC0603KRX7R7BB104" x="68.784809375" y="30.6832" size="1.778" layer="27" font="vector" ratio="15" rot="R270" display="off"/>
+<attribute name="NAME" x="68.4138875" y="29.19410625" size="0.889" layer="25" font="vector" ratio="12" rot="R270"/>
 </element>
-<element name="SJ1" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="46.736" y="11.176" rot="MR0">
+<element name="SJ1" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="46.736" y="11.176" smashed="yes" rot="MR0">
 <attribute name="PARTNO" value="NA" x="46.736" y="11.176" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
+<attribute name="NAME" x="47.879" y="10.2208" size="0.889" layer="26" ratio="12" rot="MR270"/>
+<attribute name="VALUE" x="47.6858" y="9.525" size="0.889" layer="28" ratio="12" rot="MR0"/>
 </element>
-<element name="SJ2" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="46.736" y="13.208" rot="MR0">
+<element name="SJ2" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="46.736" y="13.208" smashed="yes" rot="MR0">
 <attribute name="PARTNO" value="NA" x="46.736" y="13.208" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
+<attribute name="NAME" x="48.4478" y="14.478" size="0.889" layer="26" ratio="12" rot="MR0"/>
+<attribute name="VALUE" x="47.6858" y="11.557" size="0.889" layer="28" ratio="12" rot="MR0"/>
 </element>
-<element name="SJ3" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="52.451" y="14.478" rot="R180">
+<element name="SJ3" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="52.451" y="14.478" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="NA" x="52.451" y="14.478" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
+<attribute name="NAME" x="51.943" y="13.3958" size="0.889" layer="25" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="53.4008" y="16.129" size="0.889" layer="27" ratio="12" rot="R180"/>
 </element>
-<element name="SJ4" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="52.451" y="16.002" rot="R180">
+<element name="SJ4" library="My_Connectors" package="SJ_2S" value="SOLDERJUMPERNC" x="52.451" y="16.002" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="NA" x="52.451" y="16.002" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
+<attribute name="NAME" x="50.927" y="13.3958" size="0.889" layer="25" ratio="12" rot="R270"/>
+<attribute name="VALUE" x="53.4008" y="17.653" size="0.889" layer="27" ratio="12" rot="R180"/>
 </element>
 </elements>
 <signals>
@@ -1807,11 +1816,7 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <via x="35.56" y="1.27" extent="1-16" drill="0.381"/>
 <wire x1="56.388" y1="7.62" x2="56.388" y2="6.096" width="0.254" layer="16"/>
 <wire x1="56.388" y1="6.096" x2="56.642" y2="5.842" width="0.254" layer="16"/>
-<wire x1="56.642" y1="5.842" x2="59.055" y2="5.842" width="0.254" layer="16"/>
-<wire x1="59.055" y1="5.842" x2="59.182" y2="5.969" width="0.254" layer="16"/>
 <via x="60.452" y="6.858" extent="1-16" drill="0.381"/>
-<wire x1="59.182" y1="5.969" x2="59.563" y2="5.969" width="0.254" layer="16"/>
-<wire x1="59.563" y1="5.969" x2="60.452" y2="6.858" width="0.254" layer="16"/>
 <wire x1="35.81" y1="10.096" x2="35.81" y2="12.45" width="0.254" layer="1"/>
 <wire x1="35.81" y1="12.45" x2="35.56" y2="12.7" width="0.254" layer="1"/>
 <wire x1="34.81" y1="10.096" x2="34.81" y2="11.95" width="0.254" layer="1"/>
@@ -1854,6 +1859,8 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <via x="57.531" y="30.48" extent="1-16" drill="0.381"/>
 <via x="49.022" y="16.764" extent="1-16" drill="0.381"/>
 <via x="51.308" y="12.065" extent="1-16" drill="0.381"/>
+<wire x1="56.642" y1="5.842" x2="59.436" y2="5.842" width="0.254" layer="16"/>
+<wire x1="59.436" y1="5.842" x2="60.452" y2="6.858" width="0.254" layer="16"/>
 </signal>
 <signal name="N$8">
 <contactref element="R14" pad="1"/>
@@ -3241,8 +3248,8 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <approved hash="4,16,02f75b706e61e2e5"/>
 <approved hash="4,16,f808d40ed51f791a"/>
 <approved hash="19,16,fc664891c05f8fa3"/>
-<approved hash="4,16,09513ee48af7bc97"/>
 <approved hash="4,16,bf1d89423b6230d9"/>
+<approved hash="4,16,09513ee48af7bc97"/>
 </errors>
 </board>
 </drawing>
