@@ -4743,10 +4743,10 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <wire x1="59.22" y1="-5.565" x2="46.22" y2="-5.565" width="0.254" layer="21"/>
 <wire x1="61" y1="10" x2="61" y2="6" width="0.254" layer="21"/>
 <wire x1="59" y1="8" x2="63" y2="8" width="0.254" layer="21"/>
-<wire x1="-9.5" y1="9.5" x2="57.5" y2="9.5" width="0.4064" layer="21" style="shortdash"/>
-<wire x1="57.5" y1="9.5" x2="57.5" y2="-9.5" width="0.4064" layer="21" style="dashdot"/>
-<wire x1="57.5" y1="-9.5" x2="-9.5" y2="-9.5" width="0.4064" layer="21" style="shortdash"/>
-<wire x1="-9.5" y1="-9.5" x2="-9.5" y2="9.5" width="0.4064" layer="21" style="dashdot"/>
+<wire x1="-9.5" y1="9.5" x2="57.5" y2="9.5" width="0.4064" layer="48" style="shortdash"/>
+<wire x1="57.5" y1="9.5" x2="57.5" y2="-9.5" width="0.4064" layer="48" style="dashdot"/>
+<wire x1="57.5" y1="-9.5" x2="-9.5" y2="-9.5" width="0.4064" layer="48" style="shortdash"/>
+<wire x1="-9.5" y1="-9.5" x2="-9.5" y2="9.5" width="0.4064" layer="48" style="dashdot"/>
 </package>
 <package name="1X02_SCREWTERM_0.2IN">
 <pad name="POS" x="2.54" y="0" drill="1.0922" shape="octagon"/>
@@ -4758,8 +4758,8 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <wire x1="-5.08" y1="-3.81" x2="-5.08" y2="4.318" width="0.254" layer="21"/>
 <pad name="NEG" x="-2.54" y="0" drill="1.0922" shape="square"/>
 <text x="-6.35" y="-2.54" size="1.016" layer="21" rot="R90">&gt;NAME</text>
-<text x="-2.159" y="5.08" size="1.016" layer="21" rot="R90">neg</text>
-<text x="2.921" y="5.08" size="1.016" layer="21" rot="R90">pos</text>
+<text x="-2.159" y="5.08" size="1.016" layer="48" rot="R90">neg</text>
+<text x="2.921" y="5.08" size="1.016" layer="48" rot="R90">pos</text>
 </package>
 <package name="SJ_2S">
 <description>Small solder jumper with big paste layer so it will short during reflow.</description>
@@ -5736,11 +5736,87 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <package name="CP_TH_5MM">
 <pad name="NEG" x="-2.5" y="0" drill="0.889" shape="square"/>
 <pad name="POS" x="2.5" y="0" drill="0.889"/>
-<wire x1="-6.25" y1="-2" x2="6.25" y2="-2" width="0.254" layer="21"/>
-<wire x1="6.25" y1="-2" x2="6.25" y2="-27" width="0.254" layer="21"/>
-<wire x1="6.25" y1="-27" x2="-6.25" y2="-27" width="0.254" layer="21"/>
-<wire x1="-6.25" y1="-27" x2="-6.25" y2="-2" width="0.254" layer="21"/>
+<wire x1="-6.25" y1="-2" x2="6.25" y2="-2" width="0.254" layer="48"/>
+<wire x1="6.25" y1="-2" x2="6.25" y2="-27" width="0.254" layer="48"/>
+<wire x1="6.25" y1="-27" x2="-6.25" y2="-27" width="0.254" layer="48"/>
+<wire x1="-6.25" y1="-27" x2="-6.25" y2="-2" width="0.254" layer="48"/>
 <text x="-2.54" y="-3.81" size="1.016" layer="25">&gt;NAME</text>
+</package>
+<package name="EIA3216">
+<wire x1="-1" y1="-1.2" x2="-2.5" y2="-1.2" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="-1.2" x2="-2.5" y2="1.2" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="1.2" x2="-1" y2="1.2" width="0.2032" layer="21"/>
+<wire x1="1" y1="-1.2" x2="2.1" y2="-1.2" width="0.2032" layer="21"/>
+<wire x1="2.1" y1="-1.2" x2="2.5" y2="-0.8" width="0.2032" layer="21"/>
+<wire x1="2.5" y1="-0.8" x2="2.5" y2="0.8" width="0.2032" layer="21"/>
+<wire x1="2.5" y1="0.8" x2="2.1" y2="1.2" width="0.2032" layer="21"/>
+<wire x1="2.1" y1="1.2" x2="1" y2="1.2" width="0.2032" layer="21"/>
+<wire x1="0.381" y1="1.016" x2="0.381" y2="-1.016" width="0.127" layer="21"/>
+<smd name="C" x="-1.4" y="0" dx="1.6" dy="1.4" layer="1" rot="R90"/>
+<smd name="A" x="1.4" y="0" dx="1.6" dy="1.4" layer="1" rot="R90"/>
+<text x="-2.54" y="1.381" size="0.4064" layer="25">&gt;NAME</text>
+<text x="0.408" y="1.332" size="0.4064" layer="27">&gt;VALUE</text>
+</package>
+<package name="EIA3528">
+<wire x1="-0.9" y1="-1.6" x2="-2.6" y2="-1.6" width="0.2032" layer="21"/>
+<wire x1="-2.6" y1="-1.6" x2="-2.6" y2="1.55" width="0.2032" layer="21"/>
+<wire x1="-2.6" y1="1.55" x2="-0.9" y2="1.55" width="0.2032" layer="21"/>
+<wire x1="1" y1="-1.55" x2="2.2" y2="-1.55" width="0.2032" layer="21"/>
+<wire x1="2.2" y1="-1.55" x2="2.6" y2="-1.2" width="0.2032" layer="21"/>
+<wire x1="2.6" y1="-1.2" x2="2.6" y2="1.25" width="0.2032" layer="21"/>
+<wire x1="2.6" y1="1.25" x2="2.2" y2="1.55" width="0.2032" layer="21"/>
+<wire x1="2.2" y1="1.55" x2="1" y2="1.55" width="0.2032" layer="21"/>
+<wire x1="2.2" y1="1.55" x2="1" y2="1.55" width="0.2032" layer="21"/>
+<wire x1="0.609" y1="1.311" x2="0.609" y2="-1.286" width="0.2032" layer="21" style="longdash"/>
+<smd name="C" x="-1.65" y="0" dx="2.5" dy="1.2" layer="1" rot="R90"/>
+<smd name="A" x="1.65" y="0" dx="2.5" dy="1.2" layer="1" rot="R90"/>
+<text x="-2.27" y="-1.27" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="3.24" y="-1.37" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+</package>
+<package name="0603-POL">
+<description>Polarized footprint for tantalum 0603 sized capacitors.</description>
+<wire x1="-1.1" y1="-0.8" x2="-1.7" y2="-0.8" width="0.2032" layer="51"/>
+<wire x1="-1.7" y1="-0.8" x2="-1.7" y2="0.8" width="0.2032" layer="51"/>
+<wire x1="-1.7" y1="0.8" x2="-1.1" y2="0.8" width="0.2032" layer="51"/>
+<wire x1="1.1" y1="-0.8" x2="1.5" y2="-0.8" width="0.2032" layer="51"/>
+<wire x1="1.5" y1="-0.8" x2="1.9" y2="-0.4" width="0.2032" layer="51"/>
+<wire x1="1.9" y1="-0.4" x2="1.9" y2="0.4" width="0.2032" layer="51"/>
+<wire x1="1.9" y1="0.4" x2="1.5" y2="0.8" width="0.2032" layer="51"/>
+<wire x1="1.5" y1="0.8" x2="1.1" y2="0.8" width="0.2032" layer="51"/>
+<wire x1="-1.473" y1="0.983" x2="1.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="0.983" x2="1.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="-0.983" x2="-1.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="-1.473" y1="-0.983" x2="-1.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
+<wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
+<wire x1="0" y1="0.027940625" x2="0" y2="-0.027940625" width="0.381" layer="21"/>
+<smd name="K" x="-0.85" y="0" dx="1.1" dy="1" layer="1"/>
+<smd name="A" x="0.85" y="0" dx="1.1" dy="1" layer="1"/>
+<text x="-0.889" y="0.762" size="0.4064" layer="25" font="vector">&gt;NAME</text>
+<text x="-1.016" y="-1.143" size="0.4064" layer="27" font="vector">&gt;VALUE</text>
+<rectangle x1="-0.8382" y1="-0.4699" x2="-0.3381" y2="0.4801" layer="51"/>
+<rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
+<circle x="1.7" y="0" radius="0.05" width="0.15" layer="21"/>
+</package>
+<package name="EIA6032-NOM">
+<description>Metric Size Code EIA 6032-25 Median (Nominal) Land Protrusion&lt;br /&gt;
+http://www.kemet.com/Lists/ProductCatalog/Attachments/254/KEM_T2005_T491.pdf</description>
+<wire x1="-3.91" y1="1.5" x2="-2" y2="1.5" width="0.127" layer="21"/>
+<wire x1="-3.91" y1="1.5" x2="-3.91" y2="-1.5" width="0.127" layer="21"/>
+<wire x1="-3.91" y1="-1.5" x2="-2" y2="-1.5" width="0.127" layer="21"/>
+<wire x1="2" y1="1.5" x2="3.5" y2="1.5" width="0.127" layer="21"/>
+<wire x1="3.5" y1="1.5" x2="3.91" y2="1" width="0.127" layer="21"/>
+<wire x1="3.91" y1="1" x2="3.91" y2="-1" width="0.127" layer="21"/>
+<wire x1="3.91" y1="-1" x2="3.5" y2="-1.5" width="0.127" layer="21"/>
+<wire x1="3.5" y1="-1.5" x2="2" y2="-1.5" width="0.127" layer="21"/>
+<smd name="C" x="-2.47" y="0" dx="2.37" dy="2.23" layer="1" rot="R180"/>
+<smd name="A" x="2.47" y="0" dx="2.37" dy="2.23" layer="1" rot="R180"/>
+<text x="-1.27" y="1.27" size="0.4064" layer="25">&gt;Name</text>
+<text x="-1.27" y="-1.27" size="0.4064" layer="27">&gt;Value</text>
+<wire x1="-3.91" y1="2" x2="3.91" y2="2" width="0.127" layer="51"/>
+<wire x1="3.91" y1="2" x2="3.91" y2="-2" width="0.127" layer="51"/>
+<wire x1="3.91" y1="-2" x2="-3.91" y2="-2" width="0.127" layer="51"/>
+<wire x1="-3.91" y1="-2" x2="-3.91" y2="2" width="0.127" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -5774,17 +5850,15 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <symbol name="CAPACITOR_P">
 <description>&lt;b&gt;Library:&lt;/b&gt;  MF_Passives&lt;br/&gt;
 &lt;b&gt;Description:&lt;/b&gt; Symbol for Polarized Capacitors&lt;br/&gt;</description>
-<pin name="POS" x="0" y="2.54" visible="off" length="point" direction="pas" swaplevel="1" rot="R270"/>
-<pin name="NET" x="0" y="-2.54" visible="off" length="point" direction="pas" swaplevel="1" rot="R90"/>
-<wire x1="0" y1="2.54" x2="0" y2="0.762" width="0.1524" layer="94"/>
-<wire x1="0" y1="-2.54" x2="0" y2="-0.508" width="0.1524" layer="94"/>
-<wire x1="-2.286" y1="-1.524" x2="2.286" y2="-1.524" width="0.1524" layer="94" curve="-100"/>
-<wire x1="-2.286" y1="0.762" x2="0" y2="0.762" width="0.1524" layer="94"/>
-<wire x1="0" y1="0.762" x2="2.286" y2="0.762" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="2.286" x2="1.27" y2="1.27" width="0.1524" layer="94"/>
-<wire x1="1.778" y1="1.778" x2="0.762" y2="1.778" width="0.1524" layer="94"/>
-<text x="2.54" y="1.524" size="1.016" layer="95" font="vector" align="top-left">&gt;NAME</text>
-<text x="2.54" y="-1.524" size="1.016" layer="96" font="vector">&gt;VALUE</text>
+<pin name="POS" x="0" y="2.54" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
+<pin name="NEG" x="0" y="-5.08" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
+<wire x1="0" y1="-3.302" x2="0" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="-2.032" y1="-2.286" x2="2.032" y2="-2.286" width="0.254" layer="94" curve="-100"/>
+<wire x1="1.27" y1="1.778" x2="1.27" y2="0.762" width="0.1524" layer="94"/>
+<wire x1="1.778" y1="1.27" x2="0.762" y2="1.27" width="0.1524" layer="94"/>
+<text x="2.54" y="2.032" size="1.27" layer="95" font="vector" ratio="10" align="top-left">&gt;NAME</text>
+<text x="2.54" y="-2.286" size="1.27" layer="96" font="vector" ratio="10">&gt;VALUE</text>
+<wire x1="-2.286" y1="0" x2="2.286" y2="0" width="0.254" layer="94"/>
 </symbol>
 <symbol name="INDUCTOR">
 <pin name="P$1" x="-5.08" y="0" visible="off" length="point" direction="pas"/>
@@ -5921,7 +5995,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 <devices>
 <device name="_4MM" package="CP4MM">
 <connects>
-<connect gate="G$1" pin="NET" pad="P$2"/>
+<connect gate="G$1" pin="NEG" pad="P$2"/>
 <connect gate="G$1" pin="POS" pad="P$1"/>
 </connects>
 <technologies>
@@ -5939,7 +6013,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </device>
 <device name="_6.3MM" package="CP6.3MM">
 <connects>
-<connect gate="G$1" pin="NET" pad="P$2"/>
+<connect gate="G$1" pin="NEG" pad="P$2"/>
 <connect gate="G$1" pin="POS" pad="P$1"/>
 </connects>
 <technologies>
@@ -5957,7 +6031,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </device>
 <device name="_8MM" package="CP8MM">
 <connects>
-<connect gate="G$1" pin="NET" pad="P$2"/>
+<connect gate="G$1" pin="NEG" pad="P$2"/>
 <connect gate="G$1" pin="POS" pad="P$1"/>
 </connects>
 <technologies>
@@ -5975,7 +6049,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </device>
 <device name="_10MM" package="CP10MM">
 <connects>
-<connect gate="G$1" pin="NET" pad="P$2"/>
+<connect gate="G$1" pin="NEG" pad="P$2"/>
 <connect gate="G$1" pin="POS" pad="P$1"/>
 </connects>
 <technologies>
@@ -5993,7 +6067,7 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </device>
 <device name="_12.5MM" package="CP12.5MM">
 <connects>
-<connect gate="G$1" pin="NET" pad="P$2"/>
+<connect gate="G$1" pin="NEG" pad="P$2"/>
 <connect gate="G$1" pin="POS" pad="P$1"/>
 </connects>
 <technologies>
@@ -6011,13 +6085,49 @@ Standard SMD solder jumper. Used to automate production. Two varients : Normally
 </device>
 <device name="-TH_5MM" package="CP_TH_5MM">
 <connects>
-<connect gate="G$1" pin="NET" pad="NEG"/>
+<connect gate="G$1" pin="NEG" pad="NEG"/>
 <connect gate="G$1" pin="POS" pad="POS"/>
 </connects>
 <technologies>
 <technology name="">
 <attribute name="PARTNO" value="ECA-1AM472" constant="no"/>
 </technology>
+</technologies>
+</device>
+<device name="_3216" package="EIA3216">
+<connects>
+<connect gate="G$1" pin="NEG" pad="C"/>
+<connect gate="G$1" pin="POS" pad="A"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_3528" package="EIA3528">
+<connects>
+<connect gate="G$1" pin="NEG" pad="C"/>
+<connect gate="G$1" pin="POS" pad="A"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_0603" package="0603-POL">
+<connects>
+<connect gate="G$1" pin="NEG" pad="K"/>
+<connect gate="G$1" pin="POS" pad="A"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_6032" package="EIA6032-NOM">
+<connects>
+<connect gate="G$1" pin="NEG" pad="C"/>
+<connect gate="G$1" pin="POS" pad="A"/>
+</connects>
+<technologies>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -8787,13 +8897,13 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <segment>
 <pinref part="D4" gate="G$1" pin="C"/>
 <wire x1="185.42" y1="58.42" x2="195.58" y2="58.42" width="0.1524" layer="91"/>
-<pinref part="C11" gate="G$1" pin="POS"/>
-<wire x1="195.58" y1="58.42" x2="195.58" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="195.58" y1="58.42" x2="205.74" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="C12" gate="G$1" pin="1"/>
+<wire x1="195.58" y1="58.42" x2="205.74" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="205.74" y1="58.42" x2="205.74" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="205.74" y1="58.42" x2="210.82" y2="58.42" width="0.1524" layer="91"/>
 <label x="210.82" y="58.42" size="1.27" layer="95" xref="yes"/>
+<pinref part="C11" gate="G$1" pin="POS"/>
+<wire x1="195.58" y1="55.88" x2="195.58" y2="58.42" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U2" gate="G$1" pin="CE"/>
@@ -8827,14 +8937,14 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <net name="GND" class="0">
 <segment>
 <pinref part="C12" gate="G$1" pin="2"/>
-<pinref part="C11" gate="G$1" pin="NET"/>
-<wire x1="195.58" y1="50.8" x2="195.58" y2="45.72" width="0.1524" layer="91"/>
 <wire x1="205.74" y1="45.72" x2="195.58" y2="45.72" width="0.1524" layer="91"/>
 <wire x1="195.58" y1="45.72" x2="175.26" y2="45.72" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="55.88" x2="175.26" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="175.26" y1="55.88" x2="175.26" y2="45.72" width="0.1524" layer="91"/>
 <label x="175.26" y="45.72" size="1.27" layer="95" rot="R270" xref="yes"/>
 <pinref part="J1" gate="G$1" pin="PIN1"/>
+<pinref part="C11" gate="G$1" pin="NEG"/>
+<wire x1="195.58" y1="48.26" x2="195.58" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R5" gate="G$1" pin="P$1"/>
