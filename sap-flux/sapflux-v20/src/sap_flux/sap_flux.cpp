@@ -1,7 +1,11 @@
 /**
  * TODO:
- * Figure out why it stops recording past index 4096
- * Do longer Test
+ * NOTE: There is a bug in the timestamp retrieval for more than one saved
+ * measurement. Look at Measurement #38 and #39 in the Serial Log of the 02-10 Test
+ * And Compare to the saved data. It's a bug in the sensor code and how the time for the new
+ * recordings are saved.
+ * Also look at the data$cnt graph. It looks like the two saved measurements were offset forward
+ * in time by one record interval.
  *
  */
 #include <Arduino.h>

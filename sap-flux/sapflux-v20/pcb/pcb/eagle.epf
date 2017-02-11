@@ -31,9 +31,24 @@ UsedLibrary="/Users/kina/Documents/eagle/lbr/My/My_xTal.lbr"
 UsedLibrary="/Users/kina/Documents/eagle/lbr/My/_My_Parts.lbr"
 
 [Win_1]
+Type="Control Panel"
+Loc="0 23 1275 777"
+State=2
+Number=0
+
+[Win_2]
+Type="Text Editor"
+Loc="0 23 1275 777"
+State=2
+Number=3
+File="/Users/kina/Documents/eagle/scr/SFEagle.scr"
+CursorPos="72 108"
+Font="Courier,11,-1,5,50,0,0,0,0,0"
+
+[Win_3]
 Type="Schematic Editor"
-Loc="0 -22 1199 577"
-State=0
+Loc="0 23 1199 622"
+State=2
 Number=2
 File="sap_flux-v20.sch"
 View="-5.6388 -4.23926 254.559 189.786"
@@ -75,21 +90,16 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
+Views=" 1: -5.6388 -4.23926 254.559 189.786"
 Sheet="1"
 
-[Win_2]
-Type="Control Panel"
-Loc="0 23 1275 777"
-State=2
-Number=0
-
-[Win_3]
+[Win_4]
 Type="Board Editor"
-Loc="76 150 1275 749"
+Loc="0 23 1275 777"
 State=2
 Number=1
 File="sap_flux-v20.brd"
-View="-10.4007 -7.41142 92.117 61.318"
+View="-5.1803 -14.1005 107.589 61.5018"
 WireWidths=" 0 0.254 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064 0.3048"
 PadDiameters=" 0.254 0.3048 0.4064 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0"
 PadDrills=" 0.381"
@@ -130,7 +140,8 @@ PadsSameType=0
 Layer=16
 
 [Desktop]
-Screen="640 480"
+Screen="1280 800"
 Window="Win_1"
 Window="Win_2"
 Window="Win_3"
+Window="Win_4"
