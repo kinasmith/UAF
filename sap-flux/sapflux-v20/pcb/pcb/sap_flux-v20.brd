@@ -19,7 +19,7 @@
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="16" fill="1" visible="no" active="yes"/>
-<layer number="22" name="bPlace" color="16" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
@@ -171,11 +171,11 @@
 <text x="2.54" y="31.242" size="1.524" layer="26" font="vector" ratio="15" rot="SMR270" align="center">1</text>
 <text x="5.08" y="31.242" size="1.524" layer="26" font="vector" ratio="15" rot="SMR270" align="center">2</text>
 <text x="7.62" y="31.369" size="1.524" layer="26" font="vector" ratio="15" rot="SMR270" align="center">4</text>
-<text x="17.78" y="26.797" size="2.54" layer="26" ratio="15" rot="SMR270">Tx</text>
+<text x="18.796" y="28.194" size="1.778" layer="26" ratio="15" rot="SMR270">Tx</text>
 <text x="65.024" y="2.032" size="1.27" layer="26" ratio="15" rot="MR180">GND</text>
 <text x="63.754" y="7.239" size="3.81" layer="22" font="vector" ratio="15" rot="MR0">+</text>
 <text x="51.816" y="41.91" size="10.16" layer="22" font="vector" ratio="15" rot="MR0" align="center">+</text>
-<text x="12.7" y="26.162" size="2.54" layer="26" ratio="15" rot="SMR270">Mem</text>
+<text x="13.589" y="28.194" size="1.778" layer="26" ratio="15" rot="SMR270">Mem</text>
 <text x="63.373" y="15.875" size="1.778" layer="22" font="vector" ratio="15" rot="MR0">GND</text>
 <text x="36.83" y="36.449" size="1.778" layer="26" font="vector" ratio="15" rot="SMR0">TC1</text>
 <text x="51.181" y="25.019" size="1.778" layer="26" font="vector" ratio="15" rot="SMR0">TC3</text>
@@ -1569,7 +1569,7 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="MPN" value="" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="POPULATE" value="1" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="PARTNO" value="LTST-C191KGKT" x="11.43" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
-<attribute name="NAME" x="14.267" y="30.021" size="0.889" layer="26" font="vector" ratio="12" rot="SMR270"/>
+<attribute name="NAME" x="12.368" y="30.183" size="0.889" layer="26" font="vector" ratio="12" rot="SMR0"/>
 </element>
 <element name="R21" library="My_Passives" package="R0603-N" value="1k" x="16.51" y="31.75" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="RC0603FR-071KL" x="16.51" y="31.75" size="1.778" layer="27" font="vector" ratio="15" rot="R180" display="off"/>
@@ -1581,7 +1581,7 @@ Phone: 503-829-9108 x555.&lt;p&gt; v1.1Mod10/16/07~Layers-core reversal.Distance
 <attribute name="MPN" value="" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="POPULATE" value="1" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
 <attribute name="PARTNO" value="LTST-C191KRKT" x="16.51" y="29.21" size="1.778" layer="28" font="vector" ratio="15" rot="MR0" display="off"/>
-<attribute name="NAME" x="19.347" y="30.021" size="0.889" layer="26" font="vector" ratio="12" rot="SMR270"/>
+<attribute name="NAME" x="17.194" y="30.183" size="0.889" layer="26" font="vector" ratio="12" rot="SMR0"/>
 </element>
 <element name="Y1" library="My_xTal" package="RESONATOR-SMD" value="8MHZ" x="39.37" y="8.255" smashed="yes" rot="R90">
 <attribute name="PROD_ID" value="XTAL-08895" x="39.37" y="8.255" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
