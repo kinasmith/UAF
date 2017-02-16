@@ -1,0 +1,34 @@
+Mass properties of housing
+     Configuration: Default
+     Coordinate system: -- default --
+
+Density = 1.40 grams per  cubic centimeter
+
+Mass = 44.21 grams
+
+Volume = 31.58  cubic centimeters
+
+Surface area = 302.91  square centimeters
+
+Center of mass: ( centimeters )
+	X = 2.96
+	Y = 3.54
+	Z = -3.48
+
+Principal axes of inertia and principal moments of inertia: ( grams *  square centimeters )
+Taken at the center of mass.
+	 Ix = (0.01, -0.07, 1.00)   	Px = 351.94
+	 Iy = (1.00, 0.06, -0.01)   	Py = 441.75
+	 Iz = (-0.06, 1.00, 0.07)   	Pz = 664.26
+
+Moments of inertia: ( grams *  square centimeters )
+Taken at the center of mass and aligned with the output coordinate system.
+	Lxx = 442.63	Lxy = 13.98	Lxz = 1.89
+	Lyx = 13.98	Lyy = 661.80	Lyz = -22.02
+	Lzx = 1.89	Lzy = -22.02	Lzz = 353.51
+
+Moments of inertia: ( grams *  square centimeters )
+Taken at the output coordinate system.
+	Ixx = 1530.20	Ixy = 477.66	Ixz = -453.81
+	Iyx = 477.66	Iyy = 1584.78	Iyz = -565.72
+	Izx = -453.81	Izy = -565.72	Izz = 1295.38

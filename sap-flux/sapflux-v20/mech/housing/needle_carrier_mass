@@ -1,0 +1,34 @@
+Mass properties of needle_carrier
+     Configuration: Default
+     Coordinate system: -- default --
+
+Density = 1.40 grams per  cubic centimeter
+
+Mass = 33.64 grams
+
+Volume = 24.03  cubic centimeters
+
+Surface area = 177.27  square centimeters
+
+Center of mass: ( centimeters )
+	X = -24.75
+	Y = -5.51
+	Z = -0.16
+
+Principal axes of inertia and principal moments of inertia: ( grams *  square centimeters )
+Taken at the center of mass.
+	 Ix = (-0.03, 0.99, 0.11)   	Px = 131.97
+	 Iy = (-1.00, -0.03, 0.02)   	Py = 243.35
+	 Iz = (0.03, -0.11, 0.99)   	Pz = 354.17
+
+Moments of inertia: ( grams *  square centimeters )
+Taken at the center of mass and aligned with the output coordinate system.
+	Lxx = 243.33	Lxy = -2.84	Lxz = -3.19
+	Lyx = -2.84	Lyy = 134.55	Lyz = 23.36
+	Lzx = -3.19	Lzy = 23.36	Lzz = 351.61
+
+Moments of inertia: ( grams *  square centimeters )
+Taken at the output coordinate system.
+	Ixx = 1264.29	Ixy = 4581.29	Ixz = 133.67
+	Iyx = 4581.29	Iyy = 20736.60	Iyz = 53.81
+	Izx = 133.67	Izy = 53.81	Izz = 21972.81
