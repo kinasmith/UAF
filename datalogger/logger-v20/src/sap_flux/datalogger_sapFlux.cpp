@@ -112,22 +112,30 @@ void setup() {
 void loop() {
 	bool writeData = false;
 	bool reportTime = false;
+	bool ping = false;
 
 	if (radio.receiveDone()) {
 		DEBUG("rcv <");DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
+		/*=== TIME ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUG("t,"); DEBUG("latch to ") DEBUGln(radio.SENDERID);
-			NodeID_latch = radio.SENDERID;
+			DEBUGln("t");
 			reportTime = true;
 		}
+		/*=== UN-LATCH ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
 				DEBUG("r,"); DEBUG("unlatch from "); DEBUGln(radio.SENDERID);
 				NodeID_latch = -1;
 			}
+		}
+		/*=== PING ==*/
+		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') { //send an r to release the reciever
+			DEBUG("p,"); DEBUG("latch to ") DEBUGln(radio.SENDERID);
+			NodeID_latch = radio.SENDERID;
+			ping = true;
 		}
 		if(NodeID_latch > 0) {
 			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
@@ -150,6 +158,14 @@ void loop() {
 		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
 			DEBUGln(theTimeStamp.timestamp);
+		} else {
+			DEBUGln("Failed . . . no ack");
+		}
+	}
+	if(ping) {
+		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(1), sizeof(1), ACK_RETRIES, ACK_WAIT_TIME)) {
+			DEBUGln("1");
 		} else {
 			DEBUGln("Failed . . . no ack");
 		}
