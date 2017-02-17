@@ -31,7 +31,7 @@
 #define FLASH_CS 8
 #define RFM_CS 10
 
-#define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
+// #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
 
 #ifdef SERIAL_EN
 #define DEBUG(input)   {Serial.print(input); delay(1);}
@@ -128,14 +128,17 @@ uint8_t measurementNum = 0;
 
 void setup()
 {
+	// Serial.begin(115200);
   pinMode(LED, OUTPUT);
   pinMode(LED2, OUTPUT);
   // 1
+  // Serial.println("LED");
   digitalWrite(LED, HIGH);
   delay(100);
   digitalWrite(LED, LOW);
   delay(100);
   // 2
+  // Serial.println("RADIO");
   digitalWrite(LED, HIGH);
   radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower();
@@ -145,6 +148,7 @@ void setup()
   digitalWrite(LED, LOW);
   delay(100);
   // 3
+  // Serial.println("Tc");
   digitalWrite(LED, HIGH);
   tc1.begin();
 	tc2.begin();
@@ -152,11 +156,12 @@ void setup()
   digitalWrite(LED, LOW);
   delay(100);
   // 4
-  digitalWrite(LED, HIGH);
+  // Serial.println("Flash");
+  digitalWrite(LED2, HIGH);
   flash.begin();
   if(flash.eraseChip()){
     if(flash.powerDown()){
-      digitalWrite(LED, LOW);
+      digitalWrite(LED2, LOW);
     }
   }
 }
