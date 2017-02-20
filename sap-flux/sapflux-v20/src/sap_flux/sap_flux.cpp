@@ -144,7 +144,7 @@ void setup()
 	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	/* --| Ping the Datalogger and get Time |-- */
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
-	while(!getTime()) { //If there is no response, wait 10 seconds and try again, forever.
+	while(!ping()) { //If there is no response, wait 10 seconds and try again, forever.
 		radio.sleep();
 		DEBUGFlush();
 		Sleepy::loseSomeTime(10000);

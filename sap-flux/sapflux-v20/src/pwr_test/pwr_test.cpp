@@ -128,72 +128,77 @@ uint8_t measurementNum = 0;
 
 void setup()
 {
-	// Serial.begin(115200);
-  pinMode(LED, OUTPUT);
-  pinMode(LED2, OUTPUT);
-  // 1
-  // Serial.println("LED");
-  digitalWrite(LED, HIGH);
-  delay(100);
-  digitalWrite(LED, LOW);
-  delay(100);
-  // 2
-  // Serial.println("RADIO");
-  digitalWrite(LED, HIGH);
-  radio.initialize(FREQUENCY,NODEID,NETWORKID);
-	radio.setHighPower();
-	radio.encrypt(null);
-	radio.enableAutoPower(ATC_RSSI); //Test to see if this is actually working at some point
-  radio.sleep();
-  digitalWrite(LED, LOW);
-  delay(100);
-  // 3
-  // Serial.println("Tc");
-  digitalWrite(LED, HIGH);
-  tc1.begin();
-	tc2.begin();
-	tc3.begin();
-  digitalWrite(LED, LOW);
-  delay(100);
-  // 4
-  // Serial.println("Flash");
-  digitalWrite(LED2, HIGH);
-  flash.begin();
-  if(flash.eraseChip()){
-    if(flash.powerDown()){
-      digitalWrite(LED2, LOW);
-    }
-  }
+	pinMode(HEATER_EN, OUTPUT);
+	// // Serial.begin(115200);
+  // pinMode(LED, OUTPUT);
+  // pinMode(LED2, OUTPUT);
+  // // 1
+  // // Serial.println("LED");
+  // digitalWrite(LED, HIGH);
+  // delay(100);
+  // digitalWrite(LED, LOW);
+  // delay(100);
+  // // 2
+  // // Serial.println("RADIO");
+  // digitalWrite(LED, HIGH);
+  // radio.initialize(FREQUENCY,NODEID,NETWORKID);
+	// radio.setHighPower();
+	// radio.encrypt(null);
+	// radio.enableAutoPower(ATC_RSSI); //Test to see if this is actually working at some point
+  // radio.sleep();
+  // digitalWrite(LED, LOW);
+  // delay(100);
+  // // 3
+  // // Serial.println("Tc");
+  // digitalWrite(LED, HIGH);
+  // tc1.begin();
+	// tc2.begin();
+	// tc3.begin();
+  // digitalWrite(LED, LOW);
+  // delay(100);
+  // // 4
+  // // Serial.println("Flash");
+  // digitalWrite(LED2, HIGH);
+  // flash.begin();
+  // if(flash.eraseChip()){
+  //   if(flash.powerDown()){
+  //     digitalWrite(LED2, LOW);
+  //   }
+  // }
 }
 
 long idx = 0;
 
 void loop() {
-  digitalWrite(LED, HIGH);
-  tc1.prime(); tc2.prime(); tc3.prime();
-  tc1.read(); tc2.read(); tc3.read();
-  thePayload.sense = tc1.getExternal();
-  thePayload.bat_v = tc2.getExternal();
-  thePayload.excite_v = tc3.getExternal();
-  thePayload.brd_tmp = int(tc1.getInternal());
-  thePayload.count = count;
-
-  if(getTime()) {
-    thePayload.timestamp = theTimeStamp.timestamp;
-    if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
-      digitalWrite(LED, LOW);
-    }
-    radio.sendWithRetry(GATEWAYID, "r", 1);
-  }
-  digitalWrite(LED2, HIGH);
-  flash.powerUp();
-  flash.writeAnything(idx, thePayload);
-  idx = flash.getAddress(sizeof(thePayload));
-  if(flash.powerDown()) digitalWrite(LED2, LOW);
-
-  count++;
-  radio.sleep();
-  Sleepy::loseSomeTime(5000);
+	digitalWrite(HEATER_EN, HIGH);
+	delay(2000);
+	digitalWrite(HEATER_EN, LOW);
+	delay(5000);
+  // digitalWrite(LED, HIGH);
+  // tc1.prime(); tc2.prime(); tc3.prime();
+  // tc1.read(); tc2.read(); tc3.read();
+  // thePayload.sense = tc1.getExternal();
+  // thePayload.bat_v = tc2.getExternal();
+  // thePayload.excite_v = tc3.getExternal();
+  // thePayload.brd_tmp = int(tc1.getInternal());
+  // thePayload.count = count;
+	//
+  // if(getTime()) {
+  //   thePayload.timestamp = theTimeStamp.timestamp;
+  //   if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
+  //     digitalWrite(LED, LOW);
+  //   }
+  //   radio.sendWithRetry(GATEWAYID, "r", 1);
+  // }
+  // digitalWrite(LED2, HIGH);
+  // flash.powerUp();
+  // flash.writeAnything(idx, thePayload);
+  // idx = flash.getAddress(sizeof(thePayload));
+  // if(flash.powerDown()) digitalWrite(LED2, LOW);
+	//
+  // count++;
+  // radio.sleep();
+  // Sleepy::loseSomeTime(5000);
 }
 
 /**
