@@ -32,7 +32,7 @@ UsedLibrary="/Users/kina/Documents/eagle/lbr/My/_My_Parts.lbr"
 
 [Win_1]
 Type="Schematic Editor"
-Loc="0 -22 1199 577"
+Loc="0 23 1199 622"
 State=0
 Number=1
 File="/Users/kina/Documents/Projects/UAF/dendrometer/dendro-v20/hardware/pcb/add-ons/vRef+Therm_Mod.sch"
@@ -75,15 +75,22 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
+Views=" 1: -5.50062 -4.23062 254.116 189.346"
 Sheet="1"
 
 [Win_2]
+Type="Control Panel"
+Loc="0 23 637 777"
+State=2
+Number=0
+
+[Win_3]
 Type="Board Editor"
-Loc="623 -1200 2542 -1"
+Loc="0 23 1275 777"
 State=2
 Number=2
 File="/Users/kina/Documents/Projects/UAF/dendrometer/dendro-v20/hardware/pcb/add-ons/vRef+Therm_Mod.brd"
-View="3.90832 2.31115 12.1311 11.6851"
+View="4.06523 -2.46596 25.393 21.8477"
 WireWidths=" 0.254 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064 0 0.3048"
 PadDiameters=" 0.254 0.3048 0.4064 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0"
 PadDrills=" 0.381"
@@ -123,14 +130,8 @@ AddLevel=2
 PadsSameType=0
 Layer=16
 
-[Win_3]
-Type="Control Panel"
-Loc="0 23 637 777"
-State=2
-Number=0
-
 [Desktop]
-Screen="640 480"
+Screen="1280 800"
 Window="Win_1"
 Window="Win_2"
 Window="Win_3"
