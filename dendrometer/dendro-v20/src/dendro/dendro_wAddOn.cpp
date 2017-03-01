@@ -9,7 +9,7 @@
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODEID    10
+#define NODEID    2
 #define NETWORKID 100
 /****************************************************************************/
 /****************************************************************************/
@@ -22,9 +22,16 @@
 #define LED 3
 #define SERIAL_BAUD 115200
 
-#define V_BAT_PIN A3
-#define V_EXCITE_PIN A1
+#define BAT_V A3
+#define TEMP A1
 #define SENS_EN 4
+
+//Thermistor Var's
+#define THERMISTORNOMINAL 10000
+#define TEMPERATURENOMINAL 25
+#define BCOEFFICIENT 3950 //Check this!
+#define SERIESRESISTOR 10000
+#define NUMSAMPLES 5
 
 #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
 #ifdef SERIAL_EN
@@ -43,11 +50,13 @@ ISR(WDT_vect){ Sleepy::watchdogEvent();} // set watchdog for Sleepy
 void sendStoredEEPROMData();
 void writeDataToEEPROM();
 bool getTime();
+bool ping();
 int32_t getSensorValue();
+double getTemperature();
+double getBatteryVoltage(int);
+bool saveEEPROMTime(uint32_t t);
+uint32_t getEEPROMTime();
 void Blink(uint8_t);
-
-double checkVoltage(int);
-double getBatVoltage();
 
 /*==============|| RFM69 ||==============*/
 RFM69_ATC radio; //init radio
@@ -75,7 +84,6 @@ MCP342x::Config
 config(MCP342x::channel1, MCP342x::oneShot, MCP342x::resolution16, MCP342x::gain1);
 MCP342x::Config status;// Configuration/status read back from the ADC
 
-
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
 struct TimeStamp {
@@ -89,17 +97,15 @@ struct Data {
 	int32_t sense = 0;
 	int16_t brd_tmp = 0;
 	double bat_v = 0;
-	double excite_v = 0;
 };
 
 //Data Structure for transmitting data packets to datalogger
 struct Payload {
 	uint32_t timestamp;
 	uint16_t count;
-	int32_t sense;
-	int16_t brd_tmp;
+	uint32_t sense;
+	double brd_tmp;
 	double bat_v;
-	double excite_v;
 };
 Payload thePayload;
 
@@ -118,20 +124,23 @@ void setup()
 	pinMode(LED, OUTPUT);      // Set LED Mode
 	// Ping the datalogger. If it's alive, it will return the current time. If not, wait and try again.
 	//LED polarity is inverted. stupid
-	digitalWrite(LED, LOW); //write LED high to signal attempting connection
-	while(!getTime()) { //this saves time to the struct which holds the time globally
+	digitalWrite(LED, LOW); //turn on LED to signal attempting connection
+	while(!ping()) { //this saves time to the struct which holds the time globally
 		radio.sleep();
 		DEBUGFlush();
-		delay(10000);
-	}
+		Sleepy::loseSomeTime(10000);
+		}
 	if (radio.sendWithRetry(GATEWAYID, "r", 1)) {
-		DEBUGln("snd >");
+		DEBUGln("snd > 'r'");
 	}
-	else DEBUGln("failed . . . no ack");
+	else DEBUGln("unlatch failed . . . no ack");
 	digitalWrite(LED, HIGH); //write low to signal success
+	//Have I gotten the time yet?....This won't work with just a Ping?
+	getTime();
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
+	saveEEPROMTime(theTimeStamp.timestamp);
 
-	// Reset devices
+	// --| Initialize Devices |--
 	MCP342x::generalCallReset();
 	delay(1); // MC342x needs 300us to settle
 	// Check device present
@@ -145,27 +154,24 @@ void setup()
 
 void loop()
 {
-
-	// Payload thePayload; //Store the data to be transmitted in this struct
-	DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
-	DEBUGFlush();
-	radio.sleep();
-	count++;
-	for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
-		Sleepy::loseSomeTime(SLEEP_MS);
-	/*==============|| Wakes Up Here! ||==============*/
-
-	//Take a reading!
-
-	int16_t temperature = radio.readTemperature(); //get Temp value from Radio a BYTE value, NEG values roll over
-	if (temperature > 100) temperature -= 255; //converts BYTE value to INT value
-	thePayload.count = count;
+	//Get Current Time
+	if(getTime()) {
+		saveEEPROMTime(theTimeStamp.timestamp);
+	} else {
+		DEBUGln("time - No Response from Datalogger");
+	}
+	//Take Reading!
+	//Turn on V-REF for Sensor and Thermistor (will be on for 100ms)
+	pinMode(SENS_EN, OUTPUT);
+	digitalWrite(SENS_EN, HIGH);// write enable high for 10 ms
+	Sleepy::loseSomeTime(100);  // let the Capacitor charge for a moment
+	digitalWrite(SENS_EN, LOW); // write enable low. Falling edge triggers FET
+	delay(1);    // wait for reference to stablize
 	thePayload.sense = getSensorValue();
-	thePayload.brd_tmp = temperature;
-	thePayload.bat_v = checkVoltage(V_BAT_PIN);
-
-	//Send Data!
-	if(getTime()) { //ping datalogger. If there is a response..do the Rest
+	thePayload.brd_tmp = getTemperature();
+	thePayload.bat_v = getBatteryVoltage(BAT_V);
+	thePayload.count = count;
+	if(ping()) {
 		//Check to see if there is data waiting to be sent
 		thePayload.timestamp = theTimeStamp.timestamp;
 		if(EEPROM.read(4) > 0) { //check the first byte of data, if there is data send all of it
@@ -190,13 +196,22 @@ void loop()
 		if (radio.sendWithRetry(GATEWAYID, "r", 1)) {
 			DEBUGln("snd >");
 		}
-	} else {//If there is no response from the datalogger....
+	} else { //If there is no response from the datalogger....
+		DEBUGln("ping - No Response");
 		// if there is no response. Take readings, save readings to EEPROM.
 		DEBUGln("data - no response, saving data locally");
 		writeDataToEEPROM(); //save that data to EEPROM
 		Blink(50);
 		Blink(50);
 	}
+
+	DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
+	DEBUGFlush();
+	radio.sleep();
+	count++;
+	for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
+		Sleepy::loseSomeTime(SLEEP_MS);
+	/*==============|| Wakes Up Here! ||==============*/
 }
 
 /**
@@ -228,7 +243,6 @@ void sendStoredEEPROMData() {
 		temp.sense = theData.sense;
 		temp.brd_tmp = theData.brd_tmp;
 		temp.bat_v = theData.bat_v;
-		temp.excite_v = theData.excite_v;
 		// DEBUG("eeprom - time data was recorded is "); DEBUGln(thePayload.timestamp);
 		DEBUG("eeprom - data @ addr "); DEBUG(EEPROM_ADDR);
 		//Send data to datalogger
@@ -279,7 +293,6 @@ void writeDataToEEPROM() {
 	theData.sense = thePayload.sense;
 	theData.brd_tmp = thePayload.brd_tmp;
 	theData.bat_v = thePayload.bat_v;
-	theData.excite_v = thePayload.excite_v;
 
 	//update the saved eeprom time to the time of the last successful transaction (if they are different)
 	EEPROM.get(0, eep_time);
@@ -307,8 +320,6 @@ bool getTime()
 	bool HANDSHAKE_SENT = false;
 	bool TIME_RECIEVED = false;
 	digitalWrite(LED, LOW);
-	//Get the current timestamp from the datalogger
-
 	if(!HANDSHAKE_SENT) { //Send request for time to the Datalogger
 		DEBUG("time - ");
 		if (radio.sendWithRetry(GATEWAYID, "t", 1)) {
@@ -334,26 +345,58 @@ bool getTime()
 	}
 	return true;
 }
+/**
+ * [ping description]
+ * @return [description]
+ */
+bool ping()
+{
+	bool PING_SENT = false;
+	bool PING_RECIEVED = false;
+	digitalWrite(LED, HIGH); //signal start of communication
+	if(!PING_SENT) { //Send request for status to the Datalogger
+		DEBUG("ping - ");
+		if (radio.sendWithRetry(GATEWAYID, "p", 1)) {
+			DEBUGln(" > p");
+			PING_SENT = true;
+		}
+		else {
+			DEBUGln("failed: no ack");
+			return false; //if there is no response, returns false and exits function
+		}
+	}
+	while(!PING_RECIEVED && PING_SENT) { //Wait for the ping to be returned
+		if (radio.receiveDone()) {
+			if (radio.DATALEN == sizeof('p')) { //check to make sure it's the right size
+				DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] > ");
+				DEBUG(radio.DATA[0]); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
+				PING_RECIEVED = true;
+				digitalWrite(LED, LOW);
+			}
+			if (radio.ACKRequested()) radio.sendACK();
+			return true;
+		}
+	}
+}
 
-
- /**
-  * [Blink description]
-  * @param t [description]
-  */
- void Blink(uint8_t t)
- {
+/**
+* [Blink description]
+* @param t [description]
+*/
+void Blink(uint8_t t)
+{
  	digitalWrite(LED, LOW); //turn LED on
  	delay(t);
  	digitalWrite(LED, HIGH); //turn LED off
  	delay(t);
- }
+}
 
 /**
  * Reads the Voltage level at an analog pin
  * @param  pin Analog Pin to reading
  * @return     returns the actual voltage at that pin
  */
-double checkVoltage(int pin) // takes 100ms
+double getBatteryVoltage(int pin) // takes 100ms
 {
 	float v = 0;
 	for (int i = 0; i < 10; i++) {
@@ -370,36 +413,59 @@ double checkVoltage(int pin) // takes 100ms
  * Reads ADC Values
  * @return The Values.....
  */
-int32_t getSensorValue()// takes 100ms
+int32_t getSensorValue()
 {
-	float v;
 	int32_t value = 0;
 	// uint8_t err;
-	pinMode(SENS_EN, OUTPUT);
-	digitalWrite(SENS_EN, HIGH);// write enable high for 10 ms
-	Sleepy::loseSomeTime(100);  // let the Capacitor charge for a moment
-	digitalWrite(SENS_EN, LOW); // write enable low. Falling edge triggers FET
-	Sleepy::loseSomeTime(9);    // wait for reference to stablize
-	for (int i = 0; i < 5; i++) {
-		v += analogRead(V_EXCITE_PIN);
-		delay(1);
-	}
-	v /= 5;
-	v  = 3.3 * v / 1023.0;
-	thePayload.excite_v = v;
-
   MCP342x::Config status;
   // // Initiate a conversion; convertAndRead() will wait until it can be read
   uint8_t err = adc.convertAndRead(MCP342x::channel1, MCP342x::oneShot,
 				   MCP342x::resolution16, MCP342x::gain1,
 				   1000000, value, status);
   if (err) {
-    Serial.print("Convert error: ");
-    Serial.println(err);
+    DEBUG("Convert error: ");
+    // DEUBGln(err);
   }
   else {
-    Serial.print("Value: ");
-    Serial.println(value);
+    // DEBUG("Value: ");
+    // DEBUGln(value);
   }
 	return value;
+}
+
+bool saveEEPROMTime(uint32_t t) {
+	if(EEPROM.put(0, t)) return 1;
+	else return 0;
+}
+
+uint32_t getEEPROMTime(){
+	TimeStamp storedTime;
+	storedTime = EEPROM.get(0, storedTime);
+	return storedTime.timestamp;
+}
+
+double getTemperature()
+{
+	float ADC_reading = 0;
+	float Vcc = 3.3;
+	float Ve = 2.048;
+
+	for(uint8_t i=0; i<NUMSAMPLES; i++) {
+		ADC_reading += analogRead(TEMP);
+		delay(1);
+	}
+	ADC_reading /= NUMSAMPLES;
+	float therm_res = (SERIESRESISTOR * Vcc * ADC_reading)/((1023*Ve)-(Vcc*ADC_reading));
+	// DEBUG("Thermistor Resistance = ") DEBUGln(therm_res);
+
+	double steinhart;
+	steinhart = therm_res / THERMISTORNOMINAL;     // (R/Ro)
+	steinhart = log(steinhart);                  // ln(R/Ro)
+	steinhart /= BCOEFFICIENT;                   // 1/B * ln(R/Ro)
+	steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15); // + (1/To)
+	steinhart = 1.0 / steinhart;                 // Invert
+	steinhart -= 273.15;                         // convert to C
+	// DEBUG("Temperature "); DEBUG(steinhart); DEBUGln(" *C");
+
+	return steinhart;
 }
