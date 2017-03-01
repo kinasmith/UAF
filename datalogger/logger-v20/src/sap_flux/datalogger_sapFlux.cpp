@@ -34,7 +34,7 @@ void checkSdCard();
 RFM69_ATC radio; //Initialize Radio
 uint8_t NETWORKID; //base network address
 byte lastRequesterNodeID = NODEID;
-int8_t NodeID_latch;
+uint8_t NodeID_latch;
 
 /*==============|| DS3231_RTC ||==============*/
 DateTime now;

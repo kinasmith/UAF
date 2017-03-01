@@ -34,7 +34,7 @@ void checkSdCard();
 RFM69_ATC radio; //Initialize Radio
 uint8_t NETWORKID; //base network address
 byte lastRequesterNodeID = NODEID;
-int8_t NodeID_latch;
+uint8_t NodeID_latch;
 
 /*==============|| DS3231_RTC ||==============*/
 DateTime now;
@@ -52,14 +52,18 @@ TimeStamp theTimeStamp;
 struct Payload {
 	uint32_t timestamp;
 	uint16_t count;
-	int32_t sense;
-	int16_t brd_tmp;
+	uint32_t sense;
+	double brd_tmp;
 	double bat_v;
-	double excite_v;
 };
 Payload thePayload;
 
 void setup() {
+	#ifdef SERIAL_EN
+	Serial.begin(SERIAL_BAUD);
+	#endif
+	DEBUGln("-- Datalogger for Dendrometer System --");
+
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);
@@ -68,7 +72,6 @@ void setup() {
 	//*****
 	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
 	//*****
-	Serial.begin(SERIAL_BAUD);
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.setHighPower(); //only for RFM69HW!
 	radio.enableAutoPower(ATC_RSSI);
@@ -77,13 +80,13 @@ void setup() {
 	digitalWrite(LED, HIGH);
 	CARD_PRESENT = !digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
 	if(CARD_PRESENT) {
-		DEBUG("SD Present, ");
+		DEBUG("-- SD Present, ");
 		if (SD.begin(SD_CS_PIN)) {
 			DEBUG("initialized, ");
 			File f;
 			now = rtc.now();
 			if(f.open("start.txt", FILE_WRITE)) {
-				DEBUG("file check good at ");
+				DEBUGln("file write, OK!");
 				DEBUGln(now.unixtime());
 				f.print("program started at: ");
 				f.print(now.unixtime());
@@ -106,33 +109,42 @@ void setup() {
 void loop() {
 	bool writeData = false;
 	bool reportTime = false;
+	bool ping = false;
 
 	if (radio.receiveDone()) {
-		DEBUG("rcv <");DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
+		DEBUG("rcv <"); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
+		/*=== TIME ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUG("t,"); DEBUG("latch to ") DEBUGln(radio.SENDERID);
-			NodeID_latch = radio.SENDERID;
+			DEBUGln("t");
 			reportTime = true;
 		}
+		/*=== UN-LATCH ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
 				DEBUG("r,"); DEBUG("unlatch from "); DEBUGln(radio.SENDERID);
 				NodeID_latch = -1;
 			}
 		}
+		/*=== PING ===*/
+		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') {
+			DEBUG("p,"); DEBUG("latch to "); DEBUGln(radio.SENDERID);
+			NodeID_latch = radio.SENDERID;
+			ping = true;
+		}
+		/*=== WRITE DATA ===*/
 		if(NodeID_latch > 0) {
+			DEBUGln(radio.DATALEN);
 			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
 				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
 				writeData = true;
 				DEBUG(thePayload.timestamp);
 				DEBUG(" cnt:"); DEBUG(thePayload.count);
-				DEBUG(" sense:"); DEBUG(thePayload.sense);
-				DEBUG(" excite:"); DEBUG(thePayload.excite_v);
-				DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
-				DEBUG(" v:"); DEBUG(thePayload.bat_v);
+				DEBUG(" sensor:"); DEBUG(thePayload.sense);
+				DEBUG(" temp:"); DEBUG(thePayload.brd_tmp);
+				DEBUG(" battery voltage:"); DEBUG(thePayload.bat_v);
 				DEBUGln();
 			}
 		}
@@ -147,7 +159,14 @@ void loop() {
 			DEBUGln("Failed . . . no ack");
 		}
 	}
-
+	if(ping) {
+		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(1), sizeof(1), ACK_RETRIES, ACK_WAIT_TIME)) {
+			DEBUGln("1");
+		} else {
+			DEBUGln("Failed . . . no ack");
+		}
+	}
 	if(writeData) {
 		File f;
 		String address = String(String(NETWORKID) + "_" + String(lastRequesterNodeID));
@@ -163,7 +182,6 @@ void loop() {
 		f.print(thePayload.sense); f.print(",");
 		f.print(thePayload.brd_tmp); f.print(",");
 		f.print(thePayload.bat_v); f.print(",");
-		f.print(thePayload.excite_v); f.print(",");
 		f.print(thePayload.count); f.println();
 		f.close();
 	}
