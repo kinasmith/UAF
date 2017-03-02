@@ -112,7 +112,7 @@ void loop() {
 	bool ping = false;
 
 	if (radio.receiveDone()) {
-		DEBUG("rcv <"); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
+		DEBUG("rcv < "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
@@ -124,13 +124,15 @@ void loop() {
 		/*=== UN-LATCH ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
-				DEBUG("r,"); DEBUG("unlatch from "); DEBUGln(radio.SENDERID);
+				DEBUGln("r");
+				DEBUG("unlatch ->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
 				NodeID_latch = -1;
 			}
 		}
 		/*=== PING ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') {
-			DEBUG("p,"); DEBUG("latch to "); DEBUGln(radio.SENDERID);
+			DEBUGln("p");
+			DEBUG("latch ->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
 			NodeID_latch = radio.SENDERID;
 			ping = true;
 		}
@@ -140,11 +142,11 @@ void loop() {
 			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
 				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
 				writeData = true;
-				DEBUG(thePayload.timestamp);
-				DEBUG(" cnt:"); DEBUG(thePayload.count);
-				DEBUG(" sensor:"); DEBUG(thePayload.sense);
-				DEBUG(" temp:"); DEBUG(thePayload.brd_tmp);
-				DEBUG(" battery voltage:"); DEBUG(thePayload.bat_v);
+				DEBUG("@-"); DEBUG(thePayload.timestamp);
+				DEBUG(" sensor-"); DEBUG(thePayload.sense);
+				DEBUG(" temp-"); DEBUG(thePayload.brd_tmp);
+				DEBUG(" battery voltage-"); DEBUG(thePayload.bat_v);
+				DEBUG(" cnt-"); DEBUG(thePayload.count);
 				DEBUGln();
 			}
 		}
@@ -152,7 +154,7 @@ void loop() {
 		Blink(LED,5);
 	}
 	if(reportTime) {
-		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		DEBUG("snd > "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
 			DEBUGln(theTimeStamp.timestamp);
 		} else {
@@ -160,7 +162,7 @@ void loop() {
 		}
 	}
 	if(ping) {
-		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		DEBUG("snd > "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(1), sizeof(1), ACK_RETRIES, ACK_WAIT_TIME)) {
 			DEBUGln("1");
 		} else {

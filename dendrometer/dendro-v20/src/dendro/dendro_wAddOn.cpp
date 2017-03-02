@@ -9,7 +9,7 @@
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODEID    2
+#define NODEID    8
 #define NETWORKID 100
 /****************************************************************************/
 /****************************************************************************/
@@ -33,7 +33,7 @@
 #define SERIESRESISTOR 10000
 #define NUMSAMPLES 5
 
-#define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
+// #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
 #ifdef SERIAL_EN
 #define DEBUG(input)   {Serial.print(input); delay(1);}
 #define DEBUGln(input) {Serial.println(input); delay(1);}
@@ -64,16 +64,13 @@ uint8_t attempt_cnt = 0;
 
 /*==============|| UTIL ||==============*/
 uint16_t count = 0;
-uint8_t sentMeasurement = 0;
-int blinkCount = 1;
-uint8_t measurementNum = 0;
 
 /*==============|| EEPROM ||==============*/
 uint16_t EEPROM_ADDR = 4;
 
 /*==============|| TIMING ||==============*/
-const uint8_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
-const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+const uint8_t SLEEP_INTERVAL = 15; //sleep time in minutes
+const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 
 /*==============|| ADC ||==============*/
@@ -135,7 +132,6 @@ void setup()
 	}
 	else DEBUGln("unlatch failed . . . no ack");
 	digitalWrite(LED, HIGH); //write low to signal success
-	//Have I gotten the time yet?....This won't work with just a Ping?
 	getTime();
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 	saveEEPROMTime(theTimeStamp.timestamp);
@@ -150,6 +146,11 @@ void setup()
 		DEBUGln(address);
 		while (1);
 	}
+	#ifdef SERIAL_EN
+		for (int i = 0 ; i < EEPROM.length() ; i++) {
+			EEPROM.write(i, 0);
+		}
+	#endif
 }
 
 void loop()
@@ -171,7 +172,7 @@ void loop()
 	thePayload.brd_tmp = getTemperature();
 	thePayload.bat_v = getBatteryVoltage(BAT_V);
 	thePayload.count = count;
-	if(ping()) {
+	if(ping()) { //Check that the logger is UP
 		//Check to see if there is data waiting to be sent
 		thePayload.timestamp = theTimeStamp.timestamp;
 		if(EEPROM.read(4) > 0) { //check the first byte of data, if there is data send all of it
