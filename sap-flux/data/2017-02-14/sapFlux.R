@@ -3,8 +3,8 @@ d = data.frame(read.csv("100_27.csv"))
 names(d) <- c("id", "time", "t1", "t2", "t3", "t_int", "batV", "cnt")
 d$time_real = as.POSIXct(d$time, origin="1970-01-01", "America/Anchorage") #Convert time to POSIX
 
-dateTime1 <- strptime("0:00 2017/2/10", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
-dateTime2 <- strptime("0:00 2017/2/14", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
+dateTime1 <- strptime("0:00 2017/2/08", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
+dateTime2 <- strptime("0:30 2017/2/08", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
 sub <- d[d$time_real < dateTime2 & d$time_real > dateTime1, ]
 
 subStart = sub[1,2]

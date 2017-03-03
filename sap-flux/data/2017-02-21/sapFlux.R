@@ -1,5 +1,5 @@
 setwd("~/Documents/Projects/UAF/sap-flux/data/2017-02-21/")
-d = data.frame(read.csv("100_102.csv"))
+d = data.frame(read.csv("100_100.csv"))
 names(d) <- c("id", "time", "t1", "t2", "t3", "t_int", "batV", "cnt")
 d$time_real = as.POSIXct(d$time, origin="1970-01-01", "America/Anchorage") #Convert time to POSIX
 

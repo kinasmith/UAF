@@ -125,14 +125,14 @@ void loop() {
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
 				DEBUGln("r");
-				DEBUG("unlatch ->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
+				DEBUG("unlatch->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
 				NodeID_latch = -1;
 			}
 		}
 		/*=== PING ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') {
 			DEBUGln("p");
-			DEBUG("latch ->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
+			DEBUG("latch->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
 			NodeID_latch = radio.SENDERID;
 			ping = true;
 		}

@@ -1,10 +1,10 @@
-setwd("~/Documents/Projects/UAF/sap-flux/data/2017-02-18/")
+setwd("~/Documents/Projects/UAF/sap-flux/data/2017-02-28")
 d = data.frame(read.csv("100_100.csv"))
 names(d) <- c("id", "time", "t1", "t2", "t3", "t_int", "batV", "cnt")
 d$time_real = as.POSIXct(d$time, origin="1970-01-01", "America/Anchorage") #Convert time to POSIX
 
-dateTime1 <- strptime("0:00 2017/2/10", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
-dateTime2 <- strptime("0:00 2017/2/14", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
+dateTime1 <- strptime("10:30 2017/2/24", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
+dateTime2 <- strptime("11:00 2017/2/24", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
 sub <- d[d$time_real < dateTime2 & d$time_real > dateTime1, ]
 
 subStart = sub[1,2]
@@ -13,7 +13,7 @@ min = min(sub$t1) - 0.1
 max = min + 20
 par(mfrow=c(3,1),mar=c(2, 2, 2, 2))
 plot(sub$t1~sub$time, type='p', pch=1, cex=0.7, ylim=c(min(sub$t1) - 0.1, min(sub$t1) + 3), main="Above Heater")
-plot(sub$t3~sub$time, type='p', pch=1, cex=0.7, ylim=c(min(sub$t3) - 0.1, min(sub$t3) + 5), main="Below Heater")
+plot(sub$t3~sub$time, type='p', pch=1, cex=0.7, ylim=c(min(sub$t3) - 0.1, min(sub$t3) + 3), main="Below Heater")
 plot(sub$t2~sub$time, type='p', pch=1, cex=0.7, ylim=c(min(sub$t2) - 0.1, min(sub$t2) + 3), main="Beside Heater")
 
 par(mfrow=c(1,1))

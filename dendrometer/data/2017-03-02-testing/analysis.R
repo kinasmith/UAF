@@ -4,12 +4,18 @@ LSB = ((2*Vref)/2^N) #Least Significant Bit (in volts)
 PGA = 1 #Programmable Gain Amplifier (Set to 1)
 L = 50 #Length of Linear Sensor
 
-setwd("~/Documents/Projects/UAF/dendrometer/data/2017-02-03//")
+setwd("~/Documents/Projects/UAF/dendrometer/data/2017-03-02-testing/")
 ##--Load In Data--##
-data = data.frame(read.csv("100_3.csv"))
+data = data.frame(read.csv("100_7.csv"))
 #Sensor Address, Unix Time Stamp, ADC Value, Temperature, Battery Voltage, Excitation Voltage, Number of send attamps
-names(data) <- c("sensor_num", "time", "val", "temp", "batt_v", "Ev", "n_at") 
+names(data) <- c("sensor_num", "time", "val", "temp", "battery", "count") 
 data$time_real = as.POSIXct(data$time, origin="1970-01-01") #Convert time to POSIX
+
+plot(data$val, type = "l", ylim=c(0,500))
+plot(data$temp, type = "l", ylim=c(15,25))
+plot(data$battery, type = "l", ylim=c(0, 3.5))
+plot(data$time_real, type = "l")
+plot(data$count, type = "l")
 
 dateTime1 <- strptime("0:00 2016/1/01", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
 dateTime2 <- strptime("0:00 2017/12/01", format="%H:%M %Y/%m/%d", tz="America/Anchorage")
