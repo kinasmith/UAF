@@ -9,8 +9,8 @@
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODEID    10
-#define NETWORKID 100
+#define NODEID    6
+#define NETWORKID 101
 /****************************************************************************/
 /****************************************************************************/
 
@@ -400,12 +400,12 @@ void Blink(uint8_t t)
 double getBatteryVoltage(int pin) // takes 100ms
 {
 	float v = 0;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < NUMSAMPLES; i++) {
 		v += analogRead(pin);
 		Sleepy::loseSomeTime(10);
 	}
 	// convert analog reading into actual voltage
-	v = v / 10;
+	v = v / NUMSAMPLES;
 	v = 3.3 * v / 1023.0; // Converts 10bit value to voltage
 	return v;             // return value
 }
@@ -451,9 +451,9 @@ double getTemperature()
 	float Vcc = 3.3;
 	float Ve = 2.048;
 
-	for(uint8_t i=0; i<NUMSAMPLES; i++) {
+	for(int i = 0; i < NUMSAMPLES; i++) {
 		ADC_reading += analogRead(TEMP);
-		delay(1);
+		Sleepy::loseSomeTime(10);
 	}
 	ADC_reading /= NUMSAMPLES;
 	float therm_res = (SERIESRESISTOR * Vcc * ADC_reading)/((1023*Ve)-(Vcc*ADC_reading));
