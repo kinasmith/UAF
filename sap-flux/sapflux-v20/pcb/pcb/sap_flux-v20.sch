@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.0.0">
+<eagle version="8.0.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -9586,7 +9586,7 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <pinref part="U5" gate="G$1" pin="SDO"/>
 </segment>
 </net>
-<net name="N$1" class="0">
+<net name="TC2_POS" class="0">
 <segment>
 <wire x1="160.02" y1="132.08" x2="160.02" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="134.62" x2="167.64" y2="134.62" width="0.1524" layer="91"/>
@@ -9596,7 +9596,7 @@ Used, eg, on the Arduino Pro/ Pro Mini boards.&lt;br&gt;
 <pinref part="J5" gate="G$1" pin="PIN2"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="TC2_NEG" class="0">
 <segment>
 <wire x1="157.48" y1="132.08" x2="157.48" y2="139.7" width="0.1524" layer="91"/>
 <pinref part="R17" gate="G$1" pin="P$1"/>
