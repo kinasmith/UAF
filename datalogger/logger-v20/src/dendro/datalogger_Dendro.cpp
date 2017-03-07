@@ -87,7 +87,7 @@ void setup() {
 			now = rtc.now();
 			if(f.open("start.txt", FILE_WRITE)) {
 				DEBUGln("file write, OK!");
-				DEBUGln(now.unixtime());
+				DEBUG("-- Time is "); DEBUGln(now.unixtime());
 				f.print("program started at: ");
 				f.print(now.unixtime());
 				f.println();
@@ -112,36 +112,36 @@ void loop() {
 	bool ping = false;
 
 	if (radio.receiveDone()) {
-		DEBUG("rcv < "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
+		// DEBUG("rcv < "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
 		/*=== TIME ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUGln("t");
+			// DEBUGln("t");
 			reportTime = true;
 		}
 		/*=== UN-LATCH ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
-				DEBUGln("r");
-				DEBUG("unlatch->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
+				// DEBUGln("r");
+				// DEBUG("unlatch->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
 				NodeID_latch = -1;
 			}
 		}
 		/*=== PING ===*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') {
-			DEBUGln("p");
-			DEBUG("latch->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
+			// DEBUGln("p");
+			// DEBUG("latch->"); DEBUG('['); DEBUG(radio.SENDERID); DEBUGln("] ");
 			NodeID_latch = radio.SENDERID;
 			ping = true;
 		}
 		/*=== WRITE DATA ===*/
 		if(NodeID_latch > 0) {
-			DEBUGln(radio.DATALEN);
 			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
 				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
 				writeData = true;
+				DEBUG("["); DEBUG(radio.SENDERID); DEBUG("] ");
 				DEBUG("@-"); DEBUG(thePayload.timestamp);
 				DEBUG(" sensor-"); DEBUG(thePayload.sense);
 				DEBUG(" temp-"); DEBUG(thePayload.brd_tmp);
@@ -154,19 +154,19 @@ void loop() {
 		Blink(LED,5);
 	}
 	if(reportTime) {
-		DEBUG("snd > "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
+		// DEBUG("snd > "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln(theTimeStamp.timestamp);
+			// DEBUGln(theTimeStamp.timestamp);
 		} else {
-			DEBUGln("Failed . . . no ack");
+			// DEBUGln("Failed . . . no ack");
 		}
 	}
 	if(ping) {
-		DEBUG("snd > "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
+		// DEBUG("snd > "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("] ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(1), sizeof(1), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln("1");
+			// DEBUGln("1");
 		} else {
-			DEBUGln("Failed . . . no ack");
+			// DEBUGln("Failed . . . no ack");
 		}
 	}
 	if(writeData) {
