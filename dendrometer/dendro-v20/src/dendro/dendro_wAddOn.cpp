@@ -20,7 +20,7 @@
 #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES 10 // # of attempts before giving up
 #define LED 3
-#define SERIAL_BAUD 115200
+#define SERIAL_BAUD 9600
 
 #define BAT_V A3
 #define TEMP A1
@@ -155,9 +155,9 @@ void setup()
 
 void loop()
 {
-	//Get Current Time
-	if(getTime()) {
-		saveEEPROMTime(theTimeStamp.timestamp);
+	//Gets current time at start of measurement cycle. Stores in global theTimeStamp struct
+	if(getTime()) { //Gets time from datalogger and stores in Global Variable
+		// saveEEPROMTime(theTimeStamp.timestamp);
 	} else {
 		DEBUGln("time - No Response from Datalogger");
 	}
@@ -195,12 +195,14 @@ void loop()
 		}
 		//disengage the the Datalogger
 		if (radio.sendWithRetry(GATEWAYID, "r", 1)) {
-			DEBUGln("snd >");
+			DEBUGln("snd > r");
 		}
 	} else { //If there is no response from the datalogger....
 		DEBUGln("ping - No Response");
 		// if there is no response. Take readings, save readings to EEPROM.
 		DEBUGln("data - no response, saving data locally");
+		//stored time is now at the START of
+		saveEEPROMTime(theTimeStamp.timestamp); //only save the time to EEPROM if not failed attempt.
 		writeDataToEEPROM(); //save that data to EEPROM
 		Blink(50);
 		Blink(50);
@@ -219,14 +221,14 @@ void loop()
  * [sendStoredEEPROMData description]
  */
 void sendStoredEEPROMData() {
+	DEBUGln("--Retrieving Stored EEPROM DATA--");
 	Data blank; //init blank struct to erase data
 	Data theData; //struct to save data in
 	Payload temp;
-	/*
-	  The stored time in EEPROM is one record interval behind the actual time that the data was stored
-	  because time stamps are saved with successful transmissions and EEPROM data is stored when
-	  those transmissions don't work
-	 */
+/*
+	The stored time is the last successful transmission. So we need to add
+	1 Sleep Interval to the Stored Time to get accurate time math
+ */
 	uint8_t storeIndex = 1;
 	uint32_t eep_time = 0UL;
 	EEPROM.get(0, eep_time); //get previously stored time (at address 0)
@@ -235,7 +237,7 @@ void sendStoredEEPROMData() {
 	while (theData.bat_v > 0) { //while there is data available from the EEPROM
 		/*
 		  It could be any of the values in the struct because remember they are stored as int's, not floats.
-		  But humidity will never be below 0.01%
+		  But battery voltage will never be below less than 0
 		 */
 		uint32_t rec_time = eep_time + SLEEP_SECONDS*storeIndex; //Calculate the actual recorded time
 		//Save data into the Payload struct
@@ -244,7 +246,7 @@ void sendStoredEEPROMData() {
 		temp.sense = theData.sense;
 		temp.brd_tmp = theData.brd_tmp;
 		temp.bat_v = theData.bat_v;
-		// DEBUG("eeprom - time data was recorded is "); DEBUGln(thePayload.timestamp);
+		DEBUG("eeprom - time data was recorded is "); DEBUGln(thePayload.timestamp);
 		DEBUG("eeprom - data @ addr "); DEBUG(EEPROM_ADDR);
 		//Send data to datalogger
 		digitalWrite(LED, LOW);
@@ -263,7 +265,7 @@ void sendStoredEEPROMData() {
 			DEBUG(attempt_cnt);
 			Blink(50);
 			Blink(50);
-			if(attempt_cnt >10) {
+			if(attempt_cnt > 10) {
 				/*
 				         to avoid infinite loops if the datalogger dies permanently while attempting to transmit saved data
 				         it will try 10 times before giving up on that specific sample

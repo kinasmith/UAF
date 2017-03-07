@@ -6,7 +6,7 @@ L = 50 #Length of Linear Sensor
 
 setwd("~/Documents/Projects/UAF/dendrometer/data/2017-03-07-testing/")
 ##--Load In Data--##
-data = data.frame(read.csv("100_12.csv"))
+data = data.frame(read.csv("101_10.csv"))
 #Sensor Address, Unix Time Stamp, ADC Value, Temperature, Battery Voltage, Excitation Voltage, Number of send attamps
 names(data) <- c("sensor_num", "time", "val", "temp", "battery", "count") 
 data$time_real = as.POSIXct(data$time, origin="1970-01-01") #Convert time to POSIX
@@ -15,7 +15,7 @@ plot(data$val~data$time_real, ylim=c(0,500))
 plot(data$temp~data$time_real, ylim=c(15,25))
 plot(data$battery~data$time_real, ylim=c(0, 3.5))
 plot(data$time_real)
-plot(data$count~data$time_real)
+plot(data$count)
 
 
 
