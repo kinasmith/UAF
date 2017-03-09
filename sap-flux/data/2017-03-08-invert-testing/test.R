@@ -16,3 +16,13 @@ plot(d$int2)
 plot(d$tc2)
 plot(d$int3)
 plot(d$tc3)
+
+d$int2_mod = d$int2-5
+par(mfrow=c(1,1))
+plot(d$tc2, col="red", ylim=c(20, 23))
+points(d$int2_mod, col="blue")
+
+d[1:4,]
+trim = d[280:380,]
+plot(trim$tc2, col="red", ylim=c(20, 23))
+points(trim$int2_mod, col="blue")
