@@ -9,8 +9,8 @@
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODEID    1
-#define NETWORKID 101
+#define NODEID    12
+#define NETWORKID 100
 /****************************************************************************/
 /****************************************************************************/
 
@@ -68,7 +68,7 @@ uint16_t count = 0;
 uint16_t EEPROM_ADDR = 5; //Start of data storage
 
 /*==============|| TIMING ||==============*/
-const uint8_t SLEEP_INTERVAL = 1; //sleep time in minutes
+const uint8_t SLEEP_INTERVAL = 15; //sleep time in minutes
 const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 
