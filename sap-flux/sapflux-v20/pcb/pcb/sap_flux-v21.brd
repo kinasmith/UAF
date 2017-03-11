@@ -43,7 +43,7 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
@@ -189,6 +189,11 @@
 </polygon>
 <text x="13.97" y="17.907" size="1.778" layer="22" font="vector" ratio="15" rot="SMR270">NODE ID</text>
 <text x="11.938" y="32.766" size="1.778" layer="22" font="vector" ratio="15" rot="SMR0">NETWORK</text>
+<wire x1="14.351" y1="52.578" x2="14.351" y2="35.56" width="1.5875" layer="46"/>
+<wire x1="14.351" y1="35.56" x2="15.24" y2="34.29" width="1.5875" layer="46"/>
+<wire x1="15.24" y1="34.29" x2="30.988" y2="34.29" width="1.5875" layer="46"/>
+<wire x1="30.988" y1="34.29" x2="34.798" y2="38.1" width="1.5875" layer="46"/>
+<wire x1="35.56" y1="52.197" x2="35.56" y2="41.656" width="1.5875" layer="46"/>
 </plain>
 <libraries>
 <library name="My_Aesthetics">

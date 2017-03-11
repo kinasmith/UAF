@@ -43,7 +43,7 @@ void setup() {
 	tc1.begin();
 	tc2.begin();
 	tc3.begin();
-  DEBUGln("START--");
+  // DEBUGln("START--");
 	delay(100);
 }
 
