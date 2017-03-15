@@ -22,7 +22,7 @@ plot(data$tc_1)
 #plot single event of Upstream
 start = (30*60)*0
 #end = start+400
-end =- start+2000
+end =- start+400
 subData = data[start:end,]
 min = min(subData$tc_1) - 0.1
 #max = max(subData$tc_1) + 0.1
