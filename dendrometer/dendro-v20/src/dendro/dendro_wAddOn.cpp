@@ -9,7 +9,7 @@
 /****************************************************************************/
 /***********************    DON'T FORGET TO SET ME    ***********************/
 /****************************************************************************/
-#define NODEID    12
+#define NODEID    9
 #define NETWORKID 100
 /****************************************************************************/
 /****************************************************************************/
@@ -23,6 +23,7 @@
 #define SERIAL_BAUD 9600
 
 #define BAT_V A3
+#define REF_V A2
 #define TEMP A1
 #define SENS_EN 4
 
@@ -54,6 +55,7 @@ bool ping();
 int32_t getSensorValue();
 double getTemperature();
 double getBatteryVoltage();
+double getRefVoltage();
 bool saveEEPROMTime(uint32_t t);
 uint32_t getEEPROMTime();
 void Blink(uint8_t);
@@ -93,6 +95,7 @@ struct Data {
 	int32_t sense = 0;
 	int16_t brd_tmp = 0;
 	double bat_v = 0;
+	double ref_v = 0;
 };
 
 //Data Structure for transmitting data packets to datalogger
@@ -102,6 +105,7 @@ struct Payload {
 	uint32_t sense;
 	double brd_tmp;
 	double bat_v;
+	double ref_v;
 };
 Payload thePayload;
 
@@ -186,6 +190,7 @@ void loop()
 	thePayload.sense = getSensorValue();
 	thePayload.brd_tmp = getTemperature();
 	thePayload.bat_v = getBatteryVoltage();
+	thePayload.ref_v = getRefVoltage();
 	thePayload.count = count;
 	DEBUG("duration "); DEBUG(millis()-now); DEBUGln("ms");
 	if(ping()) { //Check that the logger is listening
@@ -328,13 +333,13 @@ bool getTime()
 	bool TIME_RECIEVED = false;
 	digitalWrite(LED, LOW);
 	if(!HANDSHAKE_SENT) { //Send request for time to the Datalogger
-		// DEBUG("time - ");
+		DEBUG("time - ");
 		if (radio.sendWithRetry(GATEWAYID, "t", 1)) {
-			// DEBUG("snd . . ");
+			DEBUG("snd . . ");
 			HANDSHAKE_SENT = true;
 		}
 		else {
-			// DEBUGln("failed . . . no ack");
+			DEBUGln("failed . . . no ack");
 			return false; //if there is no response, returns false and exits function
 		}
 	}
@@ -342,8 +347,8 @@ bool getTime()
 		if (radio.receiveDone()) {
 			if (radio.DATALEN == sizeof(theTimeStamp)) { //check to make sure it's the right size
 				theTimeStamp = *(TimeStamp*)radio.DATA; //save data
-				// DEBUG(" rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
-				// DEBUG(theTimeStamp.timestamp); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
+				DEBUG(" rcv - "); DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] ");
+				DEBUG(theTimeStamp.timestamp); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
 				TIME_RECIEVED = true;
 				digitalWrite(LED, HIGH);
 			}
@@ -362,21 +367,21 @@ bool ping()
 	bool PING_RECIEVED = false;
 	digitalWrite(LED, HIGH); //signal start of communication
 	if(!PING_SENT) { //Send request for status to the Datalogger
-		// DEBUG("ping - ");
+		DEBUG("ping - ");
 		if (radio.sendWithRetry(GATEWAYID, "p", 1)) {
-			// DEBUGln(" > p");
+			DEBUGln(" > p");
 			PING_SENT = true;
 		}
 		else {
-			// DEBUGln("failed: no ack");
+			DEBUGln("failed: no ack");
 			return false; //if there is no response, returns false and exits function
 		}
 	}
 	while(!PING_RECIEVED && PING_SENT) { //Wait for the ping to be returned
 		if (radio.receiveDone()) {
 			if (radio.DATALEN == sizeof('p')) { //check to make sure it's the right size
-				// DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] > ");
-				// DEBUG(radio.DATA[0]); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
+				DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] > ");
+				DEBUG(radio.DATA[0]); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
 				PING_RECIEVED = true;
 				digitalWrite(LED, LOW);
 			}
@@ -408,6 +413,18 @@ double getBatteryVoltage() // takes 100ms
 	float v = 0;
 	for (int i = 0; i < NUMSAMPLES; i++) {
 		v += analogRead(BAT_V);
+		Sleepy::loseSomeTime(10);
+	}
+	// convert analog reading into actual voltage
+	v = v / NUMSAMPLES;
+	v = 3.3 * v / 1023.0; // Converts 10bit value to voltage
+	return v;             // return value
+}
+
+double getRefVoltage() {
+	float v = 0;
+	for (int i = 0; i < NUMSAMPLES; i++) {
+		v += analogRead(REF_V);
 		Sleepy::loseSomeTime(10);
 	}
 	// convert analog reading into actual voltage
