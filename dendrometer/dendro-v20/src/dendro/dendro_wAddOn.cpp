@@ -32,7 +32,7 @@
 #define TEMPERATURENOMINAL 25
 #define BCOEFFICIENT 3950 //Check this!
 #define SERIESRESISTOR 10000
-#define NUMSAMPLES 5
+#define NUMSAMPLES 3
 
 // #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
 #ifdef SERIAL_EN
@@ -72,6 +72,8 @@ uint16_t EEPROM_ADDR = 5; //Start of data storage
 /*==============|| TIMING ||==============*/
 const uint8_t SLEEP_INTERVAL = 15; //sleep time in minutes
 const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
+// const uint8_t SLEEP_INTERVAL = 1; //sleep time in minutes
+// const uint16_t SLEEP_MS = 10000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 
 /*==============|| ADC ||==============*/
@@ -187,10 +189,11 @@ void loop()
 	digitalWrite(SENS_EN, LOW); //falling edge enables switch
 	delay(1); // wait for reference to stablize
 	//sensor reading and temp should happen right next to each other
-	thePayload.sense = getSensorValue();
-	thePayload.brd_tmp = getTemperature();
-	thePayload.bat_v = getBatteryVoltage();
-	thePayload.ref_v = getRefVoltage();
+	thePayload.ref_v = getRefVoltage(); //takes 10ms
+	thePayload.sense = getSensorValue(); //takes ~50ms
+	thePayload.bat_v = getBatteryVoltage(); //takes 10ms
+	thePayload.brd_tmp = getTemperature(); //takes 10ms
+
 	thePayload.count = count;
 	DEBUG("duration "); DEBUG(millis()-now); DEBUGln("ms");
 	if(ping()) { //Check that the logger is listening
@@ -267,6 +270,7 @@ void sendStoredEEPROMData() {
 		tmp.sense = theData.sense;
 		tmp.brd_tmp = theData.brd_tmp;
 		tmp.bat_v = theData.bat_v;
+		tmp.ref_v = theData.ref_v;
 		//Send data to datalogger
 		digitalWrite(LED, LOW);
 		if (radio.sendWithRetry(GATEWAYID, (const void*)(&tmp), sizeof(tmp)), ACK_RETRIES, ACK_WAIT_TIME) {
@@ -301,6 +305,7 @@ void writeDataToEEPROM() {
 	theData.sense = thePayload.sense;
 	theData.brd_tmp = thePayload.brd_tmp;
 	theData.bat_v = thePayload.bat_v;
+	theData.ref_v = thePayload.ref_v;
 
 	//update the saved eeprom time to the time of the last successful transaction (if they are different)
 	EEPROM.get(1, eep_time);
@@ -413,7 +418,7 @@ double getBatteryVoltage() // takes 100ms
 	float v = 0;
 	for (int i = 0; i < NUMSAMPLES; i++) {
 		v += analogRead(BAT_V);
-		Sleepy::loseSomeTime(10);
+		Sleepy::loseSomeTime(3);
 	}
 	// convert analog reading into actual voltage
 	v = v / NUMSAMPLES;
@@ -425,7 +430,7 @@ double getRefVoltage() {
 	float v = 0;
 	for (int i = 0; i < NUMSAMPLES; i++) {
 		v += analogRead(REF_V);
-		Sleepy::loseSomeTime(10);
+		Sleepy::loseSomeTime(3);
 	}
 	// convert analog reading into actual voltage
 	v = v / NUMSAMPLES;
@@ -476,7 +481,7 @@ double getTemperature()
 
 	for(int i = 0; i < NUMSAMPLES; i++) {
 		ADC_reading += analogRead(TEMP);
-		Sleepy::loseSomeTime(10);
+		Sleepy::loseSomeTime(3);
 	}
 	ADC_reading /= NUMSAMPLES;
 	float therm_res = (SERIESRESISTOR * Vcc * ADC_reading)/((1023*Ve)-(Vcc*ADC_reading));
