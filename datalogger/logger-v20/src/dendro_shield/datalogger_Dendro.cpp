@@ -10,7 +10,7 @@
 #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES 10 // # of attempts before giving up
 #define SERIAL_BAUD 115200
-#define LED 9
+#define LED 3
 #define SD_CS_PIN 4
 #define CARD_DETECT 5
 
@@ -55,6 +55,7 @@ struct Payload {
 	uint32_t sense;
 	double brd_tmp;
 	double bat_v;
+	double ref_v;
 };
 Payload thePayload;
 
@@ -78,7 +79,8 @@ void setup() {
 	radio.encrypt(null);
 	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	digitalWrite(LED, HIGH);
-	CARD_PRESENT = !digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
+	//NOTE: WARNING!!! THE LOGIC IS REVERSED BETWEEN UNO SHIELD AND CUSTOM DATALOGGER
+	CARD_PRESENT = digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
 	if(CARD_PRESENT) {
 		DEBUG("-- SD Present, ");
 		if (SD.begin(SD_CS_PIN)) {
@@ -146,6 +148,7 @@ void loop() {
 				DEBUG(" sensor-"); DEBUG(thePayload.sense);
 				DEBUG(" temp-"); DEBUG(thePayload.brd_tmp);
 				DEBUG(" battery voltage-"); DEBUG(thePayload.bat_v);
+				DEBUG(" reference voltage-"); DEBUG(thePayload.ref_v);
 				DEBUG(" cnt-"); DEBUG(thePayload.count);
 				DEBUGln();
 			}
@@ -184,6 +187,7 @@ void loop() {
 		f.print(thePayload.sense); f.print(",");
 		f.print(thePayload.brd_tmp); f.print(",");
 		f.print(thePayload.bat_v); f.print(",");
+		f.print(thePayload.ref_v); f.print(",");
 		f.print(thePayload.count); f.println();
 		f.close();
 	}
@@ -191,7 +195,8 @@ void loop() {
 }
 
 void checkSdCard() {
-	CARD_PRESENT = !digitalRead(CARD_DETECT); //invert for logic's sake
+	//NOTE: WARNING!!! THE LOGIC IS REVERSED BETWEEN UNO SHIELD AND CUSTOM DATALOGGER
+	CARD_PRESENT = digitalRead(CARD_DETECT); //invert for logic's sake
 	if (!CARD_PRESENT) {
 		DEBUGln("sd - card Not Present");
 		while (1) {
