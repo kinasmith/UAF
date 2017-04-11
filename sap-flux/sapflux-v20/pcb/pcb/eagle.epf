@@ -1,5 +1,5 @@
 [Eagle]
-Version="08 00 01"
+Version="08 01 00"
 Platform="Mac OS X"
 Globals="Globals"
 Desktop="Desktop"
@@ -31,18 +31,12 @@ UsedLibrary="/Users/kina/Documents/eagle/lbr/My/My_xTal.lbr"
 UsedLibrary="/Users/kina/Documents/eagle/lbr/My/_My_Parts.lbr"
 
 [Win_1]
-Type="Control Panel"
-Loc="0 23 637 777"
-State=2
-Number=0
-
-[Win_2]
 Type="Schematic Editor"
-Loc="0 -22 1199 577"
-State=0
+Loc="623 -1178 2542 -24"
+State=2
 Number=2
 File="sap_flux-v21.sch"
-View="-5.6388 -4.23926 254.559 189.786"
+View="-21.4158 -16.0117 238.782 178.146"
 WireWidths=" 0 0.254 0.3048 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064"
 PadDiameters=" 0.254 0.3048 0.4064 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0"
 PadDrills=" 0.5 0.6 0.7 0.9 1 1.1 1.2 1.3 1.4 1.5 1.6 2 2.2 2.8 3.2 0.8"
@@ -81,15 +75,16 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
-Sheet="1"
+Views=" 1: 23.2128 65.605 200.931 198.127 2: 11.8619 4.86334 189.58 137.476 3: -21.4158 -16.0117 238.782 178.146"
+Sheet="3"
 
-[Win_3]
+[Win_2]
 Type="Board Editor"
-Loc="76 150 1275 749"
+Loc="623 -1200 2542 -1"
 State=2
 Number=1
 File="sap_flux-v21.brd"
-View="52.2626 18.7283 58.1378 22.667"
+View="-1.07158 -7.15826 92.1264 55.323"
 WireWidths=" 0 0.254 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064 0.3048"
 PadDiameters=" 0.254 0.3048 0.4064 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0"
 PadDrills=" 0.381"
@@ -129,8 +124,14 @@ AddLevel=2
 PadsSameType=0
 Layer=16
 
+[Win_3]
+Type="Control Panel"
+Loc="0 23 637 777"
+State=2
+Number=0
+
 [Desktop]
-Screen="2543 2000"
+Screen="640 480"
 Window="Win_1"
 Window="Win_2"
 Window="Win_3"
