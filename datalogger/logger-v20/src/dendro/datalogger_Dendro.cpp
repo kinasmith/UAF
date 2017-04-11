@@ -55,6 +55,7 @@ struct Payload {
 	uint32_t sense;
 	double brd_tmp;
 	double bat_v;
+	double ref_v;
 };
 Payload thePayload;
 
@@ -146,6 +147,7 @@ void loop() {
 				DEBUG(" sensor-"); DEBUG(thePayload.sense);
 				DEBUG(" temp-"); DEBUG(thePayload.brd_tmp);
 				DEBUG(" battery voltage-"); DEBUG(thePayload.bat_v);
+				DEBUG(" reference voltage-"); DEBUG(thePayload.ref_v);
 				DEBUG(" cnt-"); DEBUG(thePayload.count);
 				DEBUGln();
 			}
@@ -184,6 +186,7 @@ void loop() {
 		f.print(thePayload.sense); f.print(",");
 		f.print(thePayload.brd_tmp); f.print(",");
 		f.print(thePayload.bat_v); f.print(",");
+		f.print(thePayload.ref_v); f.print(",");
 		f.print(thePayload.count); f.println();
 		f.close();
 	}
