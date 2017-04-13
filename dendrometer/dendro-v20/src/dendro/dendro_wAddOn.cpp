@@ -477,7 +477,8 @@ double getTemperature()
 {
 	float ADC_reading = 0;
 	float Vcc = 3.3;
-	float Ve = 2.048;
+	// float Ve = 2.048;
+	float Ve = thePayload.ref_v;
 
 	for(int i = 0; i < NUMSAMPLES; i++) {
 		ADC_reading += analogRead(TEMP);
