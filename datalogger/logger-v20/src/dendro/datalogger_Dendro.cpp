@@ -64,7 +64,7 @@ void setup() {
 	Serial.begin(SERIAL_BAUD);
 	#endif
 	DEBUGln("-- Datalogger for Dendrometer System --");
-
+	Wire.begin();
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);

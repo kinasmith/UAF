@@ -64,11 +64,12 @@ void setup() {
 	Serial.begin(SERIAL_BAUD);
 	#endif
 	DEBUGln("-- Datalogger for Dendrometer System --");
-
+	Wire.begin();
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);
 	NETWORKID = setAddress();
+	// NETWORKID = 101;
 	rtc.begin();
 	//*****
 	// rtc.adjust(DateTime((__DATE__), (__TIME__))); //sets the RTC to the computer time.
