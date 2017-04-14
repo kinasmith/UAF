@@ -478,7 +478,7 @@ int32_t getSensorValue()
 
 /**
  * Saves Unix timestamp to EEPROM
- * @param  t the time stamp
+ * @param  t the value to store, perferably actually the unix timestamp
  * @return   boolean confirmation
  */
 bool saveEEPROMTime(uint32_t t) {
