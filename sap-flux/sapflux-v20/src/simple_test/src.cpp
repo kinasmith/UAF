@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <MAX31856.h>
+#include "RFM69_ATC.h"
 
 #define TC1_CS 7
 #define TC2_CS 6
@@ -8,6 +9,13 @@
 #define HEATER_EN 4
 #define LED 9
 
+#define NODEID 233
+#define GATEWAYID 0
+#define FREQUENCY RF69_433MHZ //frequency of radio
+#define ATC_RSSI -70 //ideal Signal Strength of trasmission
+// #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
+#define ACK_RETRIES 10 // # of attempts before giving up
+int ACK_WAIT_TIME = 100;
 #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
 
 #ifdef SERIAL_EN
@@ -19,6 +27,13 @@
 #define DEBUGln(input);
 #define DEBUGFlush();
 #endif
+
+/*==============|| RFM69 ||==============*/
+RFM69_ATC radio;
+uint8_t attempt_cnt = 0;
+uint8_t NETWORKID = 100;
+
+
 
 MAX31856 tc1(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_1SAMP, CMODE_OFF, ONESHOT_ON); //constant conversion mode
 MAX31856 tc2(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_4SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
@@ -35,7 +50,6 @@ struct Measurement {
 
 int cnt = 0;
 int heaterState;
-
 
 void setup() {
 	Serial.begin(9600);
@@ -83,6 +97,9 @@ void loop() {
 	}
 	if(cnt > 60) cnt = 0;
 	cnt++;
-	delay(1000);
 
+	if(radio.sendWithRetry(GATEWAYID, (const void*)(&thisMeasurement), sizeof(thisMeasurement))) {
+		DEBUGln("success");
+	} else {DEBUGln("Failure")};
+	delay(1000);
 }

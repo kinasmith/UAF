@@ -11,20 +11,22 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <EEPROM.h>
 #include "Sleepy.h"
 #include "RFM69_ATC.h"
 #include "SPIFlash_Marzogh.h"
-#include <EEPROM.h>
 #include "MAX31856.h"
 
-#define NODEID 100
+#define NODEID 233
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
-#define ACK_WAIT_TIME 100 // # of ms to wait for an ack
+// #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES 10 // # of attempts before giving up
 #define SERIAL_BAUD 115200 // Serial comms rate
 #define FLASH_CAPACITY 524288
+
+int ACK_WAIT_TIME = 100;
 
 #define LED 9
 #define LED2 A0
@@ -34,6 +36,7 @@
 #define BAT_V A7
 #define BAT_EN 3
 #define HEATER_EN 4
+#define SOLAR_GD A6
 #define TC1_CS 7
 #define TC2_CS 6
 #define TC3_CS 5
@@ -65,36 +68,42 @@ uint32_t getEEPROMTime();
 void takeMeasurement();
 void sendMeasurement();
 bool transmitDataPackage();
+
 /*==============|| RFM69 ||==============*/
 RFM69_ATC radio;
 uint8_t attempt_cnt = 0;
 uint8_t NETWORKID;
+
 /*==============|| MEMORY ||==============*/
 SPIFlash_Marzogh flash(8);
 uint32_t FLASH_ADDR = 0;
 uint16_t EEPROM_ADDR = 0;
+
 /*==============|| THERMOCOUPLE ||==============*/
 MAX31856 tc1(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
 MAX31856 tc2(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
 MAX31856 tc3(TC3_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //one shot mode
+
 /*==============|| UTIL ||==============*/
 uint16_t count = 0;
 uint8_t sentMeasurement = 0;
-/*==============|| TIMING ||==============*/
-const uint8_t HEATER_ON_TIME = 6; //in seconds
-const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
-const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
-const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
-const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
+bool heaterState;
 
-	// Testing Intervals
-// const uint8_t HEATER_ON_TIME = 1; //in Record Intervals
-// const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
-// const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+/*==============|| TIMING ||==============*/
+// const uint8_t HEATER_ON_TIME = 6; //in seconds
+// const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
+// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
 // const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 // const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-// const uint16_t REC_DURATION = 10; //how many measurements
+// const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
+
+	// Testing Intervals
+const uint8_t HEATER_ON_TIME = 1; //in Record Intervals
+const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
+const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
+const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
+const uint16_t REC_DURATION = 10; //how many measurements
 
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
@@ -112,6 +121,8 @@ struct Payload {
 	double tc3;
 	double internal;
 	double bat_v;
+	bool heater_state;
+	bool solar_good;
 };
 Payload thePayload;
 
@@ -121,6 +132,8 @@ struct Measurement {
 	double tc2;
 	double tc3;
 	double internal;
+	uint8_t heater_state;
+	uint8_t solar_good;
 };
 
 uint8_t measurementNum = 0;
@@ -135,6 +148,8 @@ void setup()
 	pinMode(HEATER_EN, OUTPUT);
 	pinMode(LED, OUTPUT);
 	pinMode(LED2, OUTPUT);
+	pinMode(SOLAR_GD, INPUT);
+
 	NETWORKID = setAddress(); //Sets the network address depending on solder jumpers
 	/* --| Initialize Radio |-- */
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
@@ -149,30 +164,27 @@ void setup()
 		DEBUGFlush();
 		Sleepy::loseSomeTime(10000);
 	}
-	if (radio.sendWithRetry(GATEWAYID, "r", 1)) { //unlatch the datalogger from this Sensor
-		DEBUG("snd > 'r'");
+	if (!radio.sendWithRetry(GATEWAYID, "r", 1)) { //unlatch the datalogger from this Sensor
+		DEBUGln("unlatch failed . . . no ack");
 	}
-	else DEBUGln("unlatch failed . . . no ack");
 	digitalWrite(LED, LOW); //signal successful transmission
+	if(!getTime()) {
+		DEBUGln("time failed . . . no ack");
+	}
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 	saveEEPROMTime(theTimeStamp.timestamp); //Save that time to EEPROM
-	/* --| Initialize the Thermocouples |-- */
-  tc1.begin();
-	tc2.begin();
-	tc3.begin();
-	DEBUGln("-- Thermocouples are engaged");
+
 	/* --| Power Up Flash before Initialize |-- */
 	DEBUG("-- Flash Mem powering up ");
 	if(flash.powerUp()) {
 		DEBUG(", OK!");
 	} else DEBUG(". . failed! ");
+
 	/* --| Initialize Flash |-- */
 	digitalWrite(LED2, HIGH); //turn on LED for Flash init
 	flash.begin();
-	uint16_t _name = flash.getChipName();
-	uint32_t capacity = flash.getCapacity();
-	DEBUG(" W25X"); DEBUG(_name); DEBUG("**  ");
-	DEBUG(" capacity: "); DEBUG(capacity); DEBUGln(" bytes");
+	DEBUG(" W25X"); DEBUG(flash.getChipName()); DEBUG("**  ");
+	DEBUG(" capacity: "); DEBUG(flash.getCapacity()); DEBUGln(" bytes");
 	DEBUGln("-- Flash: Erasing Chip!");
 	while(!flash.eraseChip()) {
 	}
@@ -184,12 +196,9 @@ void setup()
 
 void loop()
 {
-	if(getTime()) { //get current Time
-		saveEEPROMTime(theTimeStamp.timestamp);
-	} else {
+	if(!getTime()) { //get current Time
 		DEBUGln("time - No Response From Datalogger");
 	}
-
 	// Power up Flash
 	DEBUG(" - Powering Up");
 	if(flash.powerUp()) {
@@ -228,14 +237,27 @@ void loop()
 void takeMeasurement() {
 		/* --| Begin Measurement Cycle |-- */
 		while(measurementNum < REC_DURATION) {
-			Measurement thisMeasurement; //place to store sensor readings temporarily
+			//At the start of the measurement cycle. Turn on/off Heater
+			if(measurementNum <= HEATER_ON_TIME) {
+				digitalWrite(HEATER_EN, HIGH);
+				heaterState = 1;
+			} else {
+				digitalWrite(HEATER_EN, LOW);
+				heaterState = 0;
+			}
+			//Then go about measuring the rest of the things
 			tc1.prime(); tc2.prime(); tc3.prime(); //force sensors to take reading
 			tc1.read(); tc2.read(); tc3.read(); //read the values
+
+			Measurement thisMeasurement; //place to store sensor readings temporarily
 			thisMeasurement.tc1 = tc1.getExternal();
 			thisMeasurement.tc2 = tc2.getExternal();
 			thisMeasurement.tc3 = tc3.getExternal();
 			thisMeasurement.internal = tc1.getInternal();
 			thisMeasurement.count = count; //reading count is incremented at the end of the sleep cycle
+			thisMeasurement.solar_good = digitalRead(SOLAR_GD);
+			thisMeasurement.heater_state = heaterState;
+
 			digitalWrite(LED2, HIGH); //signal start of Flash Write
 			if(flash.writeAnything(FLASH_ADDR, thisMeasurement)) { //write to flash. Prints on success
 				DEBUG("flash - ");
@@ -243,6 +265,8 @@ void takeMeasurement() {
 				DEBUG(thisMeasurement.tc2); DEBUG(", ");
 				DEBUG(thisMeasurement.tc3); DEBUG(", ");
 				DEBUG(thisMeasurement.internal); DEBUG(", ");
+				DEBUG(thisMeasurement.solar_good); DEBUG(", ");
+				DEBUG(thisMeasurement.heater_state); DEBUG(", ");
 				DEBUG(thisMeasurement.count); DEBUG(", ");
 				DEBUG("at Address "); DEBUGln(FLASH_ADDR);
 				FLASH_ADDR += sizeof(thisMeasurement);
@@ -250,11 +274,6 @@ void takeMeasurement() {
 			} else {
 				DEBUG("flash - failed to write at Address ");
 				DEBUGln(FLASH_ADDR);
-			}
-			if(measurementNum <= HEATER_ON_TIME) {
-				digitalWrite(HEATER_EN, HIGH); //On cycle start, turn on heater
-			} else {
-				digitalWrite(HEATER_EN, LOW); //turn off after 6 seconds
 			}
 			DEBUGFlush();
 			Sleepy::loseSomeTime(REC_INTERVAL); // wait one seconds
@@ -291,6 +310,8 @@ void sendMeasurement()
 			thePayload.tc3 = storedMeasurement.tc3;
 			thePayload.internal = storedMeasurement.internal;
 			thePayload.count = storedMeasurement.count;
+			thePayload.heater_state = storedMeasurement.heater_state;
+			thePayload.solar_good = storedMeasurement.solar_good;
 		}
 		//Correctly increment the Time Stamp on Stored Data to reflect the 1 second measurement interval, and 30 minute Record interval
 		uint8_t this_measurement_num = num_of_stored_measurements - (count - storedMeasurement.count); //invert the record count.
@@ -309,11 +330,10 @@ void sendMeasurement()
 			DEBUG(thePayload.tc3); DEBUG(",");
 			DEBUG(thePayload.internal); DEBUG(",");
 			DEBUG(thePayload.bat_v); DEBUG(",");
+			DEBUG(thePayload.heater_state); DEBUG(",");
+			DEBUG(thePayload.solar_good); DEBUG(",");
 			DEBUG(" at Address "); DEBUGln(FLASH_ADDR);
 			FLASH_ADDR += sizeof(storedMeasurement); //increment to next chunk of data
-		} else {
-			DEBUGln("poopy pants will live forever");
-			// FLASH_ADDR += sizeof(storedMeasurement); //WTF is this?...still ignoring
 		}
 	}
 	DEBUGln("flash - Setting address back to 0");

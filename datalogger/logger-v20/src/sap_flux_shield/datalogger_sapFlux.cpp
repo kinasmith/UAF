@@ -10,7 +10,7 @@
 #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
 #define ACK_RETRIES 10 // # of attempts before giving up
 #define SERIAL_BAUD 115200
-#define LED 9
+#define LED 3
 #define SD_CS_PIN 4
 #define CARD_DETECT 5
 
@@ -66,8 +66,8 @@ void setup() {
 	#ifdef SERIAL_EN
 		Serial.begin(SERIAL_BAUD);
 	#endif
+	Wire.begin();
 	DEBUGln("-- Datalogger for Sap FLux System --")
-
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);
@@ -82,7 +82,7 @@ void setup() {
 	radio.encrypt(null);
 	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	digitalWrite(LED, HIGH);
-	CARD_PRESENT = !digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
+	CARD_PRESENT = digitalRead(CARD_DETECT); //read CD pin (invert it so logic stays logical)
 	if(CARD_PRESENT) {
 		DEBUG("-- SD Present, ");
 		if (SD.begin(SD_CS_PIN)) {
@@ -117,27 +117,29 @@ void loop() {
 	bool ping = false;
 
 	if (radio.receiveDone()) {
-		DEBUG("rcv <");DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
+		DEBUG("rcv"); DEBUG("["); DEBUG(radio.SENDERID); DEBUG("].");
+
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
+
 		/*=== TIME ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUGln("t");
+			DEBUGln("t ------------------");
 			reportTime = true;
+		}
+		/*=== PING ==*/
+		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') { //send an r to release the reciever
+			DEBUG("latch ->") DEBUGln(radio.SENDERID);
+			NodeID_latch = radio.SENDERID;
+			ping = true;
 		}
 		/*=== UN-LATCH ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
-				DEBUG("r,"); DEBUG("unlatch from "); DEBUGln(radio.SENDERID);
+				DEBUG("unlatch <-"); DEBUGln(radio.SENDERID);
 				NodeID_latch = -1;
 			}
-		}
-		/*=== PING ==*/
-		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') { //send an r to release the reciever
-			DEBUG("p,"); DEBUG("latch to ") DEBUGln(radio.SENDERID);
-			NodeID_latch = radio.SENDERID;
-			ping = true;
 		}
 		if(NodeID_latch > 0) {
 			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
@@ -155,11 +157,15 @@ void loop() {
 				DEBUGln();
 			}
 		}
+		if(!writeData && !reportTime && !ping) {
+			DEBUGln("---NOTHING HAPPENED!!!");
+		}
 		if (radio.ACKRequested()) radio.sendACK();
 		Blink(LED,5);
 	}
+
 	if(reportTime) {
-		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		DEBUG("snd"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
 			DEBUGln(theTimeStamp.timestamp);
 		} else {
@@ -167,14 +173,13 @@ void loop() {
 		}
 	}
 	if(ping) {
-		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		DEBUG("snd"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(1), sizeof(1), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln("1");
+			DEBUGln("ping!");
 		} else {
 			DEBUGln("Failed . . . no ack");
 		}
 	}
-
 	if(writeData) {
 		File f;
 		String address = String(String(NETWORKID) + "_" + String(lastRequesterNodeID));
@@ -183,7 +188,7 @@ void loop() {
 		fileName.toCharArray(_fileName, sizeof(_fileName));
 		if (!f.open(_fileName, FILE_WRITE)) { DEBUG("sd - error opening "); DEBUG(_fileName); DEBUGln(); }
 		// if the file opened okay, write to it:
-		// DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
+		DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
 		f.print(NETWORKID); f.print(".");
 		f.print(radio.SENDERID); f.print(",");
 		f.print(thePayload.timestamp); f.print(",");
@@ -201,7 +206,7 @@ void loop() {
 }
 
 void checkSdCard() {
-	CARD_PRESENT = !digitalRead(CARD_DETECT); //invert for logic's sake
+	CARD_PRESENT = digitalRead(CARD_DETECT); //invert for logic's sake
 	if (!CARD_PRESENT) {
 		DEBUGln("sd - card Not Present");
 		while (1) {
@@ -236,29 +241,3 @@ uint8_t setAddress() {
 	uint8_t addr = addr01 | addr02 | addr03;
 	return addr += 100;
 }
-
-// writeLocalTemp(now.unixtime());
-// void writeLocalTemp(uint32_t n) {
-//     float t;
-//     File f;
-//     rtc.convertTemperature();
-//     t = rtc.getTemperature();
-//     String address = String(String(NETWORKID) + "_0");
-//     String fileName = String(address + ".csv");
-//     char _fileName[fileName.length() +1];
-//     fileName.toCharArray(_fileName, sizeof(_fileName));
-//     if (!f.open(_fileName, FILE_WRITE)) {
-//         DEBUG("error opening ");
-//         DEBUG(_fileName);
-//         DEBUGln(" for write");
-//     }
-//     f.print(NETWORKID);
-//     f.print(".");
-//     f.print("0");
-//     f.print(",");
-//     f.print(n);
-//     f.print(",");
-//     f.print(t);
-//     f.println();
-//     f.close(); // close the file:
-// }
