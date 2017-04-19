@@ -7,8 +7,8 @@
 #define NODEID 0
 #define FREQUENCY RF69_433MHZ
 #define ATC_RSSI -70
-#define ACK_WAIT_TIME 100 // # of ms to wait for an ack
-#define ACK_RETRIES 10 // # of attempts before giving up
+// #define ACK_WAIT_TIME 100 // # of ms to wait for an ack
+// #define ACK_RETRIES 10 // # of attempts before giving up
 #define SERIAL_BAUD 115200
 #define LED 9
 #define SD_CS_PIN 4
@@ -34,7 +34,9 @@ void checkSdCard();
 RFM69_ATC radio; //Initialize Radio
 uint8_t NETWORKID; //base network address
 byte lastRequesterNodeID = NODEID;
-uint8_t NodeID_latch;
+int16_t NodeID_latch = -1;
+uint8_t ACK_WAIT_TIME = 100;
+uint8_t ACK_RETRIES = 10;
 
 /*==============|| DS3231_RTC ||==============*/
 DateTime now;
@@ -67,7 +69,7 @@ void setup() {
 		Serial.begin(SERIAL_BAUD);
 	#endif
 	DEBUGln("-- Datalogger for Sap FLux System --")
-
+	Wire.begin();
 	bool sd_OK = false;
 	pinMode(LED, OUTPUT);
 	pinMode(CARD_DETECT, INPUT_PULLUP);
@@ -117,59 +119,71 @@ void loop() {
 	bool ping = false;
 
 	if (radio.receiveDone()) {
-		DEBUG("rcv <");DEBUG('['); DEBUG(radio.SENDERID); DEBUG("].");
+		// DEBUG("rcv ");DEBUG(radio.DATALEN); DEBUG(" byte/s from node "); DEBUG(radio.SENDERID); DEBUG(": ");
+		DEBUG(radio.SENDERID); DEBUG(": ");
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
 		/*=== TIME ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUGln("t");
+			DEBUG("t ");
 			reportTime = true;
+		}
+		/*=== PING ==*/
+		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') {
+			if(NodeID_latch < 0) {
+				DEBUG("p ");
+				NodeID_latch = radio.SENDERID;
+				// DEBUG("latch to "); DEBUGln(NodeID_latch);
+				ping = true;
+			} else {
+				// DEBUG("failed, already latched to "); DEBUGln(NodeID_latch);
+			}
 		}
 		/*=== UN-LATCH ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
-				DEBUG("r,"); DEBUG("unlatch from "); DEBUGln(radio.SENDERID);
+				DEBUG("r ");
 				NodeID_latch = -1;
-			}
-		}
-		/*=== PING ==*/
-		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') { //send an r to release the reciever
-			DEBUG("p,"); DEBUG("latch to ") DEBUGln(radio.SENDERID);
-			NodeID_latch = radio.SENDERID;
-			ping = true;
-		}
-		if(NodeID_latch > 0) {
-			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
-				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
-				writeData = true;
-				DEBUG(thePayload.timestamp);
-				DEBUG(" cnt:"); DEBUG(thePayload.count);
-				DEBUG(" t1:"); DEBUG(thePayload.tc1);
-				DEBUG(" t2:"); DEBUG(thePayload.tc2);
-				DEBUG(" t3:"); DEBUG(thePayload.tc3);
-				DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
-				DEBUG(" v:"); DEBUG(thePayload.bat_v);
-				DEBUG(" heater state:"); DEBUG(thePayload.heater_state);
-				DEBUG(" solar good:"); DEBUG(thePayload.solar_good);
+				// DEBUGln("unlatched");
 				DEBUGln();
 			}
 		}
-		if (radio.ACKRequested()) radio.sendACK();
+		if(NodeID_latch > 0) {
+			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
+				DEBUG("payload ");
+				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
+				writeData = true;
+				// DEBUG(thePayload.timestamp);
+				// DEBUG(" cnt:"); DEBUG(thePayload.count);
+				// DEBUG(" t1:"); DEBUG(thePayload.tc1);
+				// DEBUG(" t2:"); DEBUG(thePayload.tc2);
+				// DEBUG(" t3:"); DEBUG(thePayload.tc3);
+				// DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
+				// DEBUG(" v:"); DEBUG(thePayload.bat_v);
+				// DEBUG(" heater state:"); DEBUG(thePayload.heater_state);
+				// DEBUG(" solar good:"); DEBUG(thePayload.solar_good);
+				// DEBUGln();
+			}
+		}
+		if(radio.ACKRequested()){
+			radio.sendACK();
+		}
 		Blink(LED,5);
 	}
+
 	if(reportTime) {
-		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
+		// DEBUG("snd "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("], ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln(theTimeStamp.timestamp);
+			// DEBUGln(theTimeStamp.timestamp);
 		} else {
 			DEBUGln("Failed . . . no ack");
 		}
 	}
 	if(ping) {
-		DEBUG("snd >"); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("].");
-		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(1), sizeof(1), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln("1");
+		// DEBUG("snd "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("], ");
+		if(radio.sendWithRetry(lastRequesterNodeID, "p", sizeof("p"), ACK_RETRIES, ACK_WAIT_TIME)) {
+			// DEBUGln("p");
 		} else {
 			DEBUGln("Failed . . . no ack");
 		}
@@ -184,18 +198,18 @@ void loop() {
 		if (!f.open(_fileName, FILE_WRITE)) { DEBUG("sd - error opening "); DEBUG(_fileName); DEBUGln(); }
 		// if the file opened okay, write to it:
 		// DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
-		f.print(NETWORKID); f.print(".");
-		f.print(radio.SENDERID); f.print(",");
-		f.print(thePayload.timestamp); f.print(",");
-		f.print(thePayload.tc1); f.print(",");
-		f.print(thePayload.tc2); f.print(",");
-		f.print(thePayload.tc3); f.print(",");
-		f.print(thePayload.brd_tmp); f.print(",");
-		f.print(thePayload.bat_v); f.print(",");
-		f.print(thePayload.heater_state); f.print(",");
-		f.print(thePayload.solar_good); f.print(",");
-		f.print(thePayload.count); f.println();
-		f.close();
+		// f.print(NETWORKID); f.print(".");
+		// f.print(radio.SENDERID); f.print(",");
+		// f.print(thePayload.timestamp); f.print(",");
+		// f.print(thePayload.tc1); f.print(",");
+		// f.print(thePayload.tc2); f.print(",");
+		// f.print(thePayload.tc3); f.print(",");
+		// f.print(thePayload.brd_tmp); f.print(",");
+		// f.print(thePayload.bat_v); f.print(",");
+		// f.print(thePayload.heater_state); f.print(",");
+		// f.print(thePayload.solar_good); f.print(",");
+		// f.print(thePayload.count); f.println();
+		// f.close();
 	}
 	checkSdCard(); //Checks for card insertion
 }

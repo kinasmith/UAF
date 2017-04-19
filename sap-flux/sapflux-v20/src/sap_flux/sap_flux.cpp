@@ -17,7 +17,7 @@
 #include "SPIFlash_Marzogh.h"
 #include "MAX31856.h"
 
-#define NODEID 233
+#define NODEID 5
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -126,6 +126,19 @@ struct Payload {
 };
 Payload thePayload;
 
+struct Poopload {
+	uint32_t timestamp;
+	uint16_t count;
+	double tc1;
+	double tc2;
+	double tc3;
+	double internal;
+	double bat_v;
+	bool heater_state;
+	bool solar_good;
+};
+// Poopload thePoopload;
+
 struct Measurement {
 	uint16_t count;
 	double tc1;
@@ -199,39 +212,84 @@ void loop()
 	if(!getTime()) { //get current Time
 		DEBUGln("time - No Response From Datalogger");
 	}
-	// Power up Flash
-	DEBUG(" - Powering Up");
-	if(flash.powerUp()) {
-		DEBUGln(". . . OK!");
-	} else DEBUGln(". . . FAILED!");
-	measurementNum = 0; //reset Measurement Counter
-	thePayload.bat_v = getBatteryVoltage(); //get Battery Voltage
+	tc1.prime(); tc2.prime(); tc3.prime(); //force sensors to take reading
+	tc1.read(); tc2.read(); tc3.read(); //read the values
+	Poopload thePoopload;
+	thePoopload.timestamp = theTimeStamp.timestamp;
+	thePoopload.tc1 = tc1.getExternal();
+	thePoopload.tc2 = tc2.getExternal();
+	thePoopload.tc3 = tc3.getExternal();
+	thePoopload.internal = tc1.getInternal();
+	thePoopload.count = count; //reading count is incremented at the end of the sleep cycle
+	thePoopload.bat_v = getBatteryVoltage(); //get Battery Voltage
+	thePoopload.solar_good = digitalRead(SOLAR_GD);
+	thePoopload.heater_state = heaterState;
 
-	takeMeasurement();
-
-	/* --| Ping Datalogger and send stored data |-- */
-	if(ping()) { //Also Latches Datalogger to Sensor until it's finished
-		if(flash.readByte(0) < 255) { //Make sure there is data @ address 0
-			DEBUGln("=== Sending from Flash ===");
-			sendMeasurement();
+	if(ping()) {
+		if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePoopload), sizeof(thePoopload), ACK_RETRIES, ACK_WAIT_TIME)) {
+			DEBUGln("Payload Sent");
 		}
-		if (radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("-- unlatch");
-	} else {
-		DEBUGln("ping - No Response");
+		if (!radio.sendWithRetry(GATEWAYID, "r", 1)) {
+			DEBUGln("unlatch - No Response");
+		}
 	}
+	delay(1000);
 
-	//power down flash before sleeping
-	DEBUG("flash - Powering Down");
-	if(flash.powerDown()) {
-		DEBUGln(". . . OK!");
-	} else DEBUGln(". . . FAILED!");
-	DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
-	DEBUGFlush();
-	radio.sleep();
-	for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
-		Sleepy::loseSomeTime(SLEEP_MS);
-	/* --| MCU Wakes up after 30 minutes Here |-- */
-	count++; //Increment the Reading Counter
+	//
+	// // if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
+	// if(radio.sendWithRetry(GATEWAYID, &thePayload, sizeof(thePayload))) {
+	// 	DEBUG("snd - "); DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
+	// 	digitalWrite(LED, LOW);
+	// } else {
+	// 	DEBUG(" failed . . . no ack ");
+	// 	Blink(50);
+	// 	Blink(50);
+	// 	Sleepy::loseSomeTime(30000);//sleep for 30sec and try again
+	// }
+	// delay(1000);
+	// // if(radio.sendWithRetry(GATEWAYID, &thePayload, sizeof(thePayload)))
+	// if (!radio.sendWithRetry(GATEWAYID, "r", 1)) {
+	// 	DEBUGln("unlatch - No Response");
+	// }
+	//
+	// delay(1000);
+
+
+	// if(!getTime()) { //get current Time
+	// 	DEBUGln("time - No Response From Datalogger");
+	// }
+	// // Power up Flash
+	// DEBUG(" - Powering Up");
+	// if(flash.powerUp()) {
+	// 	DEBUGln(". . . OK!");
+	// } else DEBUGln(". . . FAILED!");
+	// measurementNum = 0; //reset Measurement Counter
+	// thePayload.bat_v = getBatteryVoltage(); //get Battery Voltage
+	// takeMeasurement();
+	//
+	// /* --| Ping Datalogger and send stored data |-- */
+	// if(ping()) { //Also Latches Datalogger to Sensor until it's finished
+	// 	if(flash.readByte(0) < 255) { //Make sure there is data @ address 0
+	// 		DEBUGln("=== Sending from Flash ===");
+	// 		sendMeasurement();
+	// 	}
+	// 	if (radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("-- unlatch");
+	// } else {
+	// 	DEBUGln("ping - No Response");
+	// }
+	//
+	// //power down flash before sleeping
+	// DEBUG("flash - Powering Down");
+	// if(flash.powerDown()) {
+	// 	DEBUGln(". . . OK!");
+	// } else DEBUGln(". . . FAILED!");
+	// DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
+	// DEBUGFlush();
+	// radio.sleep();
+	// for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
+	// 	Sleepy::loseSomeTime(SLEEP_MS);
+	// /* --| MCU Wakes up after 30 minutes Here |-- */
+	// count++; //Increment the Reading Counter
 }
 
 void takeMeasurement() {
@@ -377,9 +435,9 @@ bool getTime()
 	digitalWrite(LED, HIGH);
 	//Get the current timestamp from the datalogger
 	if(!HANDSHAKE_SENT) { //Send request for time to the Datalogger
-		DEBUG("time - ");
+		DEBUG("time: ");
 		if (radio.sendWithRetry(GATEWAYID, "t", 1)) {
-			DEBUG(" > t");
+			// DEBUG(" > t");
 			HANDSHAKE_SENT = true;
 		}
 		else {
@@ -391,7 +449,6 @@ bool getTime()
 		if (radio.receiveDone()) {
 			if (radio.DATALEN == sizeof(theTimeStamp)) { //check to make sure it's the right size
 				theTimeStamp = *(TimeStamp*)radio.DATA; //save data
-				DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] > ");
 				DEBUG(theTimeStamp.timestamp); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
 				TIME_RECIEVED = true;
 				digitalWrite(LED, LOW);
@@ -405,28 +462,34 @@ bool getTime()
 bool ping() {
 	bool PING_SENT = false;
 	bool PING_RECIEVED = false;
+	uint16_t timeout = 1000;
 	digitalWrite(LED, HIGH); //signal start of communication
 	if(!PING_SENT) { //Send request for status to the Datalogger
-		DEBUG("ping - ");
 		if (radio.sendWithRetry(GATEWAYID, "p", 1)) {
-			DEBUG(" > p");
+			DEBUG("ping: ");
 			PING_SENT = true;
 		}
 		else {
-			DEBUGln("failed: no ack");
+			DEBUGln("PING FAILED, no ack");
 			return false; //if there is no response, returns false and exits function
 		}
 	}
+	uint32_t savedTime = millis();
 	while(!PING_RECIEVED && PING_SENT) { //Wait for the ping to be returned
-		if (radio.receiveDone()) {
-			if (radio.DATALEN == sizeof('p')) { //check to make sure it's the right size
-				DEBUG('['); DEBUG(radio.SENDERID); DEBUG("] > ");
-				DEBUG(radio.DATA[0]); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
-				PING_RECIEVED = true;
-				digitalWrite(LED, LOW);
+		// DEBUGln(millis()-savedTime);
+		if(millis()-savedTime > timeout) {
+			DEBUGln("Timed out");
+			return false;
+		} else {
+			if (radio.receiveDone()) {
+				if (radio.DATA[0] == 'p' && radio.DATALEN == sizeof("p")) { //check to make sure it's the right size
+					DEBUG(radio.DATA[0]); DEBUG(" [RX_RSSI:"); DEBUG(radio.RSSI); DEBUG("]"); DEBUGln();
+					PING_RECIEVED = true;
+					digitalWrite(LED, LOW);
+				}
+				if (radio.ACKRequested()) radio.sendACK();
+				return true;
 			}
-			if (radio.ACKRequested()) radio.sendACK();
-			return true;
 		}
 	}
 }

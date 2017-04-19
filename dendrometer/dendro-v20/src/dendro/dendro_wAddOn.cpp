@@ -34,7 +34,7 @@
 #define NUMSAMPLES 3
 
 /*==============|| Easy way of commenting out Serial Prints, etc for deployment ||==============*/
-// #define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
+#define SERIAL_EN //Comment this out to remove Serial comms and save a few kb's of space
 #ifdef SERIAL_EN
 #define DEBUG(input)   {Serial.print(input); delay(1);}
 #define DEBUGln(input) {Serial.println(input); delay(1);}
@@ -126,6 +126,7 @@ void setup()
 	DEBUG("-- Network Address: "); DEBUG(NETWORKID); DEBUG("."); DEBUGln(NODEID);
 	// Ping the datalogger. If it is alive, it will respond with a 1, and latch to this node until it recieves an "r"
 	while(!ping()) {
+		DEBUGln("Failed to Setup ping");
 		//If datalogger doesn't respond, Blink, wait 5 seconds, and try again
 		radio.sleep();
 		DEBUGFlush();
@@ -467,7 +468,7 @@ int32_t getSensorValue()
 				   1000000, value, status);
   if (err) {
     DEBUG("Convert error: ");
-    DEUBGln(err);
+    DEBUGln(err);
   }
   else {
     DEBUG("Value: ");
