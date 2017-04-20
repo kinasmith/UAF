@@ -151,19 +151,20 @@ void loop() {
 		}
 		if(NodeID_latch > 0) {
 			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
-				DEBUG("payload ");
+				// DEBUG("payload ");
 				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
 				writeData = true;
-				// DEBUG(thePayload.timestamp);
-				// DEBUG(" cnt:"); DEBUG(thePayload.count);
-				// DEBUG(" t1:"); DEBUG(thePayload.tc1);
-				// DEBUG(" t2:"); DEBUG(thePayload.tc2);
-				// DEBUG(" t3:"); DEBUG(thePayload.tc3);
-				// DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
-				// DEBUG(" v:"); DEBUG(thePayload.bat_v);
-				// DEBUG(" heater state:"); DEBUG(thePayload.heater_state);
-				// DEBUG(" solar good:"); DEBUG(thePayload.solar_good);
 				// DEBUGln();
+				DEBUG(thePayload.timestamp);
+				DEBUG(" cnt:"); DEBUG(thePayload.count);
+				DEBUG(" t1:"); DEBUG(thePayload.tc1);
+				DEBUG(" t2:"); DEBUG(thePayload.tc2);
+				DEBUG(" t3:"); DEBUG(thePayload.tc3);
+				DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
+				DEBUG(" v:"); DEBUG(thePayload.bat_v);
+				DEBUG(" heater state:"); DEBUG(thePayload.heater_state);
+				DEBUG(" solar good:"); DEBUG(thePayload.solar_good);
+				DEBUGln();
 			}
 		}
 		if(radio.ACKRequested()){
@@ -198,18 +199,18 @@ void loop() {
 		if (!f.open(_fileName, FILE_WRITE)) { DEBUG("sd - error opening "); DEBUG(_fileName); DEBUGln(); }
 		// if the file opened okay, write to it:
 		// DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
-		// f.print(NETWORKID); f.print(".");
-		// f.print(radio.SENDERID); f.print(",");
-		// f.print(thePayload.timestamp); f.print(",");
-		// f.print(thePayload.tc1); f.print(",");
-		// f.print(thePayload.tc2); f.print(",");
-		// f.print(thePayload.tc3); f.print(",");
-		// f.print(thePayload.brd_tmp); f.print(",");
-		// f.print(thePayload.bat_v); f.print(",");
-		// f.print(thePayload.heater_state); f.print(",");
-		// f.print(thePayload.solar_good); f.print(",");
-		// f.print(thePayload.count); f.println();
-		// f.close();
+		f.print(NETWORKID); f.print(".");
+		f.print(radio.SENDERID); f.print(",");
+		f.print(thePayload.timestamp); f.print(",");
+		f.print(thePayload.tc1); f.print(",");
+		f.print(thePayload.tc2); f.print(",");
+		f.print(thePayload.tc3); f.print(",");
+		f.print(thePayload.brd_tmp); f.print(",");
+		f.print(thePayload.bat_v); f.print(",");
+		f.print(thePayload.heater_state); f.print(",");
+		f.print(thePayload.solar_good); f.print(",");
+		f.print(thePayload.count); f.println();
+		f.close();
 	}
 	checkSdCard(); //Checks for card insertion
 }

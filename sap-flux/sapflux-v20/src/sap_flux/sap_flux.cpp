@@ -36,7 +36,7 @@ int ACK_WAIT_TIME = 100;
 #define BAT_V A7
 #define BAT_EN 3
 #define HEATER_EN 4
-#define SOLAR_GD A6
+#define SOLAR_GD A6 //Needs External Pullup resistor soldered across two Via's near the 328p And is ONLY AnalogRead()
 #define TC1_CS 7
 #define TC2_CS 6
 #define TC3_CS 5
@@ -63,6 +63,7 @@ bool ping();
 void Blink(uint8_t);
 uint8_t setAddress();
 float getBatteryVoltage();
+bool solarGood();
 bool saveEEPROMTime(uint32_t t);
 uint32_t getEEPROMTime();
 void takeMeasurement();
@@ -90,20 +91,20 @@ uint8_t sentMeasurement = 0;
 bool heaterState;
 
 /*==============|| TIMING ||==============*/
-// const uint8_t HEATER_ON_TIME = 6; //in seconds
-// const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
-// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
-// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
-// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-// const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
-
-	// Testing Intervals
-const uint8_t HEATER_ON_TIME = 1; //in Record Intervals
-const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
-const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+const uint8_t HEATER_ON_TIME = 6; //in seconds
+const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
+const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-const uint16_t REC_DURATION = 10; //how many measurements
+const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
+
+	// Testing Intervals
+// const uint8_t HEATER_ON_TIME = 1; //in Record Intervals
+// const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
+// const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
+// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
+// const uint16_t REC_DURATION = 10; //how many measurements
 
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)
@@ -125,19 +126,6 @@ struct Payload {
 	bool solar_good;
 };
 Payload thePayload;
-
-struct Poopload {
-	uint32_t timestamp;
-	uint16_t count;
-	double tc1;
-	double tc2;
-	double tc3;
-	double internal;
-	double bat_v;
-	bool heater_state;
-	bool solar_good;
-};
-// Poopload thePoopload;
 
 struct Measurement {
 	uint16_t count;
@@ -161,7 +149,7 @@ void setup()
 	pinMode(HEATER_EN, OUTPUT);
 	pinMode(LED, OUTPUT);
 	pinMode(LED2, OUTPUT);
-	pinMode(SOLAR_GD, INPUT);
+
 
 	NETWORKID = setAddress(); //Sets the network address depending on solder jumpers
 	/* --| Initialize Radio |-- */
@@ -209,87 +197,40 @@ void setup()
 
 void loop()
 {
-	if(!getTime()) { //get current Time
-		DEBUGln("time - No Response From Datalogger");
-	}
-	tc1.prime(); tc2.prime(); tc3.prime(); //force sensors to take reading
-	tc1.read(); tc2.read(); tc3.read(); //read the values
-	Poopload thePoopload;
-	thePoopload.timestamp = theTimeStamp.timestamp;
-	thePoopload.tc1 = tc1.getExternal();
-	thePoopload.tc2 = tc2.getExternal();
-	thePoopload.tc3 = tc3.getExternal();
-	thePoopload.internal = tc1.getInternal();
-	thePoopload.count = count; //reading count is incremented at the end of the sleep cycle
-	thePoopload.bat_v = getBatteryVoltage(); //get Battery Voltage
-	thePoopload.solar_good = digitalRead(SOLAR_GD);
-	thePoopload.heater_state = heaterState;
+	// Power up Flash
+	DEBUG(" - Powering Up");
+	if(flash.powerUp()) {
+		DEBUGln(". . . OK!");
+	} else DEBUGln(". . . FAILED!");
+	measurementNum = 0; //reset Measurement Counter
+	thePayload.bat_v = getBatteryVoltage(); //get Battery Voltage
+	takeMeasurement();
 
-	if(ping()) {
-		if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePoopload), sizeof(thePoopload), ACK_RETRIES, ACK_WAIT_TIME)) {
-			DEBUGln("Payload Sent");
+	/* --| Ping Datalogger and send stored data |-- */
+	if(ping()) { //Also Latches Datalogger to Sensor until it's finished
+		if(!getTime()) { DEBUGln("time - No Response From Datalogger"); } //If the datalogger is alive. Get the Time.
+		if(flash.readByte(0) < 255) { //Make sure there is data @ address 0
+			DEBUGln("=== Sending from Flash ===");
+			sendMeasurement();
 		}
-		if (!radio.sendWithRetry(GATEWAYID, "r", 1)) {
-			DEBUGln("unlatch - No Response");
-		}
+		if (radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("-- unlatch");
+	} else {
+		DEBUGln("ping - No Response");
 	}
-	delay(1000);
 
-	//
-	// // if(radio.sendWithRetry(GATEWAYID, (const void*)(&thePayload), sizeof(thePayload)), ACK_RETRIES, ACK_WAIT_TIME) {
-	// if(radio.sendWithRetry(GATEWAYID, &thePayload, sizeof(thePayload))) {
-	// 	DEBUG("snd - "); DEBUG(sizeof(thePayload)); DEBUGln(" bytes  ");
-	// 	digitalWrite(LED, LOW);
-	// } else {
-	// 	DEBUG(" failed . . . no ack ");
-	// 	Blink(50);
-	// 	Blink(50);
-	// 	Sleepy::loseSomeTime(30000);//sleep for 30sec and try again
-	// }
-	// delay(1000);
-	// // if(radio.sendWithRetry(GATEWAYID, &thePayload, sizeof(thePayload)))
-	// if (!radio.sendWithRetry(GATEWAYID, "r", 1)) {
-	// 	DEBUGln("unlatch - No Response");
-	// }
-	//
-	// delay(1000);
-
-
-	// if(!getTime()) { //get current Time
-	// 	DEBUGln("time - No Response From Datalogger");
-	// }
-	// // Power up Flash
-	// DEBUG(" - Powering Up");
-	// if(flash.powerUp()) {
-	// 	DEBUGln(". . . OK!");
-	// } else DEBUGln(". . . FAILED!");
-	// measurementNum = 0; //reset Measurement Counter
-	// thePayload.bat_v = getBatteryVoltage(); //get Battery Voltage
-	// takeMeasurement();
-	//
-	// /* --| Ping Datalogger and send stored data |-- */
-	// if(ping()) { //Also Latches Datalogger to Sensor until it's finished
-	// 	if(flash.readByte(0) < 255) { //Make sure there is data @ address 0
-	// 		DEBUGln("=== Sending from Flash ===");
-	// 		sendMeasurement();
-	// 	}
-	// 	if (radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("-- unlatch");
-	// } else {
-	// 	DEBUGln("ping - No Response");
-	// }
-	//
-	// //power down flash before sleeping
-	// DEBUG("flash - Powering Down");
-	// if(flash.powerDown()) {
-	// 	DEBUGln(". . . OK!");
-	// } else DEBUGln(". . . FAILED!");
-	// DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
-	// DEBUGFlush();
-	// radio.sleep();
-	// for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
-	// 	Sleepy::loseSomeTime(SLEEP_MS);
-	// /* --| MCU Wakes up after 30 minutes Here |-- */
-	// count++; //Increment the Reading Counter
+	//power down flash before sleeping
+	DEBUG("flash - Powering Down");
+	if(flash.powerDown()) {
+		DEBUGln(". . . OK!");
+	} else DEBUGln(". . . FAILED!");
+	DEBUG("Saved Time is: "); DEBUGln(getEEPROMTime());
+	DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
+	DEBUGFlush();
+	radio.sleep();
+	for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
+		Sleepy::loseSomeTime(SLEEP_MS);
+	/* --| MCU Wakes up after 30 minutes Here |-- */
+	count++; //Increment the Reading Counter
 }
 
 void takeMeasurement() {
@@ -313,7 +254,8 @@ void takeMeasurement() {
 			thisMeasurement.tc3 = tc3.getExternal();
 			thisMeasurement.internal = tc1.getInternal();
 			thisMeasurement.count = count; //reading count is incremented at the end of the sleep cycle
-			thisMeasurement.solar_good = digitalRead(SOLAR_GD);
+
+			thisMeasurement.solar_good = solarGood();
 			thisMeasurement.heater_state = heaterState;
 
 			digitalWrite(LED2, HIGH); //signal start of Flash Write
@@ -398,6 +340,9 @@ void sendMeasurement()
 	FLASH_ADDR = 0; //Set Index to beginning of DATA for Writing Events (or...other location for load balancing?)
 	DEBUGln("flash - erasing chip");
 	flash.eraseChip();
+	if(saveEEPROMTime(theTimeStamp.timestamp)) {
+		DEBUGln("Saving new time to EEPROM");
+	} else DEBUGln("Failed to save new EEPROM Time");
 }
 
 /**
@@ -425,7 +370,7 @@ bool transmitDataPackage()
 }
 
 /**
- * [getTime description]
+ * Gets time from datalogger and saves it to global variable
  * @return [description]
  */
 bool getTime()
@@ -553,4 +498,12 @@ float getBatteryVoltage() {
 	float v = 3.3 * (readings/1023.0) * (4300.0/2700.0); //Calculate battery voltage
 	digitalWrite(BAT_EN, LOW);
 	return v;
+}
+
+bool solarGood() {
+	int val = analogRead(SOLAR_GD);
+	//open drain w/pullup. Power is good when input is LOW.
+	if(val < 500) {
+		return 1;
+	} else return 0;
 }
