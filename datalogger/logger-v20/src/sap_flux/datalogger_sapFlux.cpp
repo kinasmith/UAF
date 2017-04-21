@@ -113,10 +113,18 @@ void setup() {
 	DEBUGln("==========================");
 }
 
+uint32_t latch_timeout_start;
+uint32_t latch_timeout = 10000;
+
 void loop() {
 	bool writeData = false;
 	bool reportTime = false;
 	bool ping = false;
+
+	if(millis() > latch_timeout_start + latch_timeout && NodeID_latch > 0) {
+		NodeID_latch = -1;
+		DEBUGln("Latch Timed Out");
+	}
 
 	if (radio.receiveDone()) {
 		// DEBUG("rcv ");DEBUG(radio.DATALEN); DEBUG(" byte/s from node "); DEBUG(radio.SENDERID); DEBUG(": ");
@@ -134,6 +142,8 @@ void loop() {
 			if(NodeID_latch < 0) {
 				DEBUG("p ");
 				NodeID_latch = radio.SENDERID;
+				latch_timeout_start = millis(); //set start time for timeout
+				// DEBUGln(latch_timeout_start);
 				// DEBUG("latch to "); DEBUGln(NodeID_latch);
 				ping = true;
 			} else {
@@ -160,10 +170,10 @@ void loop() {
 				DEBUG(" t1:"); DEBUG(thePayload.tc1);
 				DEBUG(" t2:"); DEBUG(thePayload.tc2);
 				DEBUG(" t3:"); DEBUG(thePayload.tc3);
-				DEBUG(" internal:"); DEBUG(thePayload.brd_tmp);
+				DEBUG(" int:"); DEBUG(thePayload.brd_tmp);
 				DEBUG(" v:"); DEBUG(thePayload.bat_v);
-				DEBUG(" heater state:"); DEBUG(thePayload.heater_state);
-				DEBUG(" solar good:"); DEBUG(thePayload.solar_good);
+				DEBUG(" htr:"); DEBUG(thePayload.heater_state);
+				DEBUG(" pwrGd:"); DEBUG(thePayload.solar_good);
 				DEBUGln();
 			}
 		}
@@ -174,9 +184,9 @@ void loop() {
 	}
 
 	if(reportTime) {
-		// DEBUG("snd "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("], ");
+		DEBUG("snd "); DEBUG('['); DEBUG(lastRequesterNodeID); DEBUG("], ");
 		if(radio.sendWithRetry(lastRequesterNodeID, (const void*)(&theTimeStamp), sizeof(theTimeStamp), ACK_RETRIES, ACK_WAIT_TIME)) {
-			// DEBUGln(theTimeStamp.timestamp);
+			DEBUGln(theTimeStamp.timestamp);
 		} else {
 			DEBUGln("Failed . . . no ack");
 		}
