@@ -17,7 +17,7 @@
 #include "SPIFlash_Marzogh.h"
 #include "MAX31856.h"
 
-#define NODEID 5
+#define NODEID 77
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
@@ -99,7 +99,7 @@ bool heaterState;
 // const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
 
 	// Testing Intervals
-const uint8_t HEATER_ON_TIME = 3; //in Record Intervals
+const uint8_t HEATER_ON_TIME = 1; //in Record Intervals
 const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
 const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
@@ -161,14 +161,14 @@ void setup()
 
 	/* --| Ping the Datalogger and get Time |-- */
 	digitalWrite(LED, HIGH); //write LED high to signal attempting connection
-	while(!ping()) { //If there is no response, wait 10 seconds and try again, forever.
-		radio.sleep();
-		DEBUGln("-- No Response From Datalogger")
-		DEBUGFlush();
-		Sleepy::loseSomeTime(10000);
-	}
-	if(!getTime()) DEBUGln("time failed . . . no ack");
-	if(!radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("unlatch failed . . . no ack"); //unlatch the datalogger from this Sensor
+	// while(!ping()) { //If there is no response, wait 10 seconds and try again, forever.
+	// 	radio.sleep();
+	// 	DEBUGln("-- No Response From Datalogger")
+	// 	DEBUGFlush();
+	// 	Sleepy::loseSomeTime(10000);
+	// }
+	// if(!getTime()) DEBUGln("time failed . . . no ack");
+	// if(!radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("unlatch failed . . . no ack"); //unlatch the datalogger from this Sensor
 	digitalWrite(LED, LOW); //signal successful transmission
 	DEBUG("-- Time is: "); DEBUG(theTimeStamp.timestamp); DEBUGln("--");
 	saveEEPROMTime(theTimeStamp.timestamp); //Save that time to EEPROM
@@ -191,45 +191,22 @@ void setup()
 
 	DEBUG("Cooling Time is "); DEBUG(float(SLEEP_SECONDS/60.0)); DEBUGln("minutes");
 	DEBUGln("==========================");
-	for(int i = 0; i < 10; i++) {
-		Blink(100);
-	}
 }
 
 void loop()
 {
-	// Power up Flash
-	DEBUG(" - Powering Up");
-	if(flash.powerUp()) {
-		DEBUGln(". . . OK!");
-	} else DEBUGln(". . . FAILED!");
-	measurementNum = 0; //reset Measurement Counter
-	takeMeasurement(); //reads sensors and saves to flash memory
-
-	/* --| Ping Datalogger and send stored data |-- */
-	if(ping()) { //Also Latches Datalogger to Sensor until it's finished
-		if(!getTime()) DEBUGln("time - No Response From Datalogger"); //If the datalogger is alive. Get the Time.
-		if(flash.readByte(0) < 255) { //Make sure there is data @ address 0
-			DEBUGln("=== Sending from Flash ===");
-			sendMeasurement();
-		}
+	digitalWrite(LED, HIGH);
+	digitalWrite(LED2, HIGH);
+	if(ping()) {
+		delay(8000);
 	}
-	else DEBUGln("ping - No Response");
+	// else {
+		// delay(random(1000, 8000));
+	// }
 	if(!radio.sendWithRetry(GATEWAYID, "r", 1)) DEBUGln("unlatch failed . . . no ack"); //unlatch the datalogger from this Sensor
-
-	//power down flash before sleeping
-	DEBUG("flash - Powering Down");
-	if(flash.powerDown()) {
-		DEBUGln(". . . OK!");
-	} else DEBUGln(". . . FAILED!");
-	DEBUG("Saved Time is: "); DEBUGln(getEEPROMTime());
-	DEBUG("sleep - sleeping for "); DEBUG(SLEEP_SECONDS); DEBUG(" seconds"); DEBUGln();
-	DEBUGFlush();
-	radio.sleep();
-	for(uint8_t i = 0; i < SLEEP_INTERVAL; i++)
-		Sleepy::loseSomeTime(SLEEP_MS);
-	/* --| MCU Wakes up after 30 minutes Here |-- */
-	count++; //Increment the Reading Counter
+	digitalWrite(LED, LOW);
+	digitalWrite(LED2, LOW);
+	delay(random(10000, 20000));
 }
 
 void takeMeasurement() {
