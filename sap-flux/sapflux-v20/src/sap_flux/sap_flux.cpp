@@ -91,20 +91,20 @@ uint8_t sentMeasurement = 0;
 bool heaterState;
 
 /*==============|| TIMING ||==============*/
-// const uint8_t HEATER_ON_TIME = 6; //in seconds
-// const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
-// const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
-// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
-// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-// const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
-
-	// Testing Intervals
-const uint8_t HEATER_ON_TIME = 3; //in Record Intervals
-const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
-const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+const uint8_t HEATER_ON_TIME = 6; //in seconds
+const uint16_t SLEEP_INTERVAL = 30; //sleep time in minutes (Cool Down)
+const uint16_t SLEEP_MS = 60000; //one minute in milliseconds
 const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
 const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
-const uint16_t REC_DURATION = 10; //how many measurements
+const uint16_t REC_DURATION = 4 * 60; //how long the measurement is in seconds
+
+	// Testing Intervals
+// const uint8_t HEATER_ON_TIME = 3; //in Record Intervals
+// const uint16_t SLEEP_INTERVAL = 1; //sleep time in minutes (Cool Down)
+// const uint16_t SLEEP_MS = 15000; //one minute in milliseconds
+// const uint32_t SLEEP_SECONDS = SLEEP_INTERVAL * (SLEEP_MS/1000); //Sleep interval in seconds
+// const uint16_t REC_INTERVAL = 1000; //record interval during measurement event in mS
+// const uint16_t REC_DURATION = 10; //how many measurements
 
 /*==============|| DATA ||==============*/
 //Data structure for transmitting the Timestamp from datalogger to sensor (4 bytes)

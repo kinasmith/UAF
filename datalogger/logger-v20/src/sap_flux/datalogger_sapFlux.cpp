@@ -114,7 +114,7 @@ void setup() {
 }
 
 uint32_t latch_timeout_start;
-uint32_t latch_timeout = 10000;
+uint32_t latch_timeout = 1000;
 
 void loop() {
 	bool writeData = false;
@@ -128,17 +128,13 @@ void loop() {
 
 	if (radio.receiveDone()) {
 		// DEBUG("rcv ");DEBUG(radio.DATALEN); DEBUG(" byte/s from node "); DEBUG(radio.SENDERID); DEBUG(": ");
-		DEBUG(radio.SENDERID); DEBUG(": ");
+
 		lastRequesterNodeID = radio.SENDERID;
 		now = rtc.now();
 		theTimeStamp.timestamp = now.unixtime();
-		/*=== TIME ==*/
-		if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
-			DEBUG("t ");
-			reportTime = true;
-		}
 		/*=== PING ==*/
 		if(radio.DATALEN == 1 && radio.DATA[0] == 'p') {
+			DEBUG(radio.SENDERID); DEBUG(": ");
 			if(NodeID_latch < 0) {
 				DEBUG("p ");
 				NodeID_latch = radio.SENDERID;
@@ -150,17 +146,23 @@ void loop() {
 				// DEBUG("failed, already latched to "); DEBUGln(NodeID_latch);
 			}
 		}
-		/*=== UN-LATCH ==*/
-		if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
-			if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
+
+		if(NodeID_latch == radio.SENDERID) { //only the same sender that initiated the latch is able to release it
+			latch_timeout_start = millis(); //set start time for timeout
+			/*=== TIME ==*/
+			if(radio.DATALEN == 1 && radio.DATA[0] == 't') {
+				DEBUG("t ");
+				reportTime = true;
+			}
+			/*=== UN-LATCH ==*/
+			if(radio.DATALEN == 1 && radio.DATA[0] == 'r') { //send an r to release the reciever
 				DEBUG("r ");
 				NodeID_latch = -1;
 				// DEBUGln("unlatched");
 				DEBUGln();
 			}
-		}
-		if(NodeID_latch > 0) {
-			if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
+			/*=== PAYLOAD ==*/
+			if (radio.DATALEN == sizeof(thePayload)) {
 				// DEBUG("payload ");
 				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
 				writeData = true;
@@ -176,7 +178,7 @@ void loop() {
 				DEBUG(" pwrGd:"); DEBUG(thePayload.solar_good);
 				DEBUGln();
 			}
-		}
+		} else { DEBUG(radio.SENDERID); DEBUGln(": not latched"); }
 		if(radio.ACKRequested()){
 			radio.sendACK();
 		}
