@@ -6,6 +6,9 @@
  * recordings are saved.
  * Also look at the data$cnt graph. It looks like the two saved measurements were offset forward
  * in time by one record interval.
+ * NOTE: I believe voltage brownouts are causing issues with initialization of the
+ * chips. Both the Radio and sometimes the Thermocouple Amps'.
+ * Is it possible to set the initialization settings everytime the devices wakes up?
  *
  */
 #include <Arduino.h>
@@ -198,6 +201,11 @@ void setup()
 
 void loop()
 {
+	//Reinitialize Radios
+	radio.initialize(FREQUENCY,NODEID,NETWORKID);
+	radio.setHighPower();
+	radio.encrypt(null);
+	radio.enableAutoPower(ATC_RSSI);
 	// Power up Flash
 	DEBUG(" - Powering Up");
 	if(flash.powerUp()) {
@@ -244,7 +252,9 @@ void takeMeasurement() {
 				heaterState = 0;
 			}
 			//Then go about measuring the rest of the things
-			tc1.prime(); tc2.prime(); tc3.prime(); //force sensors to take reading
+			tc1.prime(TC1_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON);
+			tc2.prime(TC2_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON);
+			tc3.prime(TC3_CS, T_TYPE, CUTOFF_60HZ, AVG_SEL_16SAMP, CMODE_OFF, ONESHOT_ON); //force sensors to take reading
 			tc1.read(); tc2.read(); tc3.read(); //read the values
 
 			Measurement thisMeasurement; //place to store sensor readings temporarily
