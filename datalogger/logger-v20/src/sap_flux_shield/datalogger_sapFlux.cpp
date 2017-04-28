@@ -41,8 +41,8 @@ DateTime now;
 DS3231 rtc; //Initialize the Real Time Clock
 
 /*==============|| SD ||==============*/
-// SdFat SD; //This is the sd Card
-// uint8_t CARD_PRESENT; //var for Card Detect sensor reading
+SdFat SD; //This is the sd Card
+uint8_t CARD_PRESENT; //var for Card Detect sensor reading
 
 struct TimeStamp {
 	uint32_t timestamp;
@@ -142,7 +142,7 @@ void loop() {
 				NodeID_latch = -1;
 			}
 		}
-		// if(NodeID_latch > 0) {
+		if(NodeID_latch > 0) {
 			// if (radio.DATALEN == sizeof(thePayload) && radio.SENDERID == NodeID_latch) {
 		if (radio.DATALEN == sizeof(thePayload)) {
 				thePayload = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
@@ -158,7 +158,7 @@ void loop() {
 				DEBUG(" solar good:"); DEBUG(thePayload.solar_good);
 				DEBUGln();
 			}
-		// }
+		}
 		if(!writeData && !reportTime && !ping) {
 			DEBUGln("---NOTHING HAPPENED!!!");
 		}
@@ -184,40 +184,40 @@ void loop() {
 	}
 	if(writeData) {
 		DEBUGln("Writing Data");
-		// File f;
-		// String address = String(String(NETWORKID) + "_" + String(lastRequesterNodeID));
-		// String fileName = String(address + ".csv");
-		// char _fileName[fileName.length() +1];
-		// fileName.toCharArray(_fileName, sizeof(_fileName));
-		// if (!f.open(_fileName, FILE_WRITE)) { DEBUG("sd - error opening "); DEBUG(_fileName); DEBUGln(); }
-		// // if the file opened okay, write to it:
-		// DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
-		// f.print(NETWORKID); f.print(".");
-		// f.print(radio.SENDERID); f.print(",");
-		// f.print(thePayload.timestamp); f.print(",");
-		// f.print(thePayload.tc1); f.print(",");
-		// f.print(thePayload.tc2); f.print(",");
-		// f.print(thePayload.tc3); f.print(",");
-		// f.print(thePayload.brd_tmp); f.print(",");
-		// f.print(thePayload.bat_v); f.print(",");
-		// f.print(thePayload.heater_state); f.print(",");
-		// f.print(thePayload.solar_good); f.print(",");
-		// f.print(thePayload.count); f.println();
-		// f.close();
+		File f;
+		String address = String(String(NETWORKID) + "_" + String(lastRequesterNodeID));
+		String fileName = String(address + ".csv");
+		char _fileName[fileName.length() +1];
+		fileName.toCharArray(_fileName, sizeof(_fileName));
+		if (!f.open(_fileName, FILE_WRITE)) { DEBUG("sd - error opening "); DEBUG(_fileName); DEBUGln(); }
+		// if the file opened okay, write to it:
+		DEBUG("sd - writing to "); DEBUG(_fileName); DEBUGln();
+		f.print(NETWORKID); f.print(".");
+		f.print(radio.SENDERID); f.print(",");
+		f.print(thePayload.timestamp); f.print(",");
+		f.print(thePayload.tc1); f.print(",");
+		f.print(thePayload.tc2); f.print(",");
+		f.print(thePayload.tc3); f.print(",");
+		f.print(thePayload.brd_tmp); f.print(",");
+		f.print(thePayload.bat_v); f.print(",");
+		f.print(thePayload.heater_state); f.print(",");
+		f.print(thePayload.solar_good); f.print(",");
+		f.print(thePayload.count); f.println();
+		f.close();
 	}
-	// checkSdCard(); //Checks for card insertion
+	checkSdCard(); //Checks for card insertion
 }
-//
-// void checkSdCard() {
-// 	CARD_PRESENT = digitalRead(CARD_DETECT); //invert for logic's sake
-// 	if (!CARD_PRESENT) {
-// 		DEBUGln("sd - card Not Present");
-// 		while (1) {
-// 			Blink(LED, 100);
-// 			Blink(LED, 200); //blink to show an error.
-// 		}
-// 	}
-// }
+
+void checkSdCard() {
+	CARD_PRESENT = digitalRead(CARD_DETECT); //invert for logic's sake
+	if (!CARD_PRESENT) {
+		DEBUGln("sd - card Not Present");
+		while (1) {
+			Blink(LED, 100);
+			Blink(LED, 200); //blink to show an error.
+		}
+	}
+}
 
 void Blink(byte PIN, int DELAY_MS) {
 	digitalWrite(PIN,HIGH);
