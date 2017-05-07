@@ -28,7 +28,7 @@ int lcd_brightness = 255;
 #define neo_01 2
 #define neo_02 7
 #define neo_03 4
-#define NUMPIXELS      180
+#define NUMPIXELS      60
 
 #define button_01 A0
 #define button_02 A1
@@ -47,25 +47,25 @@ DateTime set;
 Button Bu_1(button_01, PULLUP, INVERT, DEBOUNCE_MS);
 Button Bu_2(button_02, PULLUP, INVERT, DEBOUNCE_MS);
 
-// Adafruit_NeoPixel p1 = Adafruit_NeoPixel(NUMPIXELS, neo_01, NEO_RGBW);
+// Adafruit_NeoPixel left = Adafruit_NeoPixel(NUMPIXELS, neo_01, NEO_RGBW);
 //
-NeoPatterns p1(NUMPIXELS, neo_01, NEO_RGBW);
-NeoPatterns p2(NUMPIXELS, neo_02, NEO_RGBW);
-NeoPatterns p3(NUMPIXELS, neo_03, NEO_RGBW);
+NeoPatterns left(NUMPIXELS, neo_01, NEO_GRBW);
+NeoPatterns right(NUMPIXELS, neo_02, NEO_GRBW);
+NeoPatterns top(NUMPIXELS, neo_03, NEO_GRBW);
 
 int dayLength = 12;
 int dawn_duskLength = 10;
-uint32_t color1Day = p1.Color(0,0,0,255);
-uint32_t color2Day = p2.Color(0,0,0,255);
-uint32_t color3Day = p3.Color(0,0,0,255);
+uint32_t color1Day = left.Color(0,0,0,255);
+uint32_t color2Day = right.Color(0,0,0,255);
+uint32_t color3Day = top.Color(0,0,0,255);
 int sunriseHour = 6;
 int sunriseMinute = 0;
 
 DateTime sunriseStartTime;
 DateTime sunsetFinishTime;
 
-uint32_t colorStart = p1.Color(0,0,50,0);
-uint32_t colorEnd = p1.Color(50,0,0,0);
+uint32_t colorStart = left.Color(0,0,20,0);
+uint32_t colorEnd = left.Color(20,0,0,0);
 
 int cursorRow = 0;
 int cursorCol = 0;
@@ -76,9 +76,9 @@ bool EVENING = 0;
 bool NIGHT = 0;
 
 struct Settings {
-  uint32_t c1 = p1.Color(0,0,0,255);;
-  uint32_t c2 = p2.Color(0,0,0,255);
-  uint32_t c3 = p3.Color(0,0,0,255);
+  uint32_t c1 = left.Color(0,0,0,255);;
+  uint32_t c2 = right.Color(0,0,0,255);
+  uint32_t c3 = top.Color(0,0,0,255);
   uint16_t dayL = 12;
   uint16_t fadeT = 10;
   uint16_t riseH = 6;
@@ -88,7 +88,6 @@ Settings theSettings;
 uint32_t EEPROM_ADDR = 1;
 
 void setup() {
-  // EEPROM.put(EEPROM_ADDR, theSettings);
   loadSavedSettings();
   Serial.begin(115200);
   Wire.begin();
@@ -113,15 +112,14 @@ void setup() {
     lcd.print("Please power cycle");
     while(1);
   }
-  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  p1.begin();
-  p2.begin();
-  p3.begin();
-  p1.show();
-  p2.show();
-  p3.show();
+  // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  left.begin();
+  right.begin();
+  top.begin();
+  left.show();
+  right.show();
+  top.show();
   now = rtc.now();
-  // sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0) + TimeSpan(1,0,0,0);
   sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0);
   sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
 }
@@ -259,7 +257,7 @@ void loop() {
           } else if(cursorRow == 1)
           {
             dawn_duskLength += 15;
-            if(dawn_duskLength > 120) dawn_duskLength = 1; lcd.clear();
+            if(dawn_duskLength > 241) dawn_duskLength = 1; lcd.clear();
           } else if(cursorRow == 2)
           {
             sunriseMinute += 10;
@@ -412,14 +410,13 @@ void loop() {
       if(Bu_1.wasReleased()) {
         STATE = RUN;
         setLCDBacklight(50, 255, 50);
-        // p1.setPixelColor(5, 0,0,0,0);
-        // p1.show();
+        // left.setPixelColor(5, 0,0,0,0);
+        // left.show();
       } else if(Bu_2.wasReleased()) {
         STATE = RUN;
         setLCDBacklight(50, 255, 50);
       }
       break;
-
     case TO_COLOR_SETTINGS:
       if(Bu_2.wasReleased())
       {
@@ -436,6 +433,14 @@ void loop() {
         cursorCol = 0;
         cursorRow = 0;
         lcd.setCursor(cursorCol, cursorRow);
+        for(int i = 0; i < NUMPIXELS; i++) {
+          left.setPixelColor(i, 0);
+          right.setPixelColor(i, 0);
+          top.setPixelColor(i, 0);
+        }
+        left.show();
+        right.show();
+        top.show();
       }
       break;
     case COLOR_SETTINGS:
@@ -451,12 +456,20 @@ void loop() {
       {
         cursorRow++;
         cursorRow %= 3;
+        for(int i = 0; i < NUMPIXELS; i++) {
+          left.setPixelColor(i, 0);
+          right.setPixelColor(i, 0);
+          top.setPixelColor(i, 0);
+        }
+        left.show();
+        right.show();
+        top.show();
         if(cursorRow == 0)
         {
           int p_cR = cursorRow;
           int p_cC = cursorCol;
-          for(int i = 0; i < NUMPIXELS; i++) p1.setPixelColor(i, color1Day);
-          p1.show();
+          for(int i = 0; i < NUMPIXELS; i++) left.setPixelColor(i, color1Day);
+          left.show();
           lcd.clear();
           cursorCol = 0;
           cursorRow = 0;
@@ -472,8 +485,8 @@ void loop() {
         {
           int p_cR = cursorRow;
           int p_cC = cursorCol;
-          for(int i = 0; i < NUMPIXELS; i++) p2.setPixelColor(i, color2Day);
-          p2.show();
+          for(int i = 0; i < NUMPIXELS; i++) right.setPixelColor(i, color2Day);
+          right.show();
           lcd.clear();
           cursorCol = 0;
           cursorRow = 0;
@@ -489,8 +502,8 @@ void loop() {
         {
           int p_cR = cursorRow;
           int p_cC = cursorCol;
-          for(int i = 0; i < NUMPIXELS; i++) p3.setPixelColor(i, color3Day);
-          p3.show();
+          for(int i = 0; i < NUMPIXELS; i++) top.setPixelColor(i, color3Day);
+          top.show();
           lcd.clear();
           cursorCol = 0;
           cursorRow = 0;
@@ -506,40 +519,40 @@ void loop() {
       } else
       {
         if(cursorRow == 0) {
-          for(int i = 0; i < 5; i++) p1.setPixelColor(i, getColor());
-          p1.show();
+          for(int i = 0; i < NUMPIXELS; i++) left.setPixelColor(i, getColor());
+          left.show();
           if(Bu_2.wasReleased()) {
             color1Day = getColor();
             for(int i = 0; i < NUMPIXELS; i++) {
-              p1.setPixelColor(i, color1Day);
+              left.setPixelColor(i, color1Day);
             }
-            p1.show();
+            left.show();
             lcd.setCursor(10, 0);
             lcd.print("-stored");
           }
         }
         if(cursorRow == 1) {
-          for(int i = 0; i < 5; i++) p2.setPixelColor(i, getColor());
-          p2.show();
+          for(int i = 0; i < NUMPIXELS; i++) right.setPixelColor(i, getColor());
+          right.show();
           if(Bu_2.wasReleased()){
             color2Day = getColor();
             for(int i = 0; i < NUMPIXELS; i++) {
-              p2.setPixelColor(i, color2Day);
+              right.setPixelColor(i, color2Day);
             }
-            p2.show();
+            right.show();
             lcd.setCursor(10, 0);
             lcd.print("-stored");
           }
         }
         if(cursorRow == 2) {
-          for(int i = 0; i < 5; i++) p3.setPixelColor(i, getColor());
-          p3.show();
+          for(int i = 0; i < NUMPIXELS; i++) top.setPixelColor(i, getColor());
+          top.show();
           if(Bu_2.wasReleased()){
             color3Day = getColor();
             for(int i = 0; i < NUMPIXELS; i++) {
-              p3.setPixelColor(i, color3Day);
+              top.setPixelColor(i, color3Day);
             }
-            p3.show();
+            top.show();
             lcd.setCursor(10, 0);
             lcd.print("-stored");
           }
@@ -548,7 +561,6 @@ void loop() {
       break;
   }
 }
-
 
 void setLCDBacklight(uint8_t r, uint8_t g, uint8_t b) {
   // normalize the red LED - its brighter than the rest!
@@ -585,7 +597,7 @@ uint32_t getColor() {
   lcd.print(" ");
   lcd.print(Wval);
   lcd.print(" ");
-  return p1.Color(Gval, Rval, Bval, Wval);
+  return left.Color(Rval, Gval, Bval, Wval);
 }
 
 void runLights()
@@ -600,15 +612,22 @@ void runLights()
     if(!MORNING)
     {
       MORNING = 1;
+      DAY = 0;
+      EVENING = 0;
       NIGHT = 0;
-      p1.Fade(colorStart, color1Day, dawn_duskLength);
-      p2.Fade(colorStart, color2Day, dawn_duskLength);
-      p3.Fade(colorStart, color3Day, dawn_duskLength);
+      //Just fade in ONE SIDE PANEL
+      // left.Fade(colorStart, color1Day, dawn_duskLength);
+      right.Fade(colorStart, color2Day, dawn_duskLength);
+      // top.Fade(colorStart, color3Day, dawn_duskLength);
+      left.Fade(colorStart, color1Day, 0);
+      top.Fade(colorStart, color3Day, 0);
       lcd.clear();
     }
-    p1.Update();
-    p2.Update();
-    p3.Update();
+    // left.Update();
+    right.Update();
+    left.show();
+    top.show();
+    // top.Update();
     lcd.setCursor(20-7, 0);
     lcd.print("||MORN|");
   }
@@ -618,17 +637,19 @@ void runLights()
     {
       DAY = 1;
       MORNING = 0;
+      EVENING = 0;
+      NIGHT = 0;
       lcd.clear();
     }
     for(int i = 0; i < NUMPIXELS; i++)
     {
-      p1.setPixelColor(i, color1Day);
-      p2.setPixelColor(i, color2Day);
-      p3.setPixelColor(i, color3Day);
+      left.setPixelColor(i, color1Day);
+      right.setPixelColor(i, color2Day);
+      top.setPixelColor(i, color3Day);
     }
-    p1.show();
-    p2.show();
-    p3.show();
+    left.show();
+    right.show();
+    top.show();
     lcd.setCursor(20-7, 0);
     lcd.print("||DAY||");
   }
@@ -638,14 +659,22 @@ void runLights()
     {
       EVENING = 1;
       DAY = 0;
-      p1.Fade(color1Day, colorEnd, dawn_duskLength);
-      p2.Fade(color2Day, colorEnd, dawn_duskLength);
-      p3.Fade(color3Day, colorEnd, dawn_duskLength);
+      MORNING = 0;
+      NIGHT = 0;
+      //NOTE: This is fading BACKWARDS from colorEND to ColorDay
+      //FADING OUT ON THE OPPOSITE SIDE PANEL
+      left.Fade(color1Day, colorEnd, dawn_duskLength);
+      right.Fade(color2Day, colorEnd, 0);
+      top.Fade(color3Day, colorEnd, 0);
+      // right.Fade(color2Day, colorEnd, dawn_duskLength);
+      // top.Fade(color3Day, colorEnd, dawn_duskLength);
       lcd.clear();
     }
-    p1.Update();
-    p2.Update();
-    p3.Update();
+    left.Update();
+    right.show();
+    top.show();
+    // right.Update();
+    // top.Update();
     lcd.setCursor(20-7, 0);
     lcd.print("||EVE||");
   }
@@ -654,18 +683,20 @@ void runLights()
     if(!NIGHT)
     {
       NIGHT = 1;
+      DAY = 0;
+      MORNING = 0;
       EVENING = 0;
       lcd.clear();
     }
     for(int i = 0; i < NUMPIXELS; i++)
     {
-      p1.setPixelColor(i, 0);
-      p2.setPixelColor(i, 0);
-      p3.setPixelColor(i, 0);
+      left.setPixelColor(i, 0);
+      right.setPixelColor(i, 0);
+      top.setPixelColor(i, 0);
     }
-    p1.show();
-    p2.show();
-    p3.show();
+    left.show();
+    right.show();
+    top.show();
     lcd.setCursor(20-7, 0);
     lcd.print("||NIGHT");
   }
@@ -674,18 +705,20 @@ void runLights()
     if(!NIGHT)
     {
       NIGHT = 1;
+      DAY = 0;
+      MORNING = 0;
       EVENING = 0;
       lcd.clear();
     }
     for(int i = 0; i < NUMPIXELS; i++)
     {
-      p1.setPixelColor(i, 0);
-      p2.setPixelColor(i, 0);
-      p3.setPixelColor(i, 0);
+      left.setPixelColor(i, 0);
+      right.setPixelColor(i, 0);
+      top.setPixelColor(i, 0);
     }
-    p1.show();
-    p2.show();
-    p3.show();
+    left.show();
+    right.show();
+    top.show();
     lcd.setCursor(20-7, 0);
     lcd.print("||NIGHT");
   }

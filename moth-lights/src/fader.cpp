@@ -45,7 +45,6 @@ class NeoPatterns : public Adafruit_NeoPixel
            Index++;
            if (Index >= TotalSteps)
             {
-              Serial.println("poop");
                 Index = TotalSteps; //Reach the Max? Just stay there dummy
             }
         }
@@ -96,8 +95,11 @@ class NeoPatterns : public Adafruit_NeoPixel
         uint8_t green = ((Green(Color1) * (TotalSteps - Index)) + (Green(Color2) * Index)) / TotalSteps;
         uint8_t blue = ((Blue(Color1) * (TotalSteps - Index)) + (Blue(Color2) * Index)) / TotalSteps;
         uint8_t white = ((White(Color1) * (TotalSteps - Index)) + (White(Color2) * Index)) / TotalSteps;
-        // Serial.println(red); Serial.println(green);
-        // Serial.println();
+        // Serial.print(red); Serial.print(",");
+        // Serial.print(green); Serial.print(",");
+        // Serial.print(blue); Serial.print(",");
+        // Serial.print(white); Serial.println();
+
         ColorSet(Color(red, green, blue, white));
         show();
         Increment();
