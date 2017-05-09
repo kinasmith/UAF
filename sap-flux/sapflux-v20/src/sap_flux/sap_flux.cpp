@@ -20,7 +20,7 @@
 #include "SPIFlash_Marzogh.h"
 #include "MAX31856.h"
 
-#define NODEID 5
+#define NODEID 17
 #define GATEWAYID 0
 #define FREQUENCY RF69_433MHZ //frequency of radio
 #define ATC_RSSI -70 //ideal Signal Strength of trasmission
