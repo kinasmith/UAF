@@ -54,7 +54,10 @@ NeoPatterns right(NUMPIXELS, neo_02, NEO_GRBW);
 NeoPatterns top(NUMPIXELS, neo_03, NEO_GRBW);
 
 int dayLength = 12;
+long dayLength_seconds;
 int dawn_duskLength = 10;
+long dawn_dusk_seconds;
+
 uint32_t color1Day = left.Color(0,0,0,255);
 uint32_t color2Day = right.Color(0,0,0,255);
 uint32_t color3Day = top.Color(0,0,0,255);
@@ -121,7 +124,10 @@ void setup() {
   top.show();
   now = rtc.now();
   sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0);
-  sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
+  // sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0); //BUG: for dawn/dusk times greater than 60 minutes it rolls over
+  dayLength_seconds = ((dayLength * 60)*60); //day Length is in hours. convert to seconds
+  dawn_dusk_seconds = (dawn_duskLength*60); //dawn/dusk fade time is in minutes, convert to seconds
+  sunsetFinishTime = sunriseStartTime + TimeSpan(dayLength_seconds + (dawn_dusk_seconds*2)); //add the dawn/dusk time together for total delay
 }
 
 void loop() {
@@ -207,7 +213,11 @@ void loop() {
         lcd.setCursor(cursorCol, cursorRow+=1);
         // sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0) + TimeSpan(1,0,0,0);
         sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0);
-        sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
+
+        dayLength_seconds = ((dayLength * 60)*60); //day Length is in hours. convert to seconds
+        dawn_dusk_seconds = (dawn_duskLength*60); //dawn/dusk fade time is in minutes, convert to seconds
+        sunsetFinishTime = sunriseStartTime + TimeSpan(dayLength_seconds + (dawn_dusk_seconds*2)); //add the dawn/dusk time together for total delay
+        // sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
         lcd.print("sunrise ");
         lcd.print(sunriseStartTime.hour()); lcd.print(":"); lcd.print(sunriseStartTime.minute());
         lcd.print("am");
@@ -287,7 +297,10 @@ void loop() {
           lcd.setCursor(cursorCol, cursorRow+=1);
           // sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0) + TimeSpan(1,0,0,0);
           sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0);
-          sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
+          dayLength_seconds = ((dayLength * 60)*60); //day Length is in hours. convert to seconds
+          dawn_dusk_seconds = (dawn_duskLength*60); //dawn/dusk fade time is in minutes, convert to seconds
+          sunsetFinishTime = sunriseStartTime + TimeSpan(dayLength_seconds + (dawn_dusk_seconds*2)); //add the dawn/dusk time together for total delay
+          // sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
           lcd.print("sunrise ");
           lcd.print(sunriseStartTime.hour()); lcd.print(":"); lcd.print(sunriseStartTime.minute());
           lcd.print("am");
@@ -604,8 +617,11 @@ void runLights()
 {
   DateTime sunriseFinishTime;
   DateTime sunsetStartTime;
-  sunriseFinishTime = sunriseStartTime + TimeSpan(0, 0, dawn_duskLength, 0);
-  sunsetStartTime = sunsetFinishTime - TimeSpan(0,0, dawn_duskLength,0);
+  dawn_dusk_seconds = (dawn_duskLength*60); //dawn/dusk fade time is in minutes, convert to seconds
+  sunriseFinishTime = sunriseStartTime + TimeSpan(dawn_dusk_seconds);
+  sunsetStartTime = sunsetFinishTime - TimeSpan(dawn_dusk_seconds);
+  // sunriseFinishTime = sunriseStartTime + TimeSpan(0, 0, dawn_duskLength, 0);
+  // sunsetStartTime = sunsetFinishTime - TimeSpan(0,0, dawn_duskLength,0);
 
   if(now.unixtime() > sunriseStartTime.unixtime() && now.unixtime() < sunriseFinishTime.unixtime())
   {
@@ -724,9 +740,12 @@ void runLights()
   }
   else if(now.unixtime() > sunsetFinishTime.unixtime())
   {
-    sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0) + TimeSpan(1,0,0,0);
+    sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0) + TimeSpan(1,0,0,0); //increment by 1 day
     // sunriseStartTime = DateTime(now.year(), now.month(), now.day(), sunriseHour, sunriseMinute, 0);
-    sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
+    // sunsetFinishTime = sunriseStartTime + TimeSpan(0, dayLength, dawn_duskLength*2, 0);
+    dayLength_seconds = ((dayLength * 60)*60); //day Length is in hours. convert to seconds
+    dawn_dusk_seconds = (dawn_duskLength*60); //dawn/dusk fade time is in minutes, convert to seconds
+    sunsetFinishTime = sunriseStartTime + TimeSpan(dayLength_seconds + (dawn_dusk_seconds*2)); //add the dawn/dusk time together for total delay
   }
 }
 
