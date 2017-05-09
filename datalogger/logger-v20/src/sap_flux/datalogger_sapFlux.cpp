@@ -1,3 +1,6 @@
+// R Script for converting UTC timestamp to Actual Time
+// as.POSIXct(timeStamp, origin="1970-01-01")
+
 #include <Arduino.h>
 #include <RFM69_ATC.h>//get it here: https://www.github.com/lowpowerlab/rfm69
 #include <SPI.h>
